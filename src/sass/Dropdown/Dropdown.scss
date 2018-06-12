@@ -1,0 +1,35 @@
+/* =========================================================================
+ * DROPDOWN OBJECT
+ * ========================================================================= */
+
+ .o-dropdown {
+	@include elevation(4);
+	position: absolute;
+	visibility: hidden;
+	opacity: 0;
+	top: 100%;
+	left: ($globalSpacingXxs * -1);
+	margin: 0;
+	padding: $globalSpacingXxs 0;
+	z-index: 100;
+	list-style-type: none;
+	min-width: 100%;
+	border: 1px solid getColor(gray80);
+	border-radius: 3px;
+	background-color: getColor(gray);
+	text-align: left;
+	transform: translateY(20px) scale(0.95);
+	transition: all 0.2s $easeOutQuint;
+	overflow-y: auto;
+}
+
+.is-open > .o-dropdown {
+	visibility: visible;
+	opacity: 1;
+	transform: none;
+}
+
+.o-dropdown--reverse {
+	right: ($globalSpacingXxs * -1);
+	left: auto;
+}

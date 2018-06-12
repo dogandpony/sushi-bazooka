@@ -1,0 +1,190 @@
+/* =========================================================================
+ * MODAL COMPONENT
+ * ========================================================================= */
+
+/* Container
+   ========================================================================= */
+
+   .c-modals {
+	visibility: hidden;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	z-index: 150;
+}
+
+
+
+
+/* Overlay
+   ========================================================================= */
+
+.c-modal-overlay {
+	visibility: hidden;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	opacity: 0;
+	z-index: 160;
+	transition: visibility 0.3s 0.3s, opacity 0.3s ease 0.3s;
+	background: rgba(#f2f2f2, 0.9);
+
+	&.is-open {
+		visibility: visible;
+		opacity: 1;
+		transition: visibility 0.3s, opacity 0.3s ease;
+	}
+}
+
+
+
+
+/* Modal
+   ========================================================================= */
+
+.c-modalContainer {
+	width: 100%;
+	height: 100%;
+	overflow-y: scroll;
+	-webkit-overflow-scrolling: touch;
+}
+
+.c-modal {
+	position: relative;
+	visibility: hidden;
+	padding: $globalSpacingSm;
+	opacity: 0;
+	background: #fff;
+	width: 100%;
+	max-width: (800px - ($globalSpacing * 2));
+	transition: visibility 0.3s, opacity 0.3s ease-in-out;
+
+	@include mq($from: tabletV) {
+		padding: $globalSpacing;
+	}
+
+	@include mq($from: tabletH) {
+		padding: $globalSpacingXl;
+	}
+
+	&.is-open {
+		visibility: visible;
+		opacity: 1;
+	}
+}
+
+.c-modal--full {
+	width: 100%;
+	height: 100%;
+	max-width: none;
+	max-height: none;
+}
+
+.c-modal--dark {
+	background: #000;
+}
+
+
+
+
+/* Centering
+   ========================================================================= */
+
+// CSS-only centering
+// ---------------------------
+
+.c-modalContainer--hCenter,
+.c-modalContainer--vCenter {
+	display: flex;
+	align-items: flex-start;
+	align-content: flex-start;
+}
+
+.c-modalContainer--hCenter {
+	//justify-content: center;
+}
+
+.c-modalContainer--hCenter .c-modal {
+	margin-right: auto;
+	margin-left: auto;
+}
+
+.c-modalContainer--vCenter {
+	//align-items: center;
+}
+
+.c-modalContainer--vCenter .c-modal {
+	margin-top: auto;
+	margin-bottom: auto;
+}
+
+
+
+// JavaScript centering
+// ---------------------------
+
+.c-modalContainer--calculatedHCenter .c-modal,
+.c-modalContainer--calculatedVCenter .c-modal {
+	position: absolute;
+}
+
+.c-modalContainer--calculatedHCenter .c-modal {
+	left: 50%;
+}
+
+.c-modalContainer--calculatedVCenter .c-modal {
+	top: 50%;
+}
+
+
+
+
+/* Close Button
+   ========================================================================= */
+
+.c-modal__close {
+	position: absolute;
+	top: $globalSpacingSm;
+	right: $globalSpacingSm;
+	margin: 0 -4px 0 0;
+	width: 32px;
+	height: 32px;
+	font-size: 24px;
+	text-align: center;
+	z-index: 10;
+
+	&:before {
+		content: 'clear';
+		font-family: 'Material Icons';
+		font-weight: normal;
+		font-style: normal;
+		display: inline-block;
+		line-height: 1;
+		text-transform: none;
+		letter-spacing: normal;
+		word-wrap: normal;
+		white-space: nowrap;
+		direction: ltr;
+		-webkit-font-smoothing: antialiased;
+		text-rendering: optimizeLegibility;
+		-moz-osx-font-smoothing: grayscale;
+		font-feature-settings: 'liga';
+	}
+
+	@include mq($from: tabletV) {
+		font-size: 36px;
+		width: 48px;
+		height: 48px;
+	}
+}
+
+.mobile .c-modal__close {
+	&:hover,
+	&:active {
+		color: getColor(primary);
+	}
+}
