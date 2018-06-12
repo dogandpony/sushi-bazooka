@@ -1,0 +1,133 @@
+/* =========================================================================
+ * STYLED SELECT COMPONENT
+ * ========================================================================= */
+
+ .c-styledSelect {
+	position: relative;
+	display: block;
+	width: 100%;
+}
+
+.c-styledSelect__label {
+	@extend .o-form__input;
+
+	position: relative;
+	z-index: 2;
+	padding: 13px 40px 13px 16px;
+	cursor: pointer;
+
+	&:after {
+		@extend %materialIcons;
+
+		content: 'expand_more';
+		position: absolute;
+		top: 50%;
+		right: -3px;
+		z-index: 2;
+		margin-top: -0.5em;
+		font-size: inherit;
+		font-weight: inherit;
+		color: inherit;
+		line-height: 1;
+	}
+}
+
+.c-styledSelect__label:hover,
+.c-styledSelect__label:focus,
+.c-styledSelect__select:focus + .c-styledSelect__label {
+	color: getColor(primary);
+	border-color: getColor(primary-50);
+}
+
+.c-styledSelect__select {
+	position: absolute;
+	opacity: 0;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	cursor: pointer;
+	z-index: 1;
+}
+
+
+
+
+/* Bare (text only/dropdown-like)
+   ========================================================================= */
+
+.c-styledSelect--bare {
+	display: inline-block;
+	width: auto;
+}
+
+.c-styledSelect--bare .c-styledSelect__label {
+	position: relative;
+	z-index: 2;
+	padding: 11px 14px 11px 0;
+	border: 0;
+	font-size: getFontSize(7);
+	color: getColor(gray80);
+	cursor: pointer;
+
+	&:hover,
+	&:focus {
+		color: getColor(accent);
+	}
+
+	&:after {
+		content: 'expand_more';
+	}
+}
+
+
+
+
+/* Dropdown
+   ========================================================================= */
+
+.c-styledSelect__dropdown {
+	@include elevation(8);
+	top: 0;
+	left: ($globalSpacingXxs * -1);
+	padding: $globalSpacingXs $globalSpacingSm;
+	z-index: 3;
+}
+
+.c-styledSelect__item {
+	padding: $globalSpacingXxs;
+	font-size: getFontSize(7);
+	color: getColor(gray);
+	line-height: 1;
+	cursor: pointer;
+	white-space: nowrap;
+
+	&:hover,
+	&:focus {
+		color: getColor(accent);
+	}
+
+	&.is-current {
+		color: getColor(accent);
+	}
+}
+
+.c-styledSelect__title {
+	display: block;
+	font-weight: 700;
+	line-height: 1.25;
+}
+
+.c-styledSelect__subtitle {
+	display: block;
+	color: getColor(gray80);
+	font-size: getFontSize(8);
+	font-weight: 500;
+	line-height: 1.25;
+}
+
+.c-styledSelect__item.is-active .c-styledSelect__subtitle,
+.c-styledSelect__item:hover .c-styledSelect__subtitle,
+.c-styledSelect__item:focus .c-styledSelect__subtitle {
+	color: inherit;
+}

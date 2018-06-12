@@ -1,0 +1,21 @@
+/* =========================================================================
+ * CHASER OBJECT (beta)
+ * ========================================================================= */
+
+ .o-chaser {
+	position: absolute;
+	width: 100%;
+
+	&.is-chasing {
+		position: fixed;
+	}
+
+	&.is-limited {
+		//top: auto;
+		//bottom: 0;
+	}
+}
+
+.o-chaserPlaceholder {
+	display: block;
+}

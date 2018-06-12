@@ -1,0 +1,134 @@
+/* =========================================================================
+ * REVEAL
+ *
+ * Work in progress - please take this as an alpha version
+ *
+ * Known issues:
+ * - Width-based animations (scroll from left, scroll from right)
+ * ========================================================================= */
+
+ .o-reveal {
+	overflow: hidden;
+}
+
+.o-reveal.is-animating,
+.o-reveal.is-animating > .o-reveal__content {
+	transition-duration: 0.3s;
+	transition-timing-function: $easeInOutQuart;
+}
+
+.no-js .o-reveal {
+	display: none;
+}
+
+
+
+
+/* Animations
+   ========================================================================= */
+
+%revealAsyncAnimation {
+
+	&,
+	&.is-active > .o-reveal__content {
+		transition-delay: 0.15s;
+	}
+
+	&.is-active,
+	> .o-reveal__content {
+		transition-delay: 0s;
+	}
+
+}
+
+
+
+// Hidden (helper class)
+// May be used with other classes to collapse the content box while it's hidden
+// ---------------------------
+
+.o-reveal--hidden {
+	max-height: 0;
+}
+
+
+
+// Unfold
+// ---------------------------
+
+.o-reveal--unfold {
+	max-height: 0;
+	perspective: 1000px;
+
+	@extend %revealAsyncAnimation;
+}
+
+.o-reveal--unfold > .o-reveal__content {
+	transform: rotateX(-107deg) translate3d(0, 0, 0);
+	transform-origin: 0 0;
+}
+
+.o-reveal--unfold.is-active > .o-reveal__content {
+	transform: rotateX(0deg) translate3d(0, 0, 0);
+}
+
+
+
+// Fade
+// ---------------------------
+
+.o-reveal--fade > .o-reveal__content {
+	opacity: 0;
+}
+
+.o-reveal--fade.is-active > .o-reveal__content {
+	opacity: 1;
+}
+
+
+
+// Appear
+// ---------------------------
+
+.o-reveal--appearFromLeft,
+.o-reveal--appearFromRight,
+.o-reveal--appearFromTop,
+.o-reveal--appearFromBottom {
+	overflow: hidden;
+	@extend %revealAsyncAnimation;
+}
+
+.o-reveal--appearFromLeft > .o-reveal__content,
+.o-reveal--appearFromRight > .o-reveal__content,
+.o-reveal--appearFromTop > .o-reveal__content,
+.o-reveal--appearFromBottom > .o-reveal__content {
+	opacity: 0;
+}
+
+.o-reveal--appearFromLeft.is-active > .o-reveal__content,
+.o-reveal--appearFromRight.is-active > .o-reveal__content,
+.o-reveal--appearFromTop.is-active > .o-reveal__content,
+.o-reveal--appearFromBottom.is-active > .o-reveal__content {
+	transform: translateX(0);
+	opacity: 1;
+}
+
+// left
+.o-reveal--appearFromLeft > .o-reveal__content {
+	transform: translateX(-100%);
+}
+
+// Right
+.o-reveal--appearFromRight > .o-reveal__content {
+	transform: translateX(100%);
+}
+
+// Top
+.o-reveal--appearFromTop > .o-reveal__content {
+	transform: translateY(-100%);
+}
+
+// Bottom
+.o-reveal--appearFromBottom > .o-reveal__content {
+	transform: translateY(100%);
+}
