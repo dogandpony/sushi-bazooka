@@ -81,8 +81,10 @@ var Sushi;
 			return [target];
 		}
 		else {
-			throw new TypeError("The target parameter should be either an instance of Element, " +
-				"HTMLCollection, NodeList or any other element that can have listeners attached.");
+			throw new TypeError(
+				"The target parameter should be either an instance of Element, HTMLCollection,"
+				+ " NodeList or any other element that can have listeners attached."
+			);
 		}
 	};
 
@@ -135,8 +137,8 @@ var Sushi;
 				var namespaceRegex = new RegExp(typeString + "$");
 
 				for (var namespace in storedTarget.events) {
-					if (storedTarget.events.hasOwnProperty(namespace) &&
-						namespaceRegex.test(namespace)) {
+					if (storedTarget.events.hasOwnProperty(namespace)
+						&& namespaceRegex.test(namespace)) {
 						var j = storedTarget.events[namespace].length;
 
 						while (j--) {
@@ -265,7 +267,5 @@ var Sushi;
 		return eventStack;
 	};
 
-
 	Sushi.Events = Events;
-
 })(Sushi || (Sushi = {}));
