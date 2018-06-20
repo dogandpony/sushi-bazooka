@@ -1,6 +1,6 @@
 var Sushi;
 
-(function (Sushi) {
+(function (Sushi, root) {
 	"use strict";
 
 	var Util = Sushi.Util;
@@ -21,7 +21,7 @@ var Sushi;
 
 		value = value.toFixed(decimals + 1);
 
-		return Number(window.Math.round(value + "e" + decimals) + "e-" + decimals);
+		return Number(root.Math.round(value + "e" + decimals) + "e-" + decimals);
 	};
 
 
@@ -45,7 +45,7 @@ var Sushi;
 	 * Returns a random number between min (inclusive) and max (exclusive)
 	 */
 	Math.randomFloat = function (min, max) {
-		return window.Math.random() * (max - min) + min;
+		return root.Math.random() * (max - min) + min;
 	};
 
 
@@ -54,14 +54,14 @@ var Sushi;
 	 * Using window.Math.round() will give you a non-uniform distribution!
 	 */
 	Math.randomInt = function (min, max) {
-		return window.Math.floor(window.Math.random() * (max - min + 1)) + min;
+		return root.Math.floor(root.Math.random() * (max - min + 1)) + min;
 	};
 
 
 	Math.pad = function (number, length) {
 		var padString = "";
 		var numberLength = Math.getLength(number);
-		var maxPad = window.Math.max(length, numberLength);
+		var maxPad = root.Math.max(length, numberLength);
 
 		for (var i = 0; i < maxPad; i++) {
 			padString += "0";
@@ -77,7 +77,7 @@ var Sushi;
 	 * @returns {number}
 	 */
 	Math.getLength = function (number) {
-		return window.Math.ceil(window.Math.log(number + 1) / window.Math.LN10);
+		return root.Math.ceil(root.Math.log(number + 1) / root.Math.LN10);
 	};
 
 
@@ -97,7 +97,7 @@ var Sushi;
 			clockwise = (destination + length - origin);
 		}
 
-		var distance = window.Math.min(clockwise, counterClockwise);
+		var distance = root.Math.min(clockwise, counterClockwise);
 
 		if (
 			(distance !== 0)
@@ -139,28 +139,28 @@ var Sushi;
 		var radius = Math.hypot(clonedCoordinates.x, clonedCoordinates.y);
 
 		if (minLimit) {
-			radius = window.Math.max(radius, minLimit);
+			radius = root.Math.max(radius, minLimit);
 		}
 
 		if (maxLimit) {
-			radius = window.Math.min(radius, maxLimit);
+			radius = root.Math.min(radius, maxLimit);
 		}
 
-		var radians = window.Math.atan2(clonedCoordinates.x, clonedCoordinates.y);
+		var radians = root.Math.atan2(clonedCoordinates.x, clonedCoordinates.y);
 
 		return {
-			x: radius * window.Math.sin(radians) + center.x,
-			y: radius * window.Math.cos(radians) + center.y,
+			x: radius * root.Math.sin(radians) + center.x,
+			y: radius * root.Math.cos(radians) + center.y,
 		};
 	};
 
 
 	Math.polarToCartesian = function (center, radius, angleInDegrees) {
-		var angleInRadians = (angleInDegrees * (window.Math.PI / 180.0));
+		var angleInRadians = (angleInDegrees * (root.Math.PI / 180.0));
 
 		return {
-			x: center.x + (radius * window.Math.cos(angleInRadians)),
-			y: center.y + (radius * window.Math.sin(angleInRadians)),
+			x: center.x + (radius * root.Math.cos(angleInRadians)),
+			y: center.y + (radius * root.Math.sin(angleInRadians)),
 		};
 	};
 
@@ -171,12 +171,12 @@ var Sushi;
 			y: 0,
 		};
 
-		return window.Math.atan2((point.x - origin.x), (point.y - origin.y));
+		return root.Math.atan2((point.x - origin.x), (point.y - origin.y));
 	};
 
 
 	Math.getPointAngleInDegrees = function (point, origin) {
-		return Math.getPointAngle(point, origin) * (180 / window.Math.PI);
+		return Math.getPointAngle(point, origin) * (180 / root.Math.PI);
 	};
 
 
@@ -185,9 +185,9 @@ var Sushi;
 		origin.x = origin.x || 0;
 		origin.y = origin.y || 0;
 
-		var radians = angleInDegrees * (window.Math.PI / 180.0);
-		var cos = window.Math.cos(radians);
-		var sin = window.Math.sin(radians);
+		var radians = angleInDegrees * (root.Math.PI / 180.0);
+		var cos = root.Math.cos(radians);
+		var sin = root.Math.sin(radians);
 		var deltaX = coordinates.x - origin.x;
 		var deltaY = coordinates.y - origin.y;
 
@@ -198,7 +198,7 @@ var Sushi;
 	};
 
 
-	Math.hypot = window.Math.hypot || function () {
+	Math.hypot = root.Math.hypot || function () {
 		var y = 0;
 		var i = arguments.length;
 
@@ -206,8 +206,8 @@ var Sushi;
 			y += arguments[i] * arguments[i];
 		}
 
-		return window.Math.sqrt(y);
+		return root.Math.sqrt(y);
 	};
 
 	Util.Math = Math;
-})(Sushi || (Sushi = {}));
+})(Sushi || (Sushi = {}), this);
