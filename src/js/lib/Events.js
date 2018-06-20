@@ -52,8 +52,9 @@ var Sushi;
 	 * @returns NodeList|HTMLCollection|Array
 	 */
 	var parseTargets = function (target) {
-		if ((target instanceof NodeList) || (target instanceof HTMLCollection) ||
-			(target instanceof Array)) {
+		target = target || null;
+
+		if (Sushi.Dom.isIterable(target)) {
 			return target;
 		}
 		else if ((target !== null) && (target.addEventListener !== void 0)) {
