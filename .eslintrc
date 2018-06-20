@@ -10,7 +10,7 @@
 	],
 	"rules": {
 		"brace-style": [1, "stroustrup"],
-		"camelcase": [1, {"properties": "always"}],
+		"camelcase": [1, { "properties": "always" }],
 		"comma-dangle" : [1, "always-multiline"],
 		"complexity": [1, { "max": 20 }],
 		"curly": [1, "all"],
@@ -30,7 +30,7 @@
 		"newline-after-var": 1,
 		"newline-before-return": 1,
 		"no-new": 0,
-		"no-multiple-empty-lines" : [1, {"max": 4, "maxBOF": 1}],
+		"no-multiple-empty-lines" : [1, { "max": 4, "maxBOF": 1 }],
 		"no-trailing-spaces": 1,
 		"no-unused-vars" : 1,
 		"no-undef" : 1,
