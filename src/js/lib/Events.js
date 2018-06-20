@@ -37,7 +37,7 @@ var Sushi;
 	 * @param target
 	 * @returns {*}
 	 */
-	var getStackedTarget = function (target) {
+	var getStoredTarget = function (target) {
 		var storedTarget;
 		var index = null;
 
@@ -97,7 +97,7 @@ var Sushi;
 	 */
 	var addListeners = function (types, target, fn) {
 		var typeList = types.split(" ");
-		var storedTarget = getStackedTarget(target);
+		var storedTarget = getStoredTarget(target);
 
 		for (var i = 0; i < typeList.length; i++) {
 			var typeString = typeList[i];
@@ -120,7 +120,7 @@ var Sushi;
 	 */
 	var removeListeners = function (types, target, fn) {
 		var typeList = types.split(" ");
-		var storedTarget = getStackedTarget(target);
+		var storedTarget = getStoredTarget(target);
 
 		if (storedTarget !== void 0) {
 			for (var i = 0; i < typeList.length; i++) {
