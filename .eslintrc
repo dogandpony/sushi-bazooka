@@ -55,7 +55,7 @@
 			"asyncArrow": "always"
 		}],
 		"spaced-comment": [1, "always"],
-		"strict": [1, "function"]
+		"strict": [1, "safe"]
 	}
 }
 
