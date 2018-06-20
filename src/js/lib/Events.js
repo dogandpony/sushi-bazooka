@@ -6,28 +6,7 @@ var Sushi;
 	var eventStack = [];
 
 	var Events = function (target) {
-		return {
-			on: function (types, fn) {
-				Events.on(types, target, fn);
-
-				return this;
-			},
-			one: function (types, fn) {
-				Events.one(types, target, fn);
-
-				return this;
-			},
-			off: function (types, fn) {
-				Events.off(types, target, fn);
-
-				return this;
-			},
-			trigger: function (types, data) {
-				Events.trigger(types, target, data);
-
-				return this;
-			},
-		};
+		return new Events.EventHelper(target);
 	};
 
 
