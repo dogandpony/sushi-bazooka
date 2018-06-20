@@ -100,12 +100,18 @@ var Sushi;
 		var storedTarget = getStoredTarget(target);
 
 		for (var i = 0; i < typeList.length; i++) {
-			var typeString = typeList[i];
-			var type = typeString.split(".").pop();
+			var namespaceArray = typeList[i].split(".");
 
-			storedTarget.events[typeString] = storedTarget.events[typeString] || [];
-			storedTarget.events[typeString].push(fn);
-			storedTarget.target.addEventListener(type, fn);
+			storedTarget.events[typeList[i]] = storedTarget.events[typeList[i]] || [];
+			storedTarget.events[typeList[i]].push(fn);
+
+			while (namespaceArray.length > 0) {
+				var typeString = namespaceArray.join(".");
+
+				storedTarget.target.addEventListener(typeString, fn);
+
+				namespaceArray.shift();
+			}
 		}
 	};
 
