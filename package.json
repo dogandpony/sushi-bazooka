@@ -1,43 +1,25 @@
 {
-	"name": "sushi-bazooka",
-	"version": "1.6.3",
-	"description": "Plugins JS to Sushi-Base DPS projects.",
-	"main": "example.main.scss",
-	"scripts": {
-	  "test": "npm run lint && mocha test/run.js",
-	  "lint": "./node_modules/.bin/stylelint \"**/*.scss\" --syntax scss"
+	"name" : "sushi-bazooka",
+	"version" : "0.1.0",
+	"description" : "Component-based JavaScript library",
+	"repository" : {
+		"type" : "git",
+		"url" : "git+https://github.com/dogandpony/sushi-bazooka.git"
 	},
-	"repository": {
-	  "type": "git",
-	  "url": "git+https://github.com/dogandpony/sushi-bazooka.git"
-	},
-	"keywords": [
-	  "js",
-	  "plugins",
-	  "sushi",
-	  "bazooka"
+	"keywords" : [
+		"js",
+		"plugins",
+		"sushi",
+		"bazooka"
 	],
-	"author": "Bill Addison <bill@dogandponystudios.com>",
-	"contributors": [
-	  "Caio Costa <caiocrcosta@gmail.com>",
-	  "Jorge Veloso <jorge@dogandponystudios.com>",
-	  "Fabio Ribeiro Veloso <jorge@dogandponystudios.com>"
+	"author" : "Caio Costa <caiocrcosta@gmail.com>",
+	"contributors" : [
+		"Fabio Ribeiro <fabio@dogandponystudios.com>",
+		"Jorge Veloso <jorge@dogandponystudios.com>"
 	],
-	"license": "Apache-2.0",
-	"bugs": {
-	  "url": "https://github.com/dogandpony/sushi-bazooka/issues"
+	"license" : "ISC",
+	"bugs" : {
+		"url" : "https://github.com/dogandpony/sushi-bazooka/issues"
 	},
-	"homepage": "https://github.com/dogandpony/sushi-bazooka#readme",
-	"dependencies": {
-	  "sass-mq": "^3.2.9"
-	},
-	"devDependencies": {
-	  "glob": "^7.0.5",
-	  "mocha": "^3.0.2",
-	  "node-sass": "^3.8.0",
-	  "sass-true": "^2.1.3",
-	  "stylelint": "^7.8.0",
-	  "stylelint-scss": "^1.4.1"
-	}
-  }
-  
+	"homepage" : "https://github.com/dogandpony/sushi-bazooka#readme"
+}
