@@ -2,7 +2,7 @@
  * DROPDOWN OBJECT
  * ========================================================================= */
 
- .o-dropdown {
+.o-dropdown {
 	@include elevation(4);
 	position: absolute;
 	visibility: hidden;
