@@ -191,7 +191,12 @@ var Sushi;
 		for (var i = 0; i < elementList.length; i++) {
 			var element = elementList[i];
 
-			handler(types, element, fn);
+			if (Sushi.Dom.isIterable(element)) {
+				traverse(handler, types, element, fn);
+			}
+			else {
+				handler(types, element, fn);
+			}
 		}
 	};
 
