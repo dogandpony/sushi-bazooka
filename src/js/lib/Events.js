@@ -77,7 +77,7 @@ var Sushi;
 			(target instanceof Array)) {
 			return target;
 		}
-		else if (target.addEventListener !== void 0) {
+		else if ((target !== null) && (target.addEventListener !== void 0)) {
 			return [target];
 		}
 		else {
