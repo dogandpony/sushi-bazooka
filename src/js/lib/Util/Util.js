@@ -5,7 +5,6 @@
 var Sushi;
 
 (function (Sushi) {
-
 	"use strict";
 
 	var Util = {};
@@ -25,7 +24,6 @@ var Sushi;
 	 * @param options
 	 * @returns {throttled}
 	 */
-
 	Util.throttle = function (func, wait, options) {
 		var timeout, context, args, result;
 		var previous = 0;
@@ -97,7 +95,6 @@ var Sushi;
 		var namespaceCheckRegExp = new RegExp("^" + namespace + "(([A-Z]+).*?)$");
 
 		for (var i in properties) {
-			// allow props to be accessed sans "modal" prefix and log the overrides
 			if (properties.hasOwnProperty(i) && namespaceCheckRegExp.test(i)) {
 				var val = properties[i];
 				var shortName = i.match(namespaceCheckRegExp)[1]
@@ -171,11 +168,11 @@ var Sushi;
 	Util.requestAnimationFrame = function (fn, fps) {
 		fps = fps || 60;
 
-		var animationFrameFunction = window.requestAnimationFrame ||
-			window.mozRequestAnimationFrame ||
-			window.webkitRequestAnimationFrame ||
-			window.msRequestAnimationFrame ||
-			function (fn) {
+		var animationFrameFunction = window.requestAnimationFrame
+			|| window.mozRequestAnimationFrame
+			|| window.webkitRequestAnimationFrame
+			|| window.msRequestAnimationFrame
+			|| function (fn) {
 				return setTimeout(fn, 1000 / fps);
 			};
 
@@ -183,9 +180,9 @@ var Sushi;
 	};
 
 	Util.cancelAnimationFrame = function (requestId) {
-		var animationFrameFunction = window.cancelAnimationFrame ||
-			window.mozCancelAnimationFrame ||
-			function (requestId) {
+		var animationFrameFunction = window.cancelAnimationFrame
+			|| window.mozCancelAnimationFrame
+			|| function (requestId) {
 				clearTimeout(requestId);
 			};
 
@@ -298,6 +295,28 @@ var Sushi;
 		return string.charAt(0).toLowerCase() + string.slice(1);
 	};
 
-	Sushi.Util = Util;
 
+	/**
+	 * Retrieves data from a form element
+	 *
+	 * @param formElement
+	 * @param ignoreEmpty
+	 */
+	Util.getFormData = function (formElement, ignoreEmpty) {
+		ignoreEmpty = (ignoreEmpty !== void 0) ? ignoreEmpty : true;
+
+		var formData = {};
+
+		for (var i = 0; i < formElement.elements.length; i++) {
+			var inputElement = formElement.elements[i];
+
+			if (!ignoreEmpty || (inputElement.value !== "")) {
+				formData[inputElement.name] = inputElement.value;
+			}
+		}
+
+		return formData;
+	};
+
+	Sushi.Util = Util;
 })(Sushi || (Sushi = {}));

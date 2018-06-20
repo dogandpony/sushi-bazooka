@@ -7,7 +7,6 @@ var Sushi;
  * @url https://gist.github.com/gre/1650294
  */
 (function (Sushi) {
-
 	"use strict";
 
 	var Util = Sushi.Util;
@@ -120,5 +119,4 @@ var Sushi;
 
 
 	Util.Easing = Easing;
-
 })(Sushi || (Sushi = {}));

@@ -1,13 +1,11 @@
 var Sushi;
 
 (function (Sushi) {
-
 	"use strict";
 
 	var Util = Sushi.Util;
 
 	var Css = function () {};
-
 
 	Css.rgbToHex = function (rgb) {
 		var converted = rgb;
@@ -15,8 +13,10 @@ var Sushi;
 		if (rgb.search("rgb") !== -1) {
 			rgb = rgb.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+))?\)$/);
 
-			converted = "#" + Util.Math.toHex(rgb[1]) + Util.Math.toHex(rgb[2])
-				+ Util.Math.toHex(rgb[3]);
+			converted = "#"
+				+ Util.Maths.toHex(rgb[1])
+				+ Util.Maths.toHex(rgb[2])
+				+ Util.Maths.toHex(rgb[3]);
 		}
 
 		return converted;
@@ -31,8 +31,9 @@ var Sushi;
 	};
 
 
-	// @see https://gist.github.com/2052247
 	Css.decomposeTransformMatrix = function (matrix) {
+		// @see https://gist.github.com/2052247
+
 		// calculate delta transform point
 		var px = Util.deltaTransformPoint(matrix, { x: 0, y: 1 });
 		var py = Util.deltaTransformPoint(matrix, { x: 1, y: 0 });
@@ -120,19 +121,26 @@ var Sushi;
 	 * @returns {number}
 	 */
 	Css.getMaxTransitionDuration = function (domElement, ignoreDelay) {
-		ignoreDelay = (ignoreDelay || false);
+		ignoreDelay = ignoreDelay || false;
 
-		var transitionDuration = window.getComputedStyle(domElement, null)
-			.transitionDuration.split(", ");
+		var transitionDuration = domElement.ownerDocument.defaultView
+			.getComputedStyle(domElement, null).transitionDuration.split(", ");
 
-		var transitionDelay = window.getComputedStyle(domElement, null)
-			.transitionDelay.split(", ");
+		var transitionDelay = domElement.ownerDocument.defaultView
+			.getComputedStyle(domElement, null).transitionDelay.split(", ");
 
 		var maxDuration = 0;
 
 		for (var i = 0; i < transitionDuration.length; i++) {
-			var duration = parseFloat(transitionDuration[i])
-				+ (ignoreDelay ? 0 : parseFloat(transitionDelay[i]));
+			var duration = 0;
+
+			if (transitionDuration[i] !== "") {
+				duration += parseFloat(transitionDuration[i])
+			}
+
+			if ((transitionDelay[i] !== "") && !ignoreDelay) {
+				duration += parseFloat(transitionDelay[i]);
+			}
 
 			maxDuration = Math.max(duration, maxDuration);
 		}
@@ -140,7 +148,5 @@ var Sushi;
 		return maxDuration * 1000;
 	};
 
-
 	Util.Css = Css;
-
 })(Sushi || (Sushi = {}));
