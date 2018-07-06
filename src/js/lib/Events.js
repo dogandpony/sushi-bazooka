@@ -248,6 +248,24 @@ var Sushi;
 	};
 
 
+	Events.clone = function (target, clonedTarget) {
+		var storedTarget = getStoredTarget(target);
+		var registeredEvents = storedTarget.events;
+
+		for (var eventType in registeredEvents) {
+			if (registeredEvents.hasOwnProperty(eventType)) {
+				var functionStack = registeredEvents[eventType];
+
+				for (var i = 0; i < functionStack.length; i++) {
+					var fn = functionStack[i];
+
+					Events.on(eventType, clonedTarget, fn);
+				}
+			}
+		}
+	};
+
+
 	Events.getEventStack = function () {
 		return eventStack;
 	};
