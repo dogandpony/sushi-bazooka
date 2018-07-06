@@ -305,5 +305,15 @@ var Sushi;
 		return formData;
 	};
 
+
+	/**
+	 * Forces the repaint of an element by querying its computed style
+	 *
+	 * @param element
+	 */
+	Util.forceRepaint = function (element) {
+		window.getComputedStyle(element).height;
+	};
+
 	Sushi.Util = Util;
 })(Sushi || (Sushi = {}));
