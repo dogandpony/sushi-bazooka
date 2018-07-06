@@ -2,11 +2,13 @@
  * @url https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign
  */
 if (typeof Object.assign !== "function") {
+	// eslint-disable-next-line no-console
 	console.warn("Polyfilling Object.assign");
 
 	// Must be writable: true, enumerable: false, configurable: true
 	Object.defineProperty(Object, "assign", {
-		value: function assign(target, varArgs) { // .length of function is 2
+		// eslint-disable-next-line require-jsdoc, strict
+		value: function assign(target) { // .length of function is 2
 			if (target == null) { // TypeError if undefined or null
 				throw new TypeError("Cannot convert undefined or null to object");
 			}

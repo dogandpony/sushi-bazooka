@@ -5,7 +5,7 @@ var Sushi;
 
 	var Util = Sushi.Util;
 
-	var Css = function () {};
+	var Css = {};
 
 	Css.rgbToHex = function (rgb) {
 		var converted = rgb;
