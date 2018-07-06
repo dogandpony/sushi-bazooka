@@ -1,25 +1,28 @@
 {
-	"name" : "sushi-bazooka",
-	"version" : "0.1.0",
-	"description" : "Component-based JavaScript library",
-	"repository" : {
-		"type" : "git",
-		"url" : "git+https://github.com/dogandpony/sushi-bazooka.git"
+	"name": "sushi-bazooka",
+	"version": "0.1.0",
+	"description": "Component-based JavaScript library",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/dogandpony/sushi-bazooka.git"
 	},
-	"keywords" : [
+	"keywords": [
 		"js",
 		"plugins",
 		"sushi",
 		"bazooka"
 	],
-	"author" : "Caio Costa <caiocrcosta@gmail.com>",
-	"contributors" : [
+	"author": "Caio Costa <caiocrcosta@gmail.com>",
+	"contributors": [
 		"Fabio Ribeiro <fabio@dogandponystudios.com>",
 		"Jorge Veloso <jorge@dogandponystudios.com>"
 	],
-	"license" : "ISC",
-	"bugs" : {
-		"url" : "https://github.com/dogandpony/sushi-bazooka/issues"
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/dogandpony/sushi-bazooka/issues"
 	},
-	"homepage" : "https://github.com/dogandpony/sushi-bazooka#readme"
+	"homepage": "https://github.com/dogandpony/sushi-bazooka#readme",
+	"dependencies": {
+		"eslint": "^5.0.1"
+	}
 }
