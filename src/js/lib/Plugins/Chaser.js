@@ -1,68 +1,62 @@
 /* =========================================================================
- * chasing Header
+ * Chaser Plugin
  * ========================================================================= */
 
 var Sushi;
 
-(function (Sushi) {
-
+(function (Sushi, Plugins) {
 	"use strict";
 
-	var DEFAULT_OPTIONS = {
+	var BasePlugin = Plugins.BasePlugin;
+	var Css = Sushi.Util.Css;
+	var Dom = Sushi.Dom;
+	var Events = Sushi.Events;
+
+	var Chaser = function (triggerElement, options) {
+		BasePlugin.call(this, triggerElement, options);
+
+		this.limitElement = null;
+		this.topMargin = 0;
+
+		this.placeholder = Dom.getOne(this.options.placeholder); // cache placeholder object
+
+		this.isChasing = false;
+		this.hasReachedLimit = false;
+
+		this.triggerElement.insertAdjacentElement("afterend", this.placeholder);
+		this.triggerElement.classList.add("o-chaser");
+
+		this.enable();
+		this.update();
+	};
+
+	Chaser.displayName = "Chaser";
+
+	Chaser.DEFAULTS = {
 		placeholder: "<i class=\"o-chaserPlaceholder\">",
 		updateThreshold: 30,
 		updatePlaceholderHeight: true,
 	};
 
-	var Chaser = function (element, options) {
+	Chaser.prototype = Object.create(BasePlugin.prototype);
 
-		element.data("chaser", this);
+	var proto = Chaser.prototype;
 
-		this.triggerElement = element;
-		this.id = Sushi.Util.uniqueId();
-		this.limitElement = null;
-		this.topMargin = 0;
+	proto.constructor = Chaser;
 
-		this.options = $.extend(
-			{},
-			DEFAULT_OPTIONS,
-			options,
-			Sushi.Util.getNamespaceProperties("chaser", this.triggerElement.data())
-		);
-
-		this.placeholder = $(this.options.placeholder); // cache placeholder object
-
-		// these flags may come in handy when extending functionality
-		this.isChasing = false;
-		this.hasReachedLimit = false;
-
-		this.placeholder.insertAfter(this.triggerElement);
-
-		this.triggerElement.addClass("o-chaser");
-
-		this.enable();
-		this.update();
-
-	};
-
-	Chaser.prototype.enable = function () {
-
-		$(window).on(
-			"resize.Chaser." + this.id + " scroll.Chaser." + this.id,
+	proto.enable = function () {
+		Events(window).on(
+			"Chaser.resize Chaser.scroll",
 			Sushi.Util.throttle(this.update.bind(this), this.options.updateThreshold)
 		);
-
 	};
 
-	Chaser.prototype.disable = function () {
-
-		$(window).off("resize.Chaser." + this.id + " scroll.Chaser." + this.id);
-
+	proto.disable = function () {
+		Events(window).off("Chaser.resize Chaser.scroll", this.update.bind(this));
 	};
 
-	Chaser.prototype.update = function () {
-
-		this.triggerElement.trigger("beforeUpdate.Chaser");
+	proto.update = function () {
+		Events(this.triggerElement).trigger("Chaser.beforeUpdate");
 
 		this.checkPosition();
 
@@ -70,76 +64,64 @@ var Sushi;
 			this.updatePlaceholderHeight();
 		}
 
-		this.triggerElement.trigger("afterUpdate.Chaser");
-
+		Events(this.triggerElement).trigger("Chaser.afterUpdate");
 	};
 
-	Chaser.prototype.updatePlaceholderHeight = function () {
-
-		this.placeholder.height(this.triggerElement.outerHeight(true));
-
+	proto.updatePlaceholderHeight = function () {
+		this.placeholder.style.height = Css.getHeight(this.triggerElement, true);
 	};
 
-	Chaser.prototype.isChasingAt = function (scrollY) {
-
-		return (scrollY >= (this.placeholder.offset().top - this.topMargin));
-
+	proto.isChasingAt = function (scrollY) {
+		return (scrollY >= (Css.getOffset(this.placeholder).top - this.topMargin));
 	};
 
-	Chaser.prototype.checkPosition = function () {
-
+	proto.checkPosition = function () {
 		if (this.isChasingAt(window.scrollY)) {
-			this.triggerElement.addClass("is-chasing");
+			this.triggerElement.classList.add("is-chasing");
 			this.isChasing = true;
 
 			if (this.limitElement) {
-				var windowHeight = $(window).height();
+				var windowHeight = window.innerHeight;
+				var elementHeight = Css.getHeight(this.triggerElement);
 
-				var elementHeightOverflow = Math.max(
-					0,
-					this.triggerElement.outerHeight() - windowHeight
-				);
+				var elementHeightOverflow = Math.max(0, (elementHeight - windowHeight));
 
 				var overflow = (
 					scrollY +
-					Math.min(this.triggerElement.outerHeight(), windowHeight) +
+					Math.min(elementHeight, windowHeight) +
 					this.topMargin +
 					elementHeightOverflow -
 					(
-						this.limitElement.position().top +
-						this.limitElement.height()
+						Css.getOffset(this.limitElement, this.limitElement.parentElement).top +
+						Css.getHeight(this.limitElement)
 					)
 				);
 
 				if (overflow > 0) {
-					this.triggerElement.addClass("is-limited");
+					this.triggerElement.classList.add("is-limited");
 					this.hasReachedLimit = true;
 
-					this.triggerElement.css("top", this.topMargin + (overflow * -1));
+					this.triggerElement.style.top = (this.topMargin + (overflow * -1)) + "px";
 				}
 				else {
-					this.triggerElement.removeClass("is-limited");
+					this.triggerElement.classList.remove("is-limited");
 					this.hasReachedLimit = false;
 
-					this.triggerElement.css("top", this.topMargin);
+					this.triggerElement.style.top = this.topMargin + "px";
 				}
 			}
 		}
 		else {
-			this.triggerElement.removeClass("is-chasing");
+			this.triggerElement.classList.remove("is-chasing");
 			this.isChasing = false;
 
-			this.triggerElement.css("top", "");
+			this.triggerElement.style.top = "";
 		}
-
 	};
 
-	Chaser.prototype.forceFix = function () {
-
-		this.triggerElement.addClass("is-chasing");
-
+	proto.forceFix = function () {
+		this.triggerElement.classList.remove("is-chasing");
 	};
 
-	Sushi.Chaser = Chaser;
-
-})(Sushi || (Sushi = {}));
+	Plugins.Chaser = Chaser;
+})(Sushi || (Sushi = {}), Sushi.Plugins || (Sushi.Plugins = {}));

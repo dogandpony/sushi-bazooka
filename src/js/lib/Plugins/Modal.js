@@ -13,24 +13,19 @@
 
 var Sushi;
 
-(function (Sushi) {
+(function (Sushi, Plugins) {
 	"use strict";
 
+	var BasePlugin = Plugins.BasePlugin;
+	var Dom = Sushi.Dom;
+	var Events = Sushi.Events;
 	var Util = Sushi.Util;
 
-
-
-	// Private Properties
-	// ---------------------------
-
 	var HTML_FACTORY = {
-		MODAL: "<div class=\"c-modal\">",
-		OVERLAY: "<div class=\"c-modalOverlay\">",
-		CONTAINER: "<div class=\"c-modalContainer\">",
 		CLOSE_BUTTON: "<a href=\"#!\" data-modal-trigger-close class=\"c-modal__close\"/>",
 	};
 
-	var MAIN_CONTAINER = $("<div class=\"c-modals\">");
+	var MAIN_CONTAINER = Dom.parseOne("<div class=\"c-modals\">");
 
 	var CENTERING_CLASSES = {
 		CALCULATED_HORIZONTAL: "c-modalContainer--calculatedHCenter",
@@ -39,49 +34,32 @@ var Sushi;
 		VERTICAL: "c-modalContainer--vCenter",
 	};
 
-
-
-	// Class Definition
-	// -------------------------
-
 	var Modal = function (triggerElement, options) {
-		this.id = Sushi.Util.uniqueId();
-		this.triggerElement = $(triggerElement);
+		BasePlugin.call(this, triggerElement, options);
+
 		this.isOpen = false;
 
-		this.options = $.extend(
-			{},
-			Modal.DEFAULTS,
-			options,
-			Sushi.Util.getNamespaceProperties("modal", this.triggerElement.data())
-		);
-
 		// Cache objects
-		this.modal = $(this.options.modal);
-		this.overlay = $(this.options.overlay);
-		this.container = $(this.options.container);
-		this.contentObject = $(this.options.content);
+		this.modal = Dom.getOne(this.options.modal);
+		this.overlay = Dom.getOne(this.options.overlay);
+		this.container = Dom.getOne(this.options.container);
+		this.contentElement = Dom.getOne(this.options.content);
+
+		Sushi.addPluginInstanceTo(this.modal, this);
 
 		this.create();
 
 		// Register click listener on triggering element
 		if (this.options.registerClickListener) {
-			var it = this;
-
-			this.triggerElement.on("click.Modal", function (event) {
+			Events(this.triggerElement).on("Modal.click", function (event) {
 				event.preventDefault();
 
-				it.toggle();
-			});
+				this.toggle();
+			}.bind(this));
 		}
 	};
 
-	Modal.prototype.constructor = Modal;
-
-
-
-	// Static Properties
-	// -------------------------
+	Modal.displayName = "Modal";
 
 	Modal.DEFAULTS = {
 		content: "",
@@ -91,9 +69,10 @@ var Sushi;
 		registerClickListener: true,
 		insertCloseButton: true,
 		lockScrollWhileOpen: false,
-		populateContent: "onOpen", // "onCreate", false
+		populate: "onOpen", // "onCreate", false
 		closeOnOverlayClick: true,
 		closeOnEscape: true,
+		size: "",
 
 		// Centering
 		horizontalCentering: true,
@@ -101,24 +80,23 @@ var Sushi;
 		calculatedCentering: false,
 
 		// Containers
-		modal: $(HTML_FACTORY.MODAL),
-		overlay: $(HTML_FACTORY.OVERLAY),
-		container: $(HTML_FACTORY.CONTAINER),
+		modal: "<div class=\"c-modal\">",
+		overlay: "<div class=\"c-modalOverlay\">",
+		container: "<div class=\"c-modalContainer\">",
 	};
 
 	Modal.openModals = [];
 
+	Modal.prototype = Object.create(BasePlugin.prototype);
 
+	var proto = Modal.prototype;
 
-	// Methods
-	// -------------------------
+	proto.constructor = Modal;
 
 	/**
 	 * Create the modal and overlay HTML and append it to the body
 	 */
-	Modal.prototype.create = function () {
-		var it = this;
-
+	proto.create = function () {
 		// Create main container
 		this.createMainContainer();
 
@@ -145,31 +123,36 @@ var Sushi;
 		}
 
 		if (classes.length > 0) {
-			this.container.addClass(classes.join(" "));
+			Dom.addClass(this.container, classes);
 		}
 
 		// Register overlay close listener
 		if (this.options.closeOnOverlayClick) {
-			this.overlay.on("click.Modal.close", function (event) {
-				if (event.target === it.container[0]) {
+			Events(this.overlay).on("Modal.close.click", function (event) {
+				if (event.target === this.container) {
 					event.preventDefault();
-					it.close();
+
+					this.close();
 				}
-			});
+			}.bind(this));
 		}
 
 		// Pre-populate content, if enabled
-		if (this.options.populateContent === "onCreate") {
+		if (this.options.populate === "onCreate") {
 			this.updateContent();
 		}
 
 		// Place elements on the main container
-		this.modal.addClass(this.options.extraClasses);
-		this.overlay.addClass(this.options.overlayExtraClasses);
+		Dom.addClass(this.modal, this.options.extraClasses);
+		Dom.addClass(this.overlay, this.options.overlayExtraClasses);
 
-		this.modal.appendTo(this.container);
-		this.container.appendTo(this.overlay);
-		this.overlay.appendTo(this.mainContainer);
+		if (this.options.size !== "") {
+			Dom.addClass(this.modal, "c-modal--" + this.options.size);
+		}
+
+		this.container.appendChild(this.modal);
+		this.overlay.appendChild(this.container);
+		this.mainContainer.appendChild(this.overlay);
 
 		// Only register listeners that call updatePosition() if the modal does horizontal or
 		// vertical auto-centering
@@ -183,11 +166,11 @@ var Sushi;
 	/**
 	 * Create the main modals container if it doesn't already exist
 	 */
-	Modal.prototype.createMainContainer = function () {
-		this.mainContainer = $(this.options.mainContainer || MAIN_CONTAINER);
+	proto.createMainContainer = function () {
+		this.mainContainer = Dom.getOne(this.options.mainContainer || MAIN_CONTAINER);
 
-		if (this.mainContainer[0].parentNode !== null) {
-			this.mainContainer.appendTo("body");
+		if (this.mainContainer.parentNode) {
+			document.body.appendChild(this.mainContainer);
 		}
 	};
 
@@ -195,9 +178,7 @@ var Sushi;
 	/**
 	 * Show the modal
 	 */
-	Modal.prototype.open = function () {
-		var that = this;
-
+	proto.open = function () {
 		this.isOpen = true;
 
 		// Prevent body scroll if this is the only modal open
@@ -207,46 +188,38 @@ var Sushi;
 
 		this.addToOpenModalsList();
 
-		if (this.options.populateContent === "onOpen") {
+		if (this.options.populate === "onOpen") {
 			this.updateContent();
 		}
 
 		// Force redraw so animations can take place
-		this.modal.height();
+		window.getComputedStyle(this.modal).height;
 
 		// Add a close button (if enabled)
-		this.closeButton = $(HTML_FACTORY.CLOSE_BUTTON);
+		this.closeButton = Dom.getOne(HTML_FACTORY.CLOSE_BUTTON);
 
 		if (this.options.insertCloseButton) {
 			this.modal.prepend(this.closeButton);
 		}
 
 		// Register close button listener
-		this.modal
-			.off("click.Modal.close")
-			.on("click.Modal.close", "[data-modal-trigger-close]", function (event) {
+		Events(Dom.get("[data-modal-trigger-close]", this.modal))
+			.off("Modal.close.click")
+			.on("Modal.close.click", function (event) {
 				event.preventDefault();
 
-				that.close();
-			});
+				this.close();
+			}.bind(this));
 
 		// Show modal and overlay
-		this.modal.addClass("is-open");
-		this.overlay.addClass("is-open");
+		Dom.addClass(this.modal, "is-open");
+		Dom.addClass(this.overlay, "is-open");
 
 		// Trigger open events
-		var openModalEvent = $.Event("open.Modal");
-
-		openModalEvent.modal = this;
-
-		this.modal.trigger(openModalEvent);
+		Events(this.modal).trigger("open Modal.open", { modal: this });
 
 		if (Modal.openModals.length === 1) {
-			var openFirstModalEvent = $.Event("open.first.Modal");
-
-			openFirstModalEvent.modal = this;
-
-			this.modal.trigger(openFirstModalEvent);
+			Events(this.modal).trigger("Modal.first.open", { modal: this });
 		}
 
 		// Update calculated position, if enabled
@@ -260,25 +233,19 @@ var Sushi;
 	/**
 	 * Hide the modal
 	 */
-	Modal.prototype.close = function () {
-		var that = this;
-
+	proto.close = function () {
 		this.isOpen = false;
 
-		this.modal.removeClass("is-open");
-		this.overlay.removeClass("is-open");
+		Dom.removeClass(this.modal, "is-open");
+		Dom.removeClass(this.overlay, "is-open");
 
-		var duration = Util.Css.getMaxTransitionDuration(this.modal.get(0));
-		var overlayDuration = Util.Css.getMaxTransitionDuration(this.overlay.get(0));
+		var duration = Util.Css.getMaxTransitionDuration(this.modal);
+		var overlayDuration = Util.Css.getMaxTransitionDuration(this.overlay);
 		var maxDuration = Math.max(duration, overlayDuration, 0);
-
-		var closeModalEvent = $.Event("close.Modal");
-
-		closeModalEvent.modal = this;
 
 		this.removeFromOpenModalsList();
 
-		this.modal.trigger(closeModalEvent);
+		Events(this.modal).trigger("close Modal.close", { modal: this });
 
 		// Release body scroll if this is the last modal open
 		if (Modal.openModals.length === 0) {
@@ -286,36 +253,22 @@ var Sushi;
 				Sushi.BodyScroll.unlock(this.id);
 			}
 
-			var closeLastModalEvent = $.Event("close.last.Modal");
-
-			closeLastModalEvent.modal = this;
-
-			this.modal.trigger(closeLastModalEvent);
+			Events(this.modal).trigger("Modal.last.close", { modal: this });
 		}
 
 		// @TODO: implement this with transitionend event
 		setTimeout(function () {
-			that.modal.removeClass(that.extraClasses);
-
-			if (that.options.contentOperation === "move") {
-				that.contentObject.append(that.modal.children());
+			if (this.options.contentOperation === "move") {
+				this.contentElement.appendChild(this.modal.children);
 			}
 
 			// Trigger closed event
-			var closedModalEvent = $.Event("closed.Modal");
-
-			closedModalEvent.modal = this;
-
-			that.modal.trigger(closedModalEvent);
-
-			if (that.options.contentOperation === "move") {
-				that.modal.trigger("returnContent.Modal");
-			}
-		}, maxDuration);
+			Events(this.modal).trigger("closed Modal.closed", { modal: this });
+		}.bind(this), maxDuration);
 	};
 
 
-	Modal.prototype.toggle = function () {
+	proto.toggle = function () {
 		if (this.isOpen) {
 			this.close();
 		}
@@ -328,59 +281,54 @@ var Sushi;
 	/**
 	 * Updates the content inside the modal
 	 */
-	Modal.prototype.updateContent = function () {
-		this.modal.html("");
+	proto.updateContent = function () {
+		this.modal.html = "";
 
 		switch (this.options.contentOperation) {
 			default:
 			case "copy":
-				this.modal.html(this.contentObject.html());
-				break;
-
-			case "clone":
-				this.modal.append(this.contentObject.find("> *").clone(true));
+				this.modal.innerHTML = this.contentElement.innerHTML;
 				break;
 
 			case "move":
-				this.modal.append(this.contentObject.children());
+				this.modal.appendChild(this.contentElement.children);
 				break;
 		}
+
+		Events(this.modal).trigger("contentchange Modal.contentchange");
 	};
 
 
 	/**
 	 * Update the modal position
 	 */
-	Modal.prototype.updatePosition = function () {
-		var windowWidth = $(window).width();
-		var windowHeight = $(window).height();
-		var modalWidth = this.modal.outerWidth();
-		var modalHeight = this.modal.outerHeight();
-
-		var properties = {};
+	proto.updatePosition = function () {
+		var windowWidth = window.innerWidth;
+		var windowHeight = window.innerHeight;
+		var modalStyles = window.getComputedStyle(this.modal);
+		var modalWidth = modalStyles.width;
+		var modalHeight = modalStyles.height;
 
 		if (this.options.horizontalCentering) {
-			properties["margin-left"] = (
+			this.modal.style.marginLeft = (
 				(windowWidth > modalWidth)
 					? (-1 * Math.ceil(modalWidth / 2)) : (-1 * Math.ceil(windowWidth / 2))
 			);
 		}
 
 		if (this.options.verticalCentering) {
-			properties["margin-top"] = (
+			this.modal.style.marginTop = (
 				(windowHeight > modalHeight)
 					? (-1 * Math.ceil(modalHeight / 2)) : (-1 * Math.ceil(windowHeight / 2))
 			);
 		}
-
-		this.modal.css(properties);
 	};
 
 
 	/**
 	 * Add current modal to open modals list
 	 */
-	Modal.prototype.addToOpenModalsList = function () {
+	proto.addToOpenModalsList = function () {
 		Modal.openModals.push(this);
 	};
 
@@ -388,7 +336,7 @@ var Sushi;
 	/**
 	 * Remove current modal from open modals list
 	 */
-	Modal.prototype.removeFromOpenModalsList = function () {
+	proto.removeFromOpenModalsList = function () {
 		for (var i = 0; i < Modal.openModals.length; i++) {
 			var modal = Modal.openModals[i];
 
@@ -402,21 +350,19 @@ var Sushi;
 	/**
 	 * Register listeners
 	 */
-	Modal.prototype.enableCalculatedCentering = function () {
-		var it = this;
-
-		this.modal
-			.on("open.Modal", function () {
-				$(window).on("resize.Modal." + this.id, function () {
-					if (it.isOpen) {
-						it.updatePosition();
+	proto.enableCalculatedCentering = function () {
+		Events(this.modal)
+			.on("Modal.open", function () {
+				Events(window).on(this.id + ".Modal.resize", function () {
+					if (this.isOpen) {
+						this.updatePosition();
 					}
 				});
 
-				it.updatePosition();
-			})
-			.on("close.Modal", function () {
-				$(window).off("resize.Modal." + this.id);
+				this.updatePosition();
+			}.bind(this))
+			.on("Modal.close", function () {
+				Events(window).off(this.id + ".Modal.resize");
 			});
 	};
 
@@ -443,24 +389,27 @@ var Sushi;
 	// Global listeners
 	// -------------------------
 
-	$(document).on("open.Modal", function (event) {
-		if (event.modal.options.closeOnEscape) {
-			$(document)
-				.off("keydown.Modal")
-				.on("keydown.Modal", function (event) {
+	Events(document).on("Modal.open", function (event) {
+		if (
+			(event.detail != null)
+			&& (event.detail.modal !== void 0)
+			&& event.detail.modal.options.closeOnEscape
+		) {
+			Events(document)
+				.off("Modal.keydown")
+				.on("Modal.keydown", function (event) {
 					if (event.keyCode === 27) {
 						Modal.closeCurrent();
 					}
 				});
 		}
-
 	});
 
-	$(document).on("close.Modal", function () {
+	Events(document).on("Modal.close", function () {
 		if (Modal.openModals.length === 0) {
-			$(document).off("keydown.Modal");
+			Events(document).off("Modal.keydown");
 		}
 	});
 
-	Sushi.Modal = Modal;
-})(Sushi || (Sushi = {}));
+	Plugins.Modal = Modal;
+})(Sushi || (Sushi = {}), Sushi.Plugins || (Sushi.Plugins = {}));

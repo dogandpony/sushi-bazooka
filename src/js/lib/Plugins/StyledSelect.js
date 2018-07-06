@@ -1,211 +1,370 @@
 /* =========================================================================
  * Styled Select
- *
- * @TODO: close select when it"s focused and the user presses spacebar,
- * then open the dropdown instead
  * ========================================================================= */
 
 var Sushi;
 
-(function (Sushi) {
-
+(function (Sushi, Plugins) {
 	"use strict";
 
+	var BasePlugin = Plugins.BasePlugin;
+	var Dom = Sushi.Dom;
+	var Events = Sushi.Events;
+	var Dropdown = Plugins.Dropdown;
+	var Util = Sushi.Util;
 
-	// Class definition
-	// ---------------------------
+	function getOptionLabel(optionElement) {
+		return optionElement.title || optionElement.label;
+	}
 
-	var StyledSelect = function (select, options) {
+	var StyledSelect = function (triggerElement, options) {
+		BasePlugin.call(this, triggerElement, options);
 
-		this.select = select;
-
-		this.options = $.extend(
-			{},
-			StyledSelect.DEFAULTS.options,
-			options,
-			Sushi.Util.getNamespaceProperties("styledSelect", this.select.data())
-		);
+		this.isMultiple = (this.triggerElement.getAttribute("multiple") !== null);
 
 		this.createContainer();
 		this.registerListeners();
-		this.updateCurrentOption();
-		this.updateContainerLabel();
-
 	};
 
-	StyledSelect.prototype.constructor = StyledSelect;
+	StyledSelect.displayName = "StyledSelect";
 
-
-
-	// Default Options
-	// ---------------------------
-
-	StyledSelect.DEFAULTS = {};
-
-	StyledSelect.DEFAULTS.options = {
+	StyledSelect.DEFAULTS = {
 		bare: false,
-		hideCurrent: false,
-		hideNull: true,
+		hideSelected: false,
+		hideNull: false,
+		extraClasses: "",
+		multipleSeparator: ", ",
 	};
 
+	StyledSelect.prototype = Object.create(BasePlugin.prototype);
 
+	var proto = StyledSelect.prototype;
 
-	// Methods
-	// ---------------------------
+	proto.constructor = StyledSelect;
 
-	StyledSelect.prototype.createContainer = function () {
+	proto.createContainer = function () {
+		this.containerElement = Dom.parseOne("<div class='c-styledSelect'>");
 
-		var self = this;
+		this.buttonElement = Dom.parseOne(
+			"<button class='c-styledSelect__button' type='button'>"
+		);
 
-		this.container = $("<div class='c-styledSelect'>");
-		this.containerLabel = $("<div class='c-styledSelect__label'>");
+		this.triggerElement.classList.add("c-styledSelect__select");
+		this.triggerElement.setAttribute("tabindex", "-99");
 
 		if (this.options.bare) {
-			this.container.addClass("c-styledSelect--bare");
+			this.containerElement.classList.add("c-styledSelect--bare");
 		}
 
-		this.container.insertAfter(this.select);
+		// Add the container after the select
+		this.triggerElement.parentNode.insertBefore(
+			this.containerElement,
+			this.triggerElement.nextSibling
+		);
 
-		this.select.appendTo(this.container);
-
-		this.select.addClass("c-styledSelect__select");
+		// Move the select to the container
+		this.containerElement.appendChild(this.triggerElement);
 
 
 
 		// Dropdown
 		// ---------------------------
 
-		this.dropdown = $("<ul class='c-styledSelect__dropdown o-dropdown'>");
+		this.dropdownElement = Dom.parseOne("<ul class='c-styledSelect__dropdown o-dropdown'>");
 
-		this.dropdownOptions = $();
-
-		this.select.find("> option").each(function () {
-
-			var title;
-
-			if (this.dataset.styledSelectTitle !== void 0) {
-				title = this.dataset.styledSelectTitle;
-			}
-			else {
-				title = this.innerText;
-			}
-
-			var subtitle = this.dataset.styledSelectSubtitle;
-
-			var item = $("<li class='c-styledSelect__item'>");
-
-			item.append("<span class='c-styledSelect__title'>" + title + "</span>");
-
-			if (subtitle) {
-				item.append(" <span class='c-styledSelect__subtitle'>" + subtitle + "</span>");
-			}
-
-			item.attr("data-value", $(this).val());
-
-			self.dropdownOptions = self.dropdownOptions.add(item);
-
-		});
-
-		this.dropdownOptions.appendTo(this.dropdown);
+		this.updateOptions();
 
 		// Append new elements
-		this.containerLabel.add(this.dropdown).insertAfter(this.select);
+		this.containerElement.appendChild(this.buttonElement);
+		this.containerElement.appendChild(this.dropdownElement);
 
+		this.dropdown = new Dropdown(this.containerElement, {
+			triggerEvent: "click",
+			closeOnSelect: !this.isMultiple,
+			closeIntentionTimeout: 0,
+		});
+
+		if (this.options.extraClasses) {
+			Dom.addClass(this.dropdownElement, this.options.extraClasses);
+			Dom.addClass(this.buttonElement, this.options.extraClasses);
+		}
 	};
 
-	StyledSelect.prototype.registerListeners = function () {
+	proto.registerListeners = function () {
+		Events(this.triggerElement)
+			.on("StyledSelect.change", this.updateSelectedOptions.bind(this));
 
-		var that = this;
+		Events(this.buttonElement)
+			.on("StyledSelect.focus", this.enableKeyDownListener.bind(this))
+			.on("StyledSelect.blur", this.disableKeyDownListener.bind(this));
 
-		this.container.on("click.StyledSelect", function (event) {
-
-			var container = this;
-
-			$(this).toggleClass("is-open");
-
-			event.stopPropagation();
-
-			if ($(this).hasClass("is-open")) {
-				$(document).off("click.close.StyledSelect")
-					.one("click.close.StyledSelect", function () {
-						$(container).removeClass("is-open");
-					});
-			}
-			else {
-				$(document).off("click.close.StyledSelect");
-			}
-
-		});
-
-		this.dropdownOptions.on("click.StyledSelect", function () {
-
-			var itemValue = $(this).data("value");
-
-			if (itemValue !== that.currentOption.value) {
-				that.select.val(itemValue).trigger("change");
-			}
-
-		});
-
-		this.select.on("change.StyledSelect", function () {
-
-			that.updateCurrentOption();
-			that.updateContainerLabel();
-
-		});
-
+		Events(this.dropdown.triggerElement)
+			.on("StyledSelect.open", this.handleDropdownOpen.bind(this))
+			.on("StyledSelect.close", this.disableKeyDownListener.bind(this));
 	};
 
-	StyledSelect.prototype.updateCurrentOption = function () {
+	proto.enableKeyDownListener = function () {
+		Events(document)
+			.off("StyledSelect.keydown")
+			.on("StyledSelect.keydown", this.handleKeyDown.bind(this));
+	};
 
-		var that = this;
+	proto.disableKeyDownListener = function () {
+		if (!this.dropdown.isOpen) {
+			Events(document).off("StyledSelect.keydown");
+		}
+	};
 
-		var availableOptions = this.select.find("> option");
+	proto.handleDropdownOpen = function () {
+		var currentItem = (
+			Dom.queryOne(".c-styledSelect__item.is-current", this.dropdownElement)
+			|| Dom.queryOne(".c-styledSelect__item", this.dropdownElement)
+		);
 
-		var currentOption;
+		setTimeout(function () {
+			currentItem.focus();
+		}, Util.Css.getMaxTransitionDuration(this.dropdownElement));
+	};
 
-		for (var i = 0; i < availableOptions.length; i++) {
-			var option = availableOptions[i];
-
-			if (option.selected === true) {
-				currentOption = $(option);
-				break;
-			}
+	/**
+	 *
+	 * Tab: 9
+	 * Enter: 13
+	 * ESC: 27
+	 * Space: 32
+	 * Arrow Up: 38
+	 * Arrow Down: 40
+	 *
+	 * @param event
+	 */
+	proto.handleKeyDown = function (event) {
+		if (([9, 13, 27, 32, 38, 40].indexOf(event.keyCode) === -1)) {
+			return;
 		}
 
-		this.currentOption = {
-			value: currentOption.val(),
-			label: currentOption.text(),
-		};
+		if (this.dropdown.isOpen) {
+			var activeElement = document.activeElement;
 
-		this.dropdownOptions.each(function () {
+			event.preventDefault();
 
-			if (that.options.hideNull && ($(this).data("value") === "")) {
-				$(this).addClass("_hidden");
+			switch (event.keyCode) {
+				// esc
+				case 27:
+					this.dropdown.close();
+					this.buttonElement.focus();
+
+					break;
+
+				// arrow up
+				case 38:
+					(activeElement.previousSibling || activeElement.parentNode.lastChild).focus();
+
+					break;
+
+				// arrow down
+				case 40:
+					(activeElement.nextSibling || activeElement.parentNode.firstChild).focus();
+
+					break;
+
+				// tab, enter or space
+				case 9:
+				case 13:
+				case 32:
+					if (this.isMultiple) {
+						var itemElement = activeElement.closest(".c-styledSelect__item");
+						var checkboxElement = Dom.queryOne(
+							".c-styledSelect__checkbox",
+							itemElement
+						);
+
+						checkboxElement.checked = !checkboxElement.checked;
+
+						Events(checkboxElement).trigger("change");
+					}
+					else {
+						Events(activeElement.closest(".c-styledSelect__item")).trigger("click");
+						this.buttonElement.focus();
+					}
+
+					break;
 			}
-			else if ($(this).data("value") === that.currentOption.value) {
-				$(this).addClass("is-current");
+		}
+		// space, arrow up and arrow down open the select
+		else if ([38, 40, 32].indexOf(event.keyCode) !== -1) {
+			event.preventDefault();
 
-				if (that.options.hideCurrent) {
-					$(this).addClass("_hidden");
+			this.dropdown.open();
+		}
+	};
+
+	/**
+	 * Handles clicks in dropdown items
+	 *
+	 * Expects the current styled select to be single.
+	 *
+	 * @param event
+	 */
+	proto.handleItemClick = function (event) {
+		var itemElement = event.target.closest(".c-styledSelect__item");
+		var itemValue = itemElement.dataset.value;
+		var selectedOption = this.triggerElement.selectedOptions[0];
+
+		if ((itemValue !== void 0) && (itemValue !== selectedOption.value)) {
+			this.triggerElement.value = itemValue;
+
+			Events(this.triggerElement).trigger("change");
+		}
+	};
+
+	proto.handleCheckboxChange = function (event) {
+		var itemElement = event.target.closest(".c-styledSelect__item");
+		var itemValue = itemElement.dataset.value;
+		var optionElement = Dom.queryOne("option[value='" + itemValue + "']", this.triggerElement);
+		var checkboxElement = Dom.queryOne(
+			".c-styledSelect__checkbox",
+			itemElement
+		);
+
+		optionElement.selected = checkboxElement.checked;
+
+		itemElement.focus();
+
+		this.updateSelectedOptions();
+	};
+
+	proto.registerItemListeners = function () {
+		if (this.isMultiple) {
+			Events(Dom.query(".c-styledSelect__checkbox", this.dropdownElement))
+				.on("StyledSelect.change", this.handleCheckboxChange.bind(this));
+		}
+		else {
+			Events(Dom.query(".c-styledSelect__item", this.dropdownElement))
+				.on("StyledSelect.click", this.handleItemClick.bind(this));
+		}
+	};
+
+	proto.updateOptions = function () {
+		var options = this.triggerElement.getElementsByTagName("option");
+
+		Events(this.dropdownElement.getElementsByClassName("c-styledSelect__item"))
+			.off("StyledSelect.click");
+
+		this.dropdownOptions = [];
+
+		for (var i = 0; i < options.length; i++) {
+			var option = options[i];
+			var title;
+			var itemElement = document.createElement("li");
+			var titleElement;
+
+			if (option.dataset.title !== void 0) {
+				title = option.dataset.title;
+			}
+			else {
+				title = option.innerHTML;
+			}
+
+			itemElement.classList.add("c-styledSelect__item");
+			itemElement.setAttribute("tabindex", "0");
+			itemElement.dataset.value = option.value;
+
+			if (this.isMultiple) {
+				var checkboxId = Util.uniqueId("__sushiStyledSelectCheckbox");
+				var checkboxHtml = "<input type='checkbox' id='" + checkboxId + "' tabindex='-99'>";
+				var checkboxElement = Dom.parseOne(checkboxHtml);
+
+				Dom.addClass(checkboxElement, [
+					"c-styledSelect__checkbox",
+					"o-choiceInput__input",
+					"o-choiceInput__input--checkbox",
+				]);
+
+				titleElement = Dom.parseOne("<label for='" + checkboxId + "'>");
+
+				titleElement.classList.add("o-choiceInput__label");
+
+				itemElement.classList.add("o-choiceInput");
+				itemElement.appendChild(checkboxElement);
+			}
+			else {
+				titleElement = document.createElement("div");
+			}
+
+			titleElement.classList.add("c-styledSelect__itemTitle");
+			titleElement.innerHTML = title;
+
+			itemElement.appendChild(titleElement);
+
+			this.dropdownOptions.push(itemElement);
+		}
+
+		this.dropdownElement.innerHTML = "";
+
+		for (var j = 0; j < this.dropdownOptions.length; j++) {
+			var optionElement = this.dropdownOptions[j];
+
+			this.dropdownElement.appendChild(optionElement);
+		}
+
+		this.updateSelectedOptions();
+		this.registerItemListeners();
+	};
+
+	proto.updateSelectedOptions = function () {
+		var selectedOptions = this.triggerElement.selectedOptions;
+
+		this.availableOptions = this.triggerElement.getElementsByTagName("option");
+
+		for (var i = 0; i < this.dropdownOptions.length; i++) {
+			var dropdownElement = this.dropdownOptions[i];
+			var optionElement = this.availableOptions[i];
+
+			if (this.options.hideNull && (dropdownElement.dataset.value === "")) {
+				dropdownElement.classList.add("_hidden");
+			}
+			else if (Array.prototype.slice.call(selectedOptions).includes(optionElement)) {
+				dropdownElement.classList.add("is-current");
+
+				if (this.options.hideSelected) {
+					dropdownElement.classList.add("_hidden");
 				}
 			}
 			else {
-				$(this).removeClass("is-current");
+				dropdownElement.classList.remove("is-current");
+			}
+		}
+
+		Events(this.triggerElement).trigger("update");
+
+		this.updateButtonLabel();
+	};
+
+	proto.updateButtonLabel = function () {
+		var label;
+
+		if (this.isMultiple) {
+			var selectedOptionLabels = [];
+
+			for (var i = 0; i < this.triggerElement.selectedOptions.length; i++) {
+				selectedOptionLabels.push(
+					this.triggerElement.selectedOptions[i].title
+					|| this.triggerElement.selectedOptions[i].label
+				);
 			}
 
-		});
+			label = selectedOptionLabels.join(this.options.multipleSeparator);
+		}
+		else {
+			label = getOptionLabel(this.triggerElement.selectedOptions[0]);
+		}
 
-		this.select.trigger("update", this.currentOption);
+		if (label === "") {
+			label = getOptionLabel(this.availableOptions[0]);
+		}
 
+		this.buttonElement.innerHTML = label;
 	};
 
-	StyledSelect.prototype.updateContainerLabel = function () {
-
-		this.containerLabel.html(this.currentOption.label ? this.currentOption.label : "&nbsp;");
-
-	};
-
-	Sushi.StyledSelect = StyledSelect;
-
-})(Sushi || (Sushi = {}));
+	Plugins.StyledSelect = StyledSelect;
+})(Sushi || (Sushi = {}), Sushi.Plugins || (Sushi.Plugins = {}));

@@ -9,70 +9,54 @@ var Sushi;
 (function (Sushi, Plugins) {
 	"use strict";
 
+	var BasePlugin = Plugins.BasePlugin;
+	var Dom = Sushi.Dom;
+	var Events = Sushi.Events;
 	var Util = Sushi.Util;
+	var Css = Util.Css;
 
+	var Dropdown = function (triggerElement, options) {
+		BasePlugin.call(this, triggerElement, options);
 
-	// Class definition
-	// ---------------------------
-
-	var Dropdown = function (target, options) {
-		this.targetObject = $(target);
-
-		this.options = $.extend(
-			{},
-			Dropdown.DEFAULTS,
-			options,
-			Util.getNamespaceProperties("dropdown", this.targetObject.data())
-		);
-
-		this.dropdownObject = this.targetObject.find("> .o-dropdown");
+		this.dropdownElement = Dom.queryOne("> .o-dropdown", this.triggerElement);
 
 		this.isOpen = false;
+		this.hasCloseIntention = false;
 
 		this.registerListeners();
 		this.updatePositionClass();
 		this.updateMaxHeight();
 	};
 
-	Dropdown.prototype.constructor = Dropdown;
-
-
-
-	// Default Options
-	// ---------------------------
+	Dropdown.displayName = "Dropdown";
 
 	Dropdown.DEFAULTS = {
 		triggerSelector: "",
-		openEvent: "mouseenter",
-		closeEvent: "mouseleave",
+		triggerEvent: "mouseenter mouseleave",
 		preventClickOn: "",
 		closeIntentionTimeout: 50,
 		closeOnSelect: false,
 		minHeight: null,
 	};
 
-	Dropdown.prototype.registerListeners = function () {
-		var that = this;
-		var triggerElement;
+	Dropdown.prototype = Object.create(BasePlugin.prototype);
 
-		if (this.options.triggerSelector === "") {
-			triggerElement = this.targetObject;
-		}
-		else {
-			triggerElement = this.targetObject.find(this.options.triggerSelector);
-		}
+	var proto = Dropdown.prototype;
 
+	proto.constructor = Dropdown;
+
+	proto.registerListeners = function () {
 		if (this.options.preventClickOn) {
 			var preventClickOnElement;
 
 			if (this.options.preventClickOn === "this") {
-				preventClickOnElement = this.targetObject;
+				preventClickOnElement = this.targetElement;
 			}
 			else {
-				preventClickOnElement = this.targetObject.find(this.options.preventClickOn);
+				preventClickOnElement = Dom.query(this.options.preventClickOn, this.targetElement);
 			}
 
-			preventClickOnElement.on("click", function (event) {
+			Events(preventClickOnElement).on("click", function (event) {
 				event.preventDefault();
 			});
 		}
@@ -83,99 +67,96 @@ var Sushi;
 		[2] A click inside the dropdown won't close the dropdown
 		[3] A click anywhere outside the trigger element and the dropdown will close the dropdown
 		*/
-		if (this.options.closeEvent === "click") {
+		if (this.options.triggerEvent === "click") {
 			// [1] & [2]
-			triggerElement
-				.on("click.Dropdown.Sushi.closeCheck", function (event) {
-					var eventTarget = $(event.target);
-					var targetIsTrigger = (eventTarget === triggerElement);
-					var targetIsChild = (eventTarget.closest(that.dropdownObject).length === 1);
+			Events(this.triggerElement)
+				.on("Dropdown.click", function (event) {
+					var targetIsTrigger = (event.target === this.triggerElement);
+					var targetIsChild = this.dropdownElement.contains(event.target);
 
-					if (!that.options.closeOnSelect
-						&& that.isOpen
+					if (
+						!this.options.closeOnSelect
+						&& this.isOpen
 						&& !targetIsTrigger
-						&& targetIsChild) {
+						&& targetIsChild
+					) {
 						event.stopImmediatePropagation();
 					}
-				});
+				}.bind(this));
 
 			// [3]
-			triggerElement.on("open.Dropdown.Sushi", function () {
+			Events(this.triggerElement).on("Dropdown.open", function (event) {
 				setTimeout(function () {
-					$(document).one("click.Dropdown.Sushi", function (event) {
-						if (that.isOpen
-							&& ($(event.target).closest(that.targetObject).length === 0)) {
-							that.closeContainer();
+					Events(document).one("Dropdown.click", function (event) {
+						if (this.isOpen && (!this.triggerElement.contains(event.target))) {
+							this.close();
 						}
-					});
-				}, 0);
-			});
+					}.bind(this));
+				}.bind(this), 0);
+			}.bind(this));
 		}
 
-		// if opening and closing events are the same, register only one event
-		if (this.options.openEvent === this.options.closeEvent) {
-			triggerElement
-				.on(this.options.openEvent + ".Dropdown.Sushi", function () {
-					that.toggleContainer();
-				});
+		Events(this.triggerElement).on(this.options.triggerEvent, function () {
+			this.toggle();
+		}.bind(this));
+	};
+
+	proto.toggle = function () {
+		if (this.isOpen) {
+			this.close();
 		}
 		else {
-			triggerElement
-				.on(this.options.openEvent + ".Dropdown.Sushi", function () {
-					that.openContainer();
-				})
-				.on(this.options.closeEvent + ".Dropdown.Sushi", function () {
-					that.closeContainer();
-				});
-		}
-
-		// $(window).on("resize.Dropdown.Sushi", Util.throttle(this.updateMaxHeight.bind(this)));
-	};
-
-	Dropdown.prototype.toggleContainer = function () {
-		if (this.targetObject.hasClass("is-open")) {
-			this.closeContainer();
-		}
-		else {
-			this.openContainer();
+			this.open();
 		}
 	};
 
-	Dropdown.prototype.openContainer = function () {
-		this.updatePositionClass();
+	proto.open = function () {
+		if (!this.isOpen) {
+			this.updatePositionClass();
 
-		this.isOpen = true;
+			this.isOpen = true;
+			this.hasCloseIntention = false;
 
-		this.targetObject.addClass("is-open");
-		this.targetObject.data("closeIntention", false);
-		this.targetObject.trigger("open");
+			this.triggerElement.classList.add("is-open");
 
-		this.updateMaxHeight();
+			Events(this.triggerElement).trigger("open");
+
+			this.updateMaxHeight();
+		}
 	};
 
-	Dropdown.prototype.closeContainer = function () {
-		var that = this;
+	proto.close = function () {
+		if (this.isOpen) {
+			this.hasCloseIntention = true;
 
-		this.targetObject.data("closeIntention", true);
+			var doClose = function () {
+				if (this.hasCloseIntention) {
+					this.isOpen = false;
 
-		setTimeout(function () {
-			if (that.targetObject.data("closeIntention")) {
-				that.isOpen = false;
+					this.triggerElement.classList.remove("is-open");
 
-				that.targetObject.removeClass("is-open");
-				that.targetObject.trigger("close");
+					Events(this.triggerElement).trigger("close");
+				}
+			}.bind(this);
+
+			if (this.options.closeIntentionTimeout === 0) {
+				doClose();
 			}
-		}, this.options.closeIntentionTimeout);
+			else {
+				setTimeout(doClose, this.options.closeIntentionTimeout);
+			}
+
+		}
 	};
 
-	Dropdown.prototype.updatePositionClass = function () {
-		this.dropdownObject.removeClass("o-dropdown--reverse");
+	proto.updatePositionClass = function () {
+		var leftOffset = Css.getOffset(this.dropdownElement).left;
+		var outerWidth = Css.getWidth(this.dropdownElement, true);
 
-		if (
-			(this.dropdownObject.offset().left + this.dropdownObject.outerWidth(true))
-			> $(window).width()
-		) {
-			this.dropdownObject.addClass("o-dropdown--reverse");
+		this.dropdownElement.classList.remove("o-dropdown--reverse");
+
+		if ((leftOffset + outerWidth) > window.offsetWidth) {
+			this.dropdownElement.classList.add("o-dropdown--reverse");
 		}
 	};
 
@@ -183,20 +164,19 @@ var Sushi;
 	 * Updates the max height of the dropdown element by taking into account the current viewport
 	 * height
 	 */
-	Dropdown.prototype.updateMaxHeight = function () {
+	proto.updateMaxHeight = function () {
 		setTimeout(function () {
-			var topOffset = this.dropdownObject.offset().top;
-			var pageHeight = $(window).height();
+			var topOffset = Css.getOffset(this.dropdownElement).top;
+			var pageHeight = window.offsetHeight;
 			var scroll = window.scrollY;
 			var remainingHeight = Math.floor(pageHeight - Math.max(0, (topOffset - scroll)));
 			var minHeight = this.options.minHeight;
 
 			if (minHeight === null) {
-				var dropdownComputedStyle = window.getComputedStyle(this.dropdownObject[0]);
-				var dropdownVerticalPadding
-					= parseInt(dropdownComputedStyle.getPropertyValue("padding-top"))
-					+ parseInt(dropdownComputedStyle.getPropertyValue("padding-bottom"));
-				var dropdownItems = this.dropdownObject.find("> li");
+				var dropdownComputedStyle = window.getComputedStyle(this.dropdownElement);
+				var dropdownVerticalPadding = parseInt(dropdownComputedStyle.paddingTop)
+					+ parseInt(dropdownComputedStyle.paddingBottom);
+				var dropdownItems = Dom.query("> li", this.dropdownElement);
 				var maxItems = Math.min(2, dropdownItems.length);
 
 				minHeight = dropdownVerticalPadding;
@@ -204,16 +184,15 @@ var Sushi;
 				for (var i = 0; i < maxItems; i++) {
 					var itemElement = dropdownItems[i];
 					var itemComputedStyles = window.getComputedStyle(itemElement, "");
-					var itemHeight = parseInt(itemComputedStyles.getPropertyValue("height"));
-					var itemVerticalMargin
-						= parseInt(itemComputedStyles.getPropertyValue("margin-top"))
-						+ parseInt(itemComputedStyles.getPropertyValue("margin-bottom"));
+					var itemHeight = parseInt(itemComputedStyles.height);
+					var itemVerticalMargin = parseInt(itemComputedStyles.marginTop)
+						+ parseInt(itemComputedStyles.marginBottom);
 
 					minHeight += itemHeight + itemVerticalMargin;
 				}
 			}
 
-			this.dropdownObject.css("max-height", Math.max(remainingHeight, minHeight));
+			this.dropdownElement.style.maxHeight = (Math.max(remainingHeight, minHeight) + "px");
 		}.bind(this), 0);
 	};
 

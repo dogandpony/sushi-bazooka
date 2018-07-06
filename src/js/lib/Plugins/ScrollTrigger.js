@@ -3,21 +3,17 @@ var Sushi;
 (function (Sushi, Plugins) {
 	"use strict";
 
+	var BasePlugin = Plugins.BasePlugin;
 	var Events = Sushi.Events;
 	var Util = Sushi.Util;
 
-	var ScrollTrigger = function (element, options) {
-		this.triggerElement = $(element);
-
-		this.options = Util.deepMerge(
-			{},
-			ScrollTrigger.DEFAULTS,
-			options,
-			Sushi.Util.getNamespaceProperties("scrollTrigger", this.triggerElement.dataset)
-		);
+	var ScrollTrigger = function (triggerElement, options) {
+		BasePlugin.call(this, triggerElement, options);
 
 		this.enable();
 	};
+
+	ScrollTrigger.displayName = "ScrollTrigger";
 
 	ScrollTrigger.DEFAULTS = {
 		updateThreshold: 30,
@@ -30,22 +26,28 @@ var Sushi;
 		},
 	};
 
-	ScrollTrigger.prototype.enable = function () {
+	ScrollTrigger.prototype = Object.create(BasePlugin.prototype);
+
+	var proto = ScrollTrigger.prototype;
+
+	proto.constructor = ScrollTrigger;
+
+	proto.enable = function () {
 		Events(window).on(
 			"ScrollTrigger.resize ScrollTrigger.scroll",
 			Sushi.Util.throttle(this.checkPosition.bind(this), this.options.updateThreshold)
 		);
 	};
 
-	ScrollTrigger.prototype.disable = function () {
+	proto.disable = function () {
 		Events(window).off("ScrollTrigger.resize ScrollTrigger.scroll");
 	};
 
-	ScrollTrigger.prototype.checkPosition = function () {
-		var elementOffset = this.triggerElement.offset().top;
+	proto.checkPosition = function () {
+		var elementOffset = Util.Css.getOffset(this.triggerElement).top;
 		var triggerOffset;
 		var activationPoint;
-		var limitPoint = (elementOffset + this.triggerElement.outerHeight());
+		var limitPoint = (elementOffset + Util.Css.getHeight(this.triggerElement));
 
 		var offset;
 

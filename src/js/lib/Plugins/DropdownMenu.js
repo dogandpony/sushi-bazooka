@@ -9,20 +9,16 @@ var Sushi;
 (function (Sushi, Plugins) {
 	"use strict";
 
+	var BasePlugin = Plugins.BasePlugin;
 	var Dropdown = Sushi.Plugins.Dropdown;
 
-	var DropdownMenu = function (menu, options) {
-		this.menu = menu;
-
-		this.options = $.extend(
-			{},
-			DropdownMenu.DEFAULTS,
-			options,
-			Sushi.Util.getNamespaceProperties("dropdownMenu", this.menu.data())
-		);
+	var DropdownMenu = function (triggerElement, options) {
+		BasePlugin.call(this, triggerElement, options);
 
 		this.registerListeners();
 	};
+
+	DropdownMenu.displayName = "DropdownMenu";
 
 	DropdownMenu.DEFAULTS = {
 		dropdownParentSelector: ".has-subnav",
@@ -32,23 +28,24 @@ var Sushi;
 		preventClickOn: "",
 	};
 
-	DropdownMenu.prototype.registerListeners = function () {
-		var that = this;
+	DropdownMenu.prototype = Object.create(BasePlugin.prototype);
 
-		var dropdownContainers = this.menu;
+	var proto = DropdownMenu.prototype;
+
+	proto.constructor = DropdownMenu;
+
+	proto.registerListeners = function () {
+		var dropdownContainers = this.triggerElement;
 
 		if (this.options.dropdownParentSelector) {
-			dropdownContainers = this.menu.find(this.options.dropdownParentSelector);
+			dropdownContainers = this.triggerElement.querySelectorAll(
+				this.options.dropdownParentSelector
+			);
 		}
 
-		dropdownContainers.each(function () {
-			new Dropdown($(this), {
-				triggerSelector: that.options.triggerSelector,
-				openEvent: that.options.openEvent,
-				closeEvent: that.options.closeEvent,
-				preventClickOn: that.options.preventClickOn,
-			});
-		});
+		for (var i = 0; i < dropdownContainers.length; i++) {
+			new Dropdown(dropdownContainers[i], this.options);
+		}
 	};
 
 	Plugins.DropdownMenu = DropdownMenu;

@@ -9,29 +9,20 @@ var Sushi;
 (function (Sushi, Plugins) {
 	"use strict";
 
+	var BasePlugin = Plugins.BasePlugin;
+	var Dom = Sushi.Dom;
 	var Events = Sushi.Events;
 	var Util = Sushi.Util;
 
 	var transitionEndEvent = Util.getTransitionEndEvent();
 
-
-	// Class definition
-	// ---------------------------
-
 	var Reveal = function (triggerElement, options) {
-		this.triggerElement = triggerElement || null;
+		BasePlugin.call(this, triggerElement, options);
 
 		this.isOpen = false;
 
-		this.options = Util.merge(
-			{},
-			Reveal.DEFAULTS,
-			options,
-			Util.getNamespaceProperties("reveal", this.triggerElement.dataset)
-		);
-
-		// Cache Elements
-		this.targetElement = document.querySelector(this.options.target);
+		// Cache elements
+		this.targetElement = Dom.getOne(this.options.target);
 		this.contentElement = this.targetElement.querySelector(".o-reveal__content");
 
 		var maxHeight = window.getComputedStyle(this.targetElement).maxHeight;
@@ -43,29 +34,27 @@ var Sushi;
 		this.registerListeners();
 	};
 
+	Reveal.displayName = "Reveal";
+
 	Reveal.DEFAULTS = {
 		preventDefault: true,
 		rel: null,
 	};
 
-
-
-	// Methods
-	// ---------------------------
+	Reveal.prototype = Object.create(BasePlugin.prototype);
 
 	var proto = Reveal.prototype;
 
+	proto.constructor = Reveal;
 
 	proto.registerListeners = function () {
-		if (this.triggerElement !== null) {
-			Events(this.triggerElement).on("Reveal.click", function (event) {
-				if (this.options.preventDefault) {
-					event.preventDefault();
-				}
+		Events(this.triggerElement).on("Reveal.click", function (event) {
+			if (this.options.preventDefault) {
+				event.preventDefault();
+			}
 
-				this.toggle();
-			}.bind(this));
-		}
+			this.toggle();
+		}.bind(this));
 	};
 
 
@@ -80,18 +69,31 @@ var Sushi;
 			this.targetElement.style.maxWidth = this.contentElement.offsetWidth + "px";
 		}
 
-		this.triggerElement.blur();
+		if (this.triggerElement !== null) {
+			this.triggerElement.blur();
+		}
 	};
 
 
 	proto.removeAnimationClass = function () {
-		Events(this.targetElement).one(transitionEndEvent, function () {
-			this.targetElement.classList.remove("is-animating");
-		}.bind(this));
+		Events(this.targetElement)
+			.off("Reveal." + transitionEndEvent)
+			.one("Reveal." + transitionEndEvent, function () {
+				this.targetElement.classList.remove("is-animating");
+
+				if (this.isOpen) {
+					this.targetElement.style.maxHeight = "none";
+					this.targetElement.style.maxWidth = "none";
+				}
+			}.bind(this));
 	};
 
 
 	proto.open = function () {
+		if (this.isOpen) {
+			return;
+		}
+
 		this.isOpen = true;
 
 		if (this.triggerElement !== null) {
@@ -100,25 +102,29 @@ var Sushi;
 
 		this.targetElement.classList.add("is-active");
 
-		Events(this.targetElement).trigger("open");
-
 		this.prepare();
 
-		Events(this.targetElement).one(transitionEndEvent, function () {
-			if (this.autoHeight) {
-				this.targetElement.style.maxHeight = "none";
-			}
+		Events(this.targetElement)
+			.off("Reveal." + transitionEndEvent)
+			.one("Reveal." + transitionEndEvent, function () {
+				if (this.autoHeight) {
+					this.targetElement.style.maxHeight = "none";
+				}
 
-			if (this.autoWidth) {
-				this.targetElement.style.maxWidth = "none";
-			}
-		}.bind(this));
+				if (this.autoWidth) {
+					this.targetElement.style.maxWidth = "none";
+				}
+			}.bind(this));
 
 		this.removeAnimationClass();
 	};
 
 
 	proto.close = function () {
+		if (!this.isOpen) {
+			return;
+		}
+
 		this.isOpen = false;
 
 		if (this.triggerElement !== null) {
@@ -127,12 +133,9 @@ var Sushi;
 
 		this.targetElement.classList.remove("is-active");
 
-		Events(this.targetElement).trigger("close");
-
 		this.prepare();
 
-		// force repaint
-		window.getComputedStyle(this.targetElement).height;
+		Util.forceRepaint(this.targetElement);
 
 		if (this.autoHeight) {
 			this.targetElement.style.maxHeight = 0;
