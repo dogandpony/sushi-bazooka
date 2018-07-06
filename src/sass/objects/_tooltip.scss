@@ -1,0 +1,80 @@
+/* =====================================================================
+ * TOOLTIP OBJECT
+ * ===================================================================== */
+
+.o-tooltip {
+	position: absolute;
+	z-index: 10;
+	padding: 8px 10px;
+	visibility: hidden;
+	opacity: 0;
+	background-color: getColor("gray20");
+	border-radius: $baseBorderRadius;
+	font-weight: 400;
+	font-size: getFontSize(9);
+	line-height: getLineHeight("title");
+	color: getColor("black");
+	text-align: center;
+	white-space: nowrap;
+	transition: visibility 0.2s, opacity 0.2s $easeInQuint;
+
+	&:before {
+		content: '';
+		position: absolute;
+		z-index: 1;
+		width: 10px;
+		height: 10px;
+		background-color: getColor("gray20");
+		transform: rotateZ(45deg);
+	}
+}
+
+.o-tooltip.is-open {
+	visibility: visible;
+	opacity: 1;
+}
+
+.o-tooltip--top {
+	bottom: calc(100% + 6px);
+	left: 50%;
+
+	&:before {
+		top: calc(100% - 5px);
+		left: calc(50% - 5px);
+	}
+}
+
+.o-tooltip--bottom {
+	top: calc(100% + 6px);
+	left: 50%;
+
+	&:before {
+		bottom: calc(100% - 5px);
+		left: calc(50% - 5px);
+	}
+}
+
+.o-tooltip--right {
+	top: 50%;
+	left: calc(100% + 6px);
+
+	&:before {
+		top: calc(50% - 5px);
+		right: calc(100% - 5px);
+	}
+}
+
+.o-tooltip--left {
+	top: 50%;
+	right: calc(100% + 6px);
+
+	&:before {
+		top: calc(50% - 5px);
+		left: calc(100% - 5px);
+	}
+}
+
+.o-tooltip__content {
+	position: relative;
+	z-index: 2;
+}
