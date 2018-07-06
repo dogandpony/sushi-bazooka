@@ -222,8 +222,8 @@ var Sushi;
 	 * @param fn Function
 	 */
 	Events.one = function (types, targets, fn) {
-		var oneFunction = function () {
-			fn.call(this);
+		var oneFunction = function (event) {
+			fn.call(this, event);
 			traverse(removeListeners, types, this, oneFunction);
 		};
 
