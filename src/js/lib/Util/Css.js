@@ -23,7 +23,7 @@ var Sushi;
 	};
 
 
-	Css.deltaTransformPoint = function (matrix, point)  {
+	Css.deltaTransformPoint = function (matrix, point) {
 		var dx = point.x * matrix.a + point.y * matrix.c;
 		var dy = point.x * matrix.b + point.y * matrix.d;
 
@@ -64,11 +64,13 @@ var Sushi;
 
 	/**
 	 * Returns the rotation angle of an element
+	 *
 	 * Also works with SVG elements.
 	 *
-	 * @param element The element to get the rotation value from
-	 * @param round Whether to round the result or not
-	 * @returns {number}
+	 * @param {HTMLElement} element The element to get the rotation value from
+	 * @param {Boolean} round Whether to round the result or not
+	 *
+	 * @returns {number} Rotation value in degrees
 	 */
 	Css.getRotationAngle = function (element, round) {
 		var style;
@@ -116,18 +118,20 @@ var Sushi;
 
 	/**
 	 * Returns the maximum transition duration from an element taking the delays into account
-	 * @param domElement
-	 * @param ignoreDelay
-	 * @returns {number}
+	 *
+	 * @param {HTMLElement} element Element to get values from
+	 * @param {Boolean} ignoreDelay Whether to ignore or not the delay value
+	 *
+	 * @returns {number} Transition duration in milliseconds
 	 */
-	Css.getMaxTransitionDuration = function (domElement, ignoreDelay) {
+	Css.getMaxTransitionDuration = function (element, ignoreDelay) {
 		ignoreDelay = ignoreDelay || false;
 
-		var transitionDuration = domElement.ownerDocument.defaultView
-			.getComputedStyle(domElement, null).transitionDuration.split(", ");
+		var transitionDuration = element.ownerDocument.defaultView
+			.getComputedStyle(element, null).transitionDuration.split(", ");
 
-		var transitionDelay = domElement.ownerDocument.defaultView
-			.getComputedStyle(domElement, null).transitionDelay.split(", ");
+		var transitionDelay = element.ownerDocument.defaultView
+			.getComputedStyle(element, null).transitionDelay.split(", ");
 
 		var maxDuration = 0;
 
@@ -135,7 +139,7 @@ var Sushi;
 			var duration = 0;
 
 			if (transitionDuration[i] !== "") {
-				duration += parseFloat(transitionDuration[i])
+				duration += parseFloat(transitionDuration[i]);
 			}
 
 			if ((transitionDelay[i] !== "") && !ignoreDelay) {
