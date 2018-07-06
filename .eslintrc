@@ -43,7 +43,9 @@
 			"require": {
 				"FunctionDeclaration": true,
 				"MethodDefinition": true,
-				"ClassDeclaration": true
+				"ClassDeclaration": true,
+				"ArrowFunctionExpression": false,
+				"FunctionExpression": true
 			}
 		}],
 		"semi-spacing": 1,
@@ -55,7 +57,8 @@
 			"asyncArrow": "always"
 		}],
 		"spaced-comment": [1, "always"],
-		"strict": [1, "safe"]
+		"strict": [1, "safe"],
+		"valid-jsdoc" : 1
 	}
 }
 
