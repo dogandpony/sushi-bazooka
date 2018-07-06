@@ -148,5 +148,52 @@ var Sushi;
 		return maxDuration * 1000;
 	};
 
+	Css.getOffset = function (element, context) {
+		context = context || document.body;
+
+		var contextRect = context.getBoundingClientRect();
+		var elementRect = element.getBoundingClientRect();
+		var offset = {
+			top: (elementRect.top - contextRect.top),
+			right: (elementRect.right - contextRect.right),
+			bottom: (elementRect.bottom - contextRect.bottom),
+			left: (elementRect.left - contextRect.left),
+		};
+
+		return offset;
+	};
+
+	Css.getWidth = function (element, accountForMargins) {
+		var style = window.getComputedStyle(element);
+
+		return (
+			element.clientWidth
+			+ style.paddingRight
+			+ style.paddingLeft
+			+ style.borderRightWidth
+			+ style.borderLeftWidth
+		)
+		+ accountForMargins
+			? (style.marginRight + style.marginLeft)
+			: 0
+		;
+	};
+
+	Css.getHeight = function (element, accountForMargins) {
+		var style = window.getComputedStyle(element);
+
+		return (
+			element.clientHeight
+			+ style.paddingTop
+			+ style.paddingBottom
+			+ style.borderRightHeight
+			+ style.borderLeftHeight
+		)
+		+ accountForMargins
+			? (style.marginTop + style.marginBottom)
+			: 0
+		;
+	};
+
 	Util.Css = Css;
 })(Sushi || (Sushi = {}));
