@@ -9,35 +9,23 @@ var Sushi;
 (function (Sushi) {
 	"use strict";
 
-
-
-	// DOM cache
-	// ---------------------------
-
-	var PAGE_WRAPPER = $("#pageWrapper");
-	var HTML = $("html");
+	var Dom = Sushi.Dom;
 
 	var bodyScrollPosition;
 
+	var BodyScroll = {};
 
-
-	// Class definition
-	// ---------------------------
-
-	var BodyScroll = function () {};
-
-
-
-	// Methods
-	// ---------------------------
+	BodyScroll.pageWrapper = "#pageWrapper";
 
 	/**
 	 * Locks body scroll
 	 * This is to be used primarily when a full-page scrolling overlay is visible, so the page
 	 * scroll remains fixed as the user scrolls the overlay contents.
+	 *
+	 * @return {void}
 	 */
 	BodyScroll.lock = function () {
-		if ($("#sushiLockBodyScrollStyleTag").length === 0) {
+		if (document.getElementById("sushiLockBodyScrollStyleTag") === null) {
 			var scrollbarWidth = Sushi.Util.getScrollbarWidth();
 
 			var css = ""
@@ -53,28 +41,33 @@ var Sushi;
 				+ "   padding-right:" + scrollbarWidth + "px !important;"
 				+ "}";
 
-			$("<style id=\"sushiLockBodyScrollStyleTag\">" + css + "</style>").appendTo("head");
+			var styleElement = Dom.parseOne(
+				"<style id=\"sushiLockBodyScrollStyleTag\">" + css + "</style>"
+			);
+
+			document.head.appendChild(styleElement);
 		}
 
 		bodyScrollPosition = window.scrollY;
 
-		HTML.addClass("is-scroll-locked");
+		document.documentElement.classList.add("is-scrollLocked");
 
-		PAGE_WRAPPER.css("margin-top", -1 * bodyScrollPosition);
+		Dom.getOne(BodyScroll.pageWrapper).style.marginTop = (-1 * bodyScrollPosition) + "px";
 	};
 
 
 	/**
 	 * Releases the scroll locked by Util.lockBodyScroll()
+	 *
+	 * @return {void}
 	 */
 	BodyScroll.unlock = function () {
-		PAGE_WRAPPER.css("margin-top", "");
+		Dom.getOne(BodyScroll.pageWrapper).style.marginTop = "";
 
-		HTML.removeClass("is-scroll-locked");
+		document.documentElement.classList.remove("is-scrollLocked");
 
-		$(window).scrollTop(bodyScrollPosition);
+		window.scrollTo(window.scrollX, bodyScrollPosition);
 	};
-
 
 	Sushi.BodyScroll = BodyScroll;
 })(Sushi || (Sushi = {}));
