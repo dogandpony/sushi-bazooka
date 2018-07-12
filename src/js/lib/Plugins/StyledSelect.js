@@ -43,9 +43,9 @@ var Sushi;
 	proto.constructor = StyledSelect;
 
 	proto.createContainer = function () {
-		this.containerElement = Dom.parseOne("<div class='c-styledSelect'>");
+		this.containerElement = Dom.parse("<div class='c-styledSelect'>");
 
-		this.buttonElement = Dom.parseOne(
+		this.buttonElement = Dom.parse(
 			"<button class='c-styledSelect__button' type='button'>"
 		);
 
@@ -70,7 +70,7 @@ var Sushi;
 		// Dropdown
 		// ---------------------------
 
-		this.dropdownElement = Dom.parseOne("<ul class='c-styledSelect__dropdown o-dropdown'>");
+		this.dropdownElement = Dom.parse("<ul class='c-styledSelect__dropdown o-dropdown'>");
 
 		this.updateOptions();
 
@@ -117,8 +117,8 @@ var Sushi;
 
 	proto.handleDropdownOpen = function () {
 		var currentItem = (
-			Dom.queryOne(".c-styledSelect__item.is-current", this.dropdownElement)
-			|| Dom.queryOne(".c-styledSelect__item", this.dropdownElement)
+			Dom.query(".c-styledSelect__item.is-current", this.dropdownElement)
+			|| Dom.query(".c-styledSelect__item", this.dropdownElement)
 		);
 
 		setTimeout(function () {
@@ -173,7 +173,7 @@ var Sushi;
 				case 32:
 					if (this.isMultiple) {
 						var itemElement = activeElement.closest(".c-styledSelect__item");
-						var checkboxElement = Dom.queryOne(
+						var checkboxElement = Dom.query(
 							".c-styledSelect__checkbox",
 							itemElement
 						);
@@ -220,8 +220,8 @@ var Sushi;
 	proto.handleCheckboxChange = function (event) {
 		var itemElement = event.target.closest(".c-styledSelect__item");
 		var itemValue = itemElement.dataset.value;
-		var optionElement = Dom.queryOne("option[value='" + itemValue + "']", this.triggerElement);
-		var checkboxElement = Dom.queryOne(
+		var optionElement = Dom.query("option[value='" + itemValue + "']", this.triggerElement);
+		var checkboxElement = Dom.query(
 			".c-styledSelect__checkbox",
 			itemElement
 		);
@@ -235,11 +235,11 @@ var Sushi;
 
 	proto.registerItemListeners = function () {
 		if (this.isMultiple) {
-			Events(Dom.query(".c-styledSelect__checkbox", this.dropdownElement))
+			Events(Dom.queryAll(".c-styledSelect__checkbox", this.dropdownElement))
 				.on("StyledSelect.change", this.handleCheckboxChange.bind(this));
 		}
 		else {
-			Events(Dom.query(".c-styledSelect__item", this.dropdownElement))
+			Events(Dom.queryAll(".c-styledSelect__item", this.dropdownElement))
 				.on("StyledSelect.click", this.handleItemClick.bind(this));
 		}
 	};
@@ -272,7 +272,7 @@ var Sushi;
 			if (this.isMultiple) {
 				var checkboxId = Util.uniqueId("__sushiStyledSelectCheckbox");
 				var checkboxHtml = "<input type='checkbox' id='" + checkboxId + "' tabindex='-99'>";
-				var checkboxElement = Dom.parseOne(checkboxHtml);
+				var checkboxElement = Dom.parse(checkboxHtml);
 
 				Dom.addClass(checkboxElement, [
 					"c-styledSelect__checkbox",
@@ -280,7 +280,7 @@ var Sushi;
 					"o-choiceInput__input--checkbox",
 				]);
 
-				titleElement = Dom.parseOne("<label for='" + checkboxId + "'>");
+				titleElement = Dom.parse("<label for='" + checkboxId + "'>");
 
 				titleElement.classList.add("o-choiceInput__label");
 

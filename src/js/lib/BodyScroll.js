@@ -41,7 +41,7 @@ var Sushi;
 				+ "   padding-right:" + scrollbarWidth + "px !important;"
 				+ "}";
 
-			var styleElement = Dom.parseOne(
+			var styleElement = Dom.parse(
 				"<style id=\"sushiLockBodyScrollStyleTag\">" + css + "</style>"
 			);
 
@@ -52,7 +52,7 @@ var Sushi;
 
 		document.documentElement.classList.add("is-scrollLocked");
 
-		Dom.getOne(BodyScroll.pageWrapper).style.marginTop = (-1 * bodyScrollPosition) + "px";
+		Dom.get(BodyScroll.pageWrapper).style.marginTop = (-1 * bodyScrollPosition) + "px";
 	};
 
 
@@ -62,7 +62,7 @@ var Sushi;
 	 * @return {void}
 	 */
 	BodyScroll.unlock = function () {
-		Dom.getOne(BodyScroll.pageWrapper).style.marginTop = "";
+		Dom.get(BodyScroll.pageWrapper).style.marginTop = "";
 
 		document.documentElement.classList.remove("is-scrollLocked");
 

@@ -18,7 +18,7 @@ var Sushi;
 		this.limitElement = null;
 		this.topMargin = 0;
 
-		this.placeholder = Dom.getOne(this.options.placeholder); // cache placeholder object
+		this.placeholder = Dom.get(this.options.placeholder); // cache placeholder object
 
 		this.isChasing = false;
 		this.hasReachedLimit = false;

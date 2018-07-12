@@ -16,8 +16,8 @@ var Sushi;
 	var NavigationPriority = function (triggerElement, options) {
 		BasePlugin.call(this, triggerElement, options);
 
-		this.dropdownElement = Dom.getOne(this.options.dropdown);
-		this.dropdownParentElement = Dom.getOne(this.options.dropdownParent);
+		this.dropdownElement = Dom.get(this.options.dropdown);
+		this.dropdownParentElement = Dom.get(this.options.dropdownParent);
 
 		this.parseItems();
 		this.createDropdownNav();
@@ -43,7 +43,7 @@ var Sushi;
 	 */
 	NavigationPriority.prototype.parseItems = function () {
 		var orderedByPriority = [];
-		var items = Dom.query(this.options.itemSelector, this.triggerElement);
+		var items = Dom.queryAll(this.options.itemSelector, this.triggerElement);
 
 		this.orderedItems = [];
 
