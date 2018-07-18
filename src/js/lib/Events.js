@@ -164,7 +164,7 @@ var Sushi;
 			var eventName = typeList[i];
 
 			if (typeof window.CustomEvent === "function") {
-				event = new window.CustomEvent(eventName, { detail: data });
+				event = new window.CustomEvent(eventName, { detail: data, bubbles: true });
 			}
 			else if (document.createEvent) {
 				event = document.createEvent("CustomEvent");
