@@ -22,6 +22,7 @@
 	transition: transform 0.2s $easeOutQuint, opacity 0.2s $easeOutQuint, visibility 0.2s;
 	transition-delay: 50ms;
 	overflow-y: auto;
+	white-space: nowrap;
 }
 
 .is-open > .o-dropdown {
