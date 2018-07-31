@@ -355,11 +355,11 @@ var Sushi;
 
 			label = selectedOptionLabels.join(this.options.multipleSeparator);
 		}
-		else {
+		else if (this.triggerElement.selectedOptions[0] !== void 0) {
 			label = getOptionLabel(this.triggerElement.selectedOptions[0]);
 		}
 
-		if (label === "") {
+		if (!label) {
 			label = getOptionLabel(this.availableOptions[0]);
 		}
 
