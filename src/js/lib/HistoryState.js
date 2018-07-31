@@ -2,7 +2,7 @@ var Sushi;
 
 (function (Sushi) {
 
-	'use strict';
+	"use strict";
 
 	var HistoryState = function (useBasePath, basePathname) {
 		this.useBasePath = false;
@@ -24,6 +24,7 @@ var Sushi;
 
 		var nativePushStateSupport = false;
 		// Set if it has a native support for pushState
+
 		if ((window.history) && (window.history.pushState)) {
 			nativePushStateSupport = true;
 		}
@@ -34,23 +35,27 @@ var Sushi;
 		 * By default, the base path is not used, let's check the
 		 * parameter value
 		 */
-		if (typeof useBasePath !== 'undefined') {
+		if (typeof useBasePath !== "undefined") {
 			if (useBasePath) {
 				// Ok, it should use the base path
 				this.setUseBasePath(true);
 			}
 		}
 
-		if (typeof basePathname === 'string') {
+		if (typeof basePathname === "string") {
 			// It has a valid base path name
 			this.setBasePathname(basePathname);
 		}
-		else if ((typeof basePathname === 'undefined') || (basePathname === null) || (basePathname === "")) {
+		else if (
+			(typeof basePathname === "undefined")
+			|| (basePathname === null)
+			|| (basePathname === "")
+		) {
 			// Use the window.location.pathname as the base path name
 			this.setBasePathname(window.location.pathname);
 		}
 		else {
-			throw 'basePathname must be null, not passed or a string, ' + (typeof basePathname) + ' given';
+			throw "basePathname must be null, not passed or a string, " + (typeof basePathname) + " given";
 		}
 
 		this.registerEventListeners();
@@ -65,6 +70,7 @@ var Sushi;
 	 */
 	HistoryState.prototype.setUseBasePath = function (useBasePath) {
 		this.useBasePath = useBasePath;
+
 		return this;
 	};
 
@@ -84,10 +90,12 @@ var Sushi;
 	 * @returns {HistoryState}
 	 */
 	HistoryState.prototype.setBasePathname = function (basePathname) {
-		if (basePathname.charAt(0) !== '/') {
-			basePathname = '/' + basePathname;
+		if (basePathname.charAt(0) !== "/") {
+			basePathname = "/" + basePathname;
 		}
+
 		this.basePathname = basePathname;
+
 		return this;
 	};
 
@@ -107,7 +115,8 @@ var Sushi;
 	 */
 	HistoryState.prototype.setNativePushStateSupport = function (nativePushStateSupport) {
 		this.nativePushStateSupport = nativePushStateSupport;
-		return this;
+
+return this;
 	};
 
 
@@ -126,7 +135,8 @@ var Sushi;
 	 */
 	HistoryState.prototype.setCurrentState = function (state) {
 		this.currentState = state;
-		return this;
+
+return this;
 	};
 
 
@@ -137,7 +147,8 @@ var Sushi;
 	 */
 	HistoryState.prototype.getCurrentState = function () {
 		if (!this.getNativePushStateSupport()) {
-			throw 'This function should not be used for non-native support. Please use getState in all ocasions.'
+			throw "This function should not be used for non-native support."
+			+ " Please use getState in all occasions.";
 		}
 
 		return this.currentState;
@@ -151,6 +162,7 @@ var Sushi;
 	 */
 	HistoryState.prototype.setHistoryAndCurrentStack = function (sushiStateStack) {
 		this.historyAndCurrentStack = sushiStateStack;
+
 		return this;
 	};
 
@@ -175,6 +187,7 @@ var Sushi;
 	 */
 	HistoryState.prototype.setForwardStack = function (sushiStatesStack) {
 		this.forwardStack = sushiStatesStack;
+
 		return this;
 	};
 
@@ -199,6 +212,7 @@ var Sushi;
 	 */
 	HistoryState.prototype.setUpdateStacks = function (updateStacks) {
 		this.updateStacks = updateStacks;
+
 		return this;
 	};
 
@@ -228,6 +242,7 @@ var Sushi;
 	 */
 	HistoryState.prototype.setIsReplaceState = function (isReplaceState) {
 		this.isReplaceState = isReplaceState;
+
 		return this;
 	};
 
@@ -244,10 +259,10 @@ var Sushi;
 	HistoryState.prototype.registerEventListeners = function () {
 		var currentInstance = this;
 
-		var onSushiHistoryStatePopEvent = $.Event('onSushiHistoryStatePop');
+		var onSushiHistoryStatePopEvent = $.Event("onSushiHistoryStatePop");
 
 		if (this.getNativePushStateSupport()) {
-			$(window).on('popstate', function (jQueryEvent) {
+			$(window).on("popstate", function (jQueryEvent) {
 
 				currentInstance.setIsReplaceState(false);
 
@@ -260,7 +275,7 @@ var Sushi;
 			});
 		}
 		else {
-			$(window).on('hashchange', function () {
+			$(window).on("hashchange", function () {
 
 				if (!currentInstance.getUpdateStacks()) {
 					// Do nothing, only update the status
@@ -272,11 +287,11 @@ var Sushi;
 					 * We need to get the state in one of the stacks
 					 * (History or Forward)
 					 * If we can't find the state, we would use a replaceState because the user
-					 * changed the URL manually by himself/herself
+					 * changed the URL manually by themselves
 					 */
 					var stateDataToDispatch = null;
 
-					var currentPath = window.location.hash.replace('#!', '');
+					var currentPath = window.location.hash.replace("#!", "");
 
 					var matchState = null;
 
@@ -296,7 +311,7 @@ var Sushi;
 								state: stateDataToDispatch,
 								title: null,
 								originalPath: currentPath,
-								path: currentPath
+								path: currentPath,
 							});
 						}
 						else {
@@ -318,7 +333,7 @@ var Sushi;
 									state: stateDataToDispatch,
 									title: null,
 									originalPath: currentPath,
-									path: currentPath
+									path: currentPath,
 								});
 
 								// Clean the forward
@@ -335,7 +350,8 @@ var Sushi;
 							var secondOldState = currentInstance.getHistoryAndCurrentStack().pop();
 
 							if (secondOldState === null) {
-								// We only have a new state, but we need to verifiy if it matches with a forward state
+								// We only have a new state, but we need to verify
+								// if it matches with a forward state
 								secondOldState = currentInstance.getForwardStack().pop();
 
 								if (secondOldState === null) {
@@ -351,7 +367,7 @@ var Sushi;
 										state: stateDataToDispatch,
 										title: null,
 										originalPath: currentPath,
-										path: currentPath
+										path: currentPath,
 									});
 								}
 								else {
@@ -373,7 +389,7 @@ var Sushi;
 											state: stateDataToDispatch,
 											title: null,
 											originalPath: currentPath,
-											path: currentPath
+											path: currentPath,
 										});
 
 										// Clean the forward
@@ -410,7 +426,7 @@ var Sushi;
 											state: stateDataToDispatch,
 											title: null,
 											originalPath: currentPath,
-											path: currentPath
+											path: currentPath,
 										});
 
 										// Clean the forward
@@ -435,7 +451,7 @@ var Sushi;
 												state: stateDataToDispatch,
 												title: null,
 												originalPath: currentPath,
-												path: currentPath
+												path: currentPath,
 											});
 
 											// Clean the forward
@@ -468,8 +484,8 @@ var Sushi;
 	 */
 	HistoryState.prototype.push = function (state, title, path) {
 
-		if (typeof path === 'undefined') {
-			throw 'HistoryState.push: path is mandatory';
+		if (typeof path === "undefined") {
+			throw "HistoryState.push: path is mandatory";
 		}
 
 		if (this.getNativePushStateSupport()) {
@@ -478,7 +494,9 @@ var Sushi;
 			this.setIsReplaceState(false);
 
 			if (this.getUseBasePath()) {
-				relativeUrl = this.getBasePathname() + (relativeUrl.charAt(0) === '/' ? '' : '/') + relativeUrl;
+				relativeUrl = this.getBasePathname()
+					+ (relativeUrl.charAt(0) === "/" ? "" : "/")
+					+ relativeUrl;
 			}
 
 			// Use the native function
@@ -499,14 +517,14 @@ var Sushi;
 					/*
 					 * We need to discriminate the path here
 					 */
-					if (uniquePathValue.indexOf('?') > -1) {
-						uniquePathValue += '&';
+					if (uniquePathValue.indexOf("?") > -1) {
+						uniquePathValue += "&";
 					}
 					else {
-						uniquePathValue += '?';
+						uniquePathValue += "?";
 					}
 
-					uniquePathValue += '_dp='.concat(this.getStateDiscriminatorIterator());
+					uniquePathValue += "_dp=".concat(this.getStateDiscriminatorIterator());
 				}
 
 				this.getHistoryAndCurrentStack().push(currentStateData);
@@ -517,7 +535,7 @@ var Sushi;
 				state: state,
 				title: title,
 				originalPath: path,
-				path: uniquePathValue
+				path: uniquePathValue,
 			});
 
 			// Clean the forward stak
@@ -527,7 +545,7 @@ var Sushi;
 			this.setUpdateStacks(false);
 
 			// Change the hash
-			window.location.hash = '#!' + uniquePathValue;
+			window.location.hash = "#!" + uniquePathValue;
 		}
 
 	};
@@ -540,15 +558,17 @@ var Sushi;
 	 */
 	HistoryState.prototype.replace = function (state, title, path) {
 
-		if (typeof path === 'undefined') {
-			throw 'HistoryState.replace: path is mandatory';
+		if (typeof path === "undefined") {
+			throw "HistoryState.replace: path is mandatory";
 		}
 
 		if (this.getNativePushStateSupport()) {
 			var relativeUrl = path;
 
 			if (this.getUseBasePath()) {
-				relativeUrl = this.getBasePathname() + (relativeUrl.charAt(0) === '/' ? '' : '/') + relativeUrl;
+				relativeUrl = this.getBasePathname()
+					+ (relativeUrl.charAt(0) === "/" ? "" : "/")
+					+ relativeUrl;
 			}
 
 			this.setIsReplaceState(true);
@@ -597,14 +617,14 @@ var Sushi;
 				/*
 				 * We need to discriminate the path here
 				 */
-				if (uniquePathValue.indexOf('?') > -1) {
-					uniquePathValue += '&';
+				if (uniquePathValue.indexOf("?") > -1) {
+					uniquePathValue += "&";
 				}
 				else {
-					uniquePathValue += '?';
+					uniquePathValue += "?";
 				}
 
-				uniquePathValue += '_dp='.concat(this.getStateDiscriminatorIterator());
+				uniquePathValue += "_dp=".concat(this.getStateDiscriminatorIterator());
 			}
 
 			// Push the state
@@ -612,7 +632,7 @@ var Sushi;
 				state: state,
 				title: title,
 				originalPath: path,
-				path: uniquePathValue
+				path: uniquePathValue,
 			});
 
 			// We don't need to change the forward states as we are replacing an event
@@ -621,7 +641,7 @@ var Sushi;
 			this.setUpdateStacks(false);
 
 			// Change the hash
-			window.location.hash = '#!' + path;
+			window.location.hash = "#!" + path;
 		}
 
 	};
