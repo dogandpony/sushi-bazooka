@@ -8,18 +8,19 @@
 	visibility: hidden;
 	opacity: 0;
 	top: 100%;
-	left: ($globalSpacingXxs * -1);
+	left: 0;
 	margin: 0;
-	padding: $globalSpacingXxs 0;
+	padding: ($globalSpacingXxs / 2) 0;
 	z-index: 100;
 	list-style-type: none;
 	min-width: 100%;
-	border: 1px solid getColor(gray80);
+	border: 1px solid getColor("gray80");
 	border-radius: 3px;
-	background-color: getColor(gray);
+	background-color: getColor("gray");
 	text-align: left;
-	transform: translateY(20px) scale(0.95);
-	transition: all 0.2s $easeOutQuint;
+	transform: translateY($globalSpacing) scale(0.95);
+	transition: transform 0.2s $easeOutQuint, opacity 0.2s $easeOutQuint, visibility 0.2s;
+	transition-delay: 50ms;
 	overflow-y: auto;
 }
 
@@ -27,6 +28,7 @@
 	visibility: visible;
 	opacity: 1;
 	transform: none;
+	transition: transform 0.2s $easeOutQuint, opacity 0.2s $easeOutQuint, visibility 0.2s;
 }
 
 .o-dropdown--reverse {

@@ -34,7 +34,6 @@ var Sushi;
 		triggerSelector: "",
 		triggerEvent: "mouseenter mouseleave",
 		preventClickOn: "",
-		closeIntentionTimeout: 50,
 		closeOnSelect: false,
 		minHeight: null,
 	};
@@ -76,7 +75,6 @@ var Sushi;
 
 					if (
 						!this.options.closeOnSelect
-						&& this.isOpen
 						&& !targetIsTrigger
 						&& targetIsChild
 					) {
@@ -112,10 +110,9 @@ var Sushi;
 
 	proto.open = function () {
 		if (!this.isOpen) {
-			this.updatePositionClass();
-
 			this.isOpen = true;
-			this.hasCloseIntention = false;
+
+			this.updatePositionClass();
 
 			this.triggerElement.classList.add("is-open");
 
@@ -127,25 +124,11 @@ var Sushi;
 
 	proto.close = function () {
 		if (this.isOpen) {
-			this.hasCloseIntention = true;
+			this.isOpen = false;
 
-			var doClose = function () {
-				if (this.hasCloseIntention) {
-					this.isOpen = false;
+			this.triggerElement.classList.remove("is-open");
 
-					this.triggerElement.classList.remove("is-open");
-
-					Events(this.triggerElement).trigger("close");
-				}
-			}.bind(this);
-
-			if (this.options.closeIntentionTimeout === 0) {
-				doClose();
-			}
-			else {
-				setTimeout(doClose, this.options.closeIntentionTimeout);
-			}
-
+			Events(this.triggerElement).trigger("close");
 		}
 	};
 
