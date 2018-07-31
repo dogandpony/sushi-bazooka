@@ -220,59 +220,6 @@ var Sushi;
 		traverseClassNames(target, "remove", classNames);
 	};
 
-
-	/**
-	 * Appends an arbitrary number of elements to a parent
-	 *
-	 * If you are appending a single element just use native .append() instead.
-	 *
-	 * @param {HTMLElement | Node | Array | NodeList | HTMLCollection} child Elements to append
-	 * @param {HTMLElement} parent Parent element where elements will be appended
-	 *
-	 * @return {void}
-	 */
-	Dom.append = function (child, parent) {
-		if (!Dom.isIterable(child)) {
-			child = [child];
-		}
-
-		for (var i = 0; i < child.length; i++) {
-			parent.append(child[i]);
-		}
-	};
-
-	/**
-	 * Clones a given target
-	 *
-	 * @param {HTMLElement | Node | Array} target Target to be cloned
-	 * @param {Boolean} cloneEvents Whether or not to also clone events
-	 * @returns {HTMLElement | Node | Array} Cloned target
-	 */
-	Dom.clone = function (target, cloneEvents) {
-		cloneEvents = cloneEvents || false;
-
-		var clonedTarget = null;
-
-		if (Dom.isIterable(target)) {
-			clonedTarget = [];
-
-			for (var i = 0; i < target.length; i++) {
-				var targetItem = target[i];
-
-				clonedTarget.push(Dom.clone(targetItem));
-			}
-		}
-		else {
-			clonedTarget = target.cloneNode(true);
-
-			if (cloneEvents === true) {
-				Sushi.Events.clone(target, clonedTarget);
-			}
-		}
-
-		return clonedTarget;
-	};
-
 	/**
 	 * Checks if the target is either an instance of NodeList, HTMLCollection or Array
 	 *
