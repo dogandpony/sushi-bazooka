@@ -1,16 +1,16 @@
 /* =====================================================================
  * Sushi DOM library
  *
- * In regards to get(), getAll(), parse(), parseAll(), query()
- * and queryAll():
+ * In regards to get(), getOne(), parse(), parseOne(), query()
+ * and queryOne():
  * Please note that you should use native methods above all else. These
  * are just helper methods to use when you don't have a clue on what's
  * the input. For instance:
  *
  * - When you know the input is not an element, but you don't know if
- * it's a class or an ID selector: use Dom.query() or Dom.queryAll();
+ * it's a class or an ID selector: use Dom.query() or Dom.queryOne();
  * - When you don't know if the input is already an element or a string
- * selector: use Dom.get() or Dom.getAll().
+ * selector: use Dom.get() or Dom.getOne().
  *
  * With that in mind, please note all those methods are at best 3 times
  * slower than their native counterparts, so it really pays off if you
@@ -108,7 +108,7 @@ var Sushi;
 		return fragment;
 	};
 
-	Dom.getAll = function (selector, context, onlyOne) {
+	Dom.get = function (selector, context, onlyOne) {
 		if (selector instanceof HTMLElement) {
 			if (onlyOne === true) {
 				return selector;
@@ -120,18 +120,18 @@ var Sushi;
 			selector = selector.trim();
 
 			if (selector.indexOf("<") === 0) {
-				return onlyOne ? Dom.parse(selector) : Dom.parseAll(selector);
+				return onlyOne ? Dom.parseOne(selector) : Dom.parse(selector);
 			}
 
-			return Dom.queryAll(selector, context, onlyOne);
+			return Dom.query(selector, context, onlyOne);
 		}
 	};
 
-	Dom.get = function (selector, context) {
-		return Dom.getAll(selector, context, true);
+	Dom.getOne = function (selector, context) {
+		return Dom.get(selector, context, true);
 	};
 
-	Dom.parseAll = function (html, returnFragment) {
+	Dom.parse = function (html, returnFragment) {
 		returnFragment = returnFragment || false;
 
 		var parent;
@@ -150,11 +150,11 @@ var Sushi;
 		return returnFragment ? parent : parent.childNodes;
 	};
 
-	Dom.parse = function (html) {
-		return Dom.parseAll(html).item(0);
+	Dom.parseOne = function (html) {
+		return Dom.parse(html).item(0);
 	};
 
-	Dom.queryAll = function (selector, context, onlyOne) {
+	Dom.query = function (selector, context, onlyOne) {
 		selector = selector.trim();
 		context = context || document;
 		onlyOne = onlyOne || false;
@@ -166,7 +166,7 @@ var Sushi;
 				context.id = Util.uniqueId("__sushi");
 			}
 
-			return Dom.queryAll("#" + context.id + " " + selector, document, onlyOne);
+			return Dom.query("#" + context.id + " " + selector, document, onlyOne);
 		}
 
 		var isSimpleSelector = (/[^a-zA-Z#.]/.test(selector) === false);
@@ -208,8 +208,8 @@ var Sushi;
 		return context.querySelectorAll(selector);
 	};
 
-	Dom.query = function (selector, context) {
-		return Dom.queryAll(selector, context, true);
+	Dom.queryOne = function (selector, context) {
+		return Dom.query(selector, context, true);
 	};
 
 	Dom.addClass = function (target, classNames) {

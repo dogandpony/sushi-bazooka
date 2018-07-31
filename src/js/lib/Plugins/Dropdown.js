@@ -18,7 +18,7 @@ var Sushi;
 	var Dropdown = function (triggerElement, options) {
 		BasePlugin.call(this, triggerElement, options);
 
-		this.dropdownElement = Dom.query("> .o-dropdown", this.triggerElement);
+		this.dropdownElement = Dom.queryOne("> .o-dropdown", this.triggerElement);
 
 		this.isOpen = false;
 		this.hasCloseIntention = false;
@@ -52,7 +52,7 @@ var Sushi;
 				preventClickOnElement = this.targetElement;
 			}
 			else {
-				preventClickOnElement = Dom.queryAll(this.options.preventClickOn, this.targetElement);
+				preventClickOnElement = Dom.query(this.options.preventClickOn, this.targetElement);
 			}
 
 			Events(preventClickOnElement).on("click", function (event) {
@@ -159,7 +159,7 @@ var Sushi;
 				var dropdownComputedStyle = window.getComputedStyle(this.dropdownElement);
 				var dropdownVerticalPadding = parseInt(dropdownComputedStyle.paddingTop)
 					+ parseInt(dropdownComputedStyle.paddingBottom);
-				var dropdownItems = Dom.queryAll("> li", this.dropdownElement);
+				var dropdownItems = Dom.query("> li", this.dropdownElement);
 				var maxItems = Math.min(2, dropdownItems.length);
 
 				minHeight = dropdownVerticalPadding;
