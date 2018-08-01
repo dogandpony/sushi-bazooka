@@ -17,7 +17,7 @@ var Sushi;
 		return optionElement.title || optionElement.label;
 	}
 
-	var StyledSelect = function (triggerElement, options) {
+	var Select = function (triggerElement, options) {
 		BasePlugin.call(this, triggerElement, options);
 
 		this.isMultiple = (this.triggerElement.getAttribute("multiple") !== null);
@@ -26,9 +26,9 @@ var Sushi;
 		this.registerListeners();
 	};
 
-	StyledSelect.displayName = "StyledSelect";
+	Select.displayName = "Select";
 
-	StyledSelect.DEFAULTS = {
+	Select.DEFAULTS = {
 		bare: false,
 		hideSelected: false,
 		hideNull: false,
@@ -36,24 +36,24 @@ var Sushi;
 		multipleSeparator: ", ",
 	};
 
-	StyledSelect.prototype = Object.create(BasePlugin.prototype);
+	Select.prototype = Object.create(BasePlugin.prototype);
 
-	var proto = StyledSelect.prototype;
+	var proto = Select.prototype;
 
-	proto.constructor = StyledSelect;
+	proto.constructor = Select;
 
 	proto.createContainer = function () {
-		this.containerElement = Dom.parseOne("<div class='c-styledSelect'>");
+		this.containerElement = Dom.parseOne("<div class='c-select'>");
 
 		this.buttonElement = Dom.parseOne(
-			"<button class='c-styledSelect__button' type='button'>"
+			"<button class='c-select__button' type='button'>"
 		);
 
-		this.triggerElement.classList.add("c-styledSelect__select");
+		this.triggerElement.classList.add("c-select__select");
 		this.triggerElement.setAttribute("tabindex", "-99");
 
 		if (this.options.bare) {
-			this.containerElement.classList.add("c-styledSelect--bare");
+			this.containerElement.classList.add("c-select--bare");
 		}
 
 		// Add the container after the select
@@ -70,7 +70,7 @@ var Sushi;
 		// Dropdown
 		// ---------------------------
 
-		this.dropdownElement = Dom.parseOne("<ul class='c-styledSelect__dropdown o-dropdown'>");
+		this.dropdownElement = Dom.parseOne("<ul class='c-select__dropdown o-dropdown'>");
 
 		this.updateOptions();
 
@@ -92,33 +92,33 @@ var Sushi;
 
 	proto.registerListeners = function () {
 		Events(this.triggerElement)
-			.on("StyledSelect.change", this.updateSelectedOptions.bind(this));
+			.on("Select.change", this.updateSelectedOptions.bind(this));
 
 		Events(this.buttonElement)
-			.on("StyledSelect.focus", this.enableKeyDownListener.bind(this))
-			.on("StyledSelect.blur", this.disableKeyDownListener.bind(this));
+			.on("Select.focus", this.enableKeyDownListener.bind(this))
+			.on("Select.blur", this.disableKeyDownListener.bind(this));
 
 		Events(this.dropdown.triggerElement)
-			.on("StyledSelect.open", this.handleDropdownOpen.bind(this))
-			.on("StyledSelect.close", this.disableKeyDownListener.bind(this));
+			.on("Select.open", this.handleDropdownOpen.bind(this))
+			.on("Select.close", this.disableKeyDownListener.bind(this));
 	};
 
 	proto.enableKeyDownListener = function () {
 		Events(document)
-			.off("StyledSelect.keydown")
-			.on("StyledSelect.keydown", this.handleKeyDown.bind(this));
+			.off("Select.keydown")
+			.on("Select.keydown", this.handleKeyDown.bind(this));
 	};
 
 	proto.disableKeyDownListener = function () {
 		if (!this.dropdown.isOpen) {
-			Events(document).off("StyledSelect.keydown");
+			Events(document).off("Select.keydown");
 		}
 	};
 
 	proto.handleDropdownOpen = function () {
 		var currentItem = (
-			Dom.queryOne(".c-styledSelect__item.is-current", this.dropdownElement)
-			|| Dom.queryOne(".c-styledSelect__item", this.dropdownElement)
+			Dom.queryOne(".c-select__item.is-current", this.dropdownElement)
+			|| Dom.queryOne(".c-select__item", this.dropdownElement)
 		);
 
 		setTimeout(function () {
@@ -172,9 +172,9 @@ var Sushi;
 				case 13:
 				case 32:
 					if (this.isMultiple) {
-						var itemElement = activeElement.closest(".c-styledSelect__item");
+						var itemElement = activeElement.closest(".c-select__item");
 						var checkboxElement = Dom.queryOne(
-							".c-styledSelect__checkbox",
+							".c-select__checkbox",
 							itemElement
 						);
 
@@ -183,7 +183,7 @@ var Sushi;
 						Events(checkboxElement).trigger("change");
 					}
 					else {
-						Events(activeElement.closest(".c-styledSelect__item")).trigger("click");
+						Events(activeElement.closest(".c-select__item")).trigger("click");
 						this.buttonElement.focus();
 					}
 
@@ -206,7 +206,7 @@ var Sushi;
 	 * @param event
 	 */
 	proto.handleItemClick = function (event) {
-		var itemElement = event.target.closest(".c-styledSelect__item");
+		var itemElement = event.target.closest(".c-select__item");
 		var itemValue = itemElement.dataset.value;
 		var selectedOption = this.triggerElement.selectedOptions[0] || {};
 
@@ -218,11 +218,11 @@ var Sushi;
 	};
 
 	proto.handleCheckboxChange = function (event) {
-		var itemElement = event.target.closest(".c-styledSelect__item");
+		var itemElement = event.target.closest(".c-select__item");
 		var itemValue = itemElement.dataset.value;
 		var optionElement = Dom.queryOne("option[value='" + itemValue + "']", this.triggerElement);
 		var checkboxElement = Dom.queryOne(
-			".c-styledSelect__checkbox",
+			".c-select__checkbox",
 			itemElement
 		);
 
@@ -235,20 +235,20 @@ var Sushi;
 
 	proto.registerItemListeners = function () {
 		if (this.isMultiple) {
-			Events(Dom.query(".c-styledSelect__checkbox", this.dropdownElement))
-				.on("StyledSelect.change", this.handleCheckboxChange.bind(this));
+			Events(Dom.query(".c-select__checkbox", this.dropdownElement))
+				.on("Select.change", this.handleCheckboxChange.bind(this));
 		}
 		else {
-			Events(Dom.query(".c-styledSelect__item", this.dropdownElement))
-				.on("StyledSelect.click", this.handleItemClick.bind(this));
+			Events(Dom.query(".c-select__item", this.dropdownElement))
+				.on("Select.click", this.handleItemClick.bind(this));
 		}
 	};
 
 	proto.updateOptions = function () {
 		var options = this.triggerElement.getElementsByTagName("option");
 
-		Events(this.dropdownElement.getElementsByClassName("c-styledSelect__item"))
-			.off("StyledSelect.click");
+		Events(this.dropdownElement.getElementsByClassName("c-select__item"))
+			.off("Select.click");
 
 		this.dropdownOptions = [];
 
@@ -265,17 +265,17 @@ var Sushi;
 				title = option.innerHTML;
 			}
 
-			itemElement.classList.add("c-styledSelect__item");
+			itemElement.classList.add("c-select__item");
 			itemElement.setAttribute("tabindex", "0");
 			itemElement.dataset.value = option.value;
 
 			if (this.isMultiple) {
-				var checkboxId = Util.uniqueId("__sushiStyledSelectCheckbox");
+				var checkboxId = Util.uniqueId("__sushiSelectCheckbox");
 				var checkboxHtml = "<input type='checkbox' id='" + checkboxId + "' tabindex='-99'>";
 				var checkboxElement = Dom.parseOne(checkboxHtml);
 
 				Dom.addClass(checkboxElement, [
-					"c-styledSelect__checkbox",
+					"c-select__checkbox",
 					"o-choiceInput__input",
 					"o-choiceInput__input--checkbox",
 				]);
@@ -291,7 +291,7 @@ var Sushi;
 				titleElement = document.createElement("div");
 			}
 
-			titleElement.classList.add("c-styledSelect__itemTitle");
+			titleElement.classList.add("c-select__itemTitle");
 			titleElement.innerHTML = title;
 
 			itemElement.appendChild(titleElement);
@@ -366,5 +366,5 @@ var Sushi;
 		this.buttonElement.innerHTML = label;
 	};
 
-	Plugins.StyledSelect = StyledSelect;
+	Plugins.Select = Select;
 })(Sushi || (Sushi = {}), Sushi.Plugins || (Sushi.Plugins = {}));
