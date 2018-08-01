@@ -25,7 +25,7 @@ var Sushi;
 		CLOSE_BUTTON: "<a href=\"#!\" data-modal-trigger-close class=\"c-modal__close\"/>",
 	};
 
-	var MAIN_CONTAINER = Dom.parseOne("<div class=\"c-modals\">");
+	var MAIN_CONTAINER = Dom.parse("<div class=\"c-modals\">");
 
 	var CENTERING_CLASSES = {
 		CALCULATED_HORIZONTAL: "c-modalContainer--calculatedHCenter",
@@ -40,10 +40,10 @@ var Sushi;
 		this.isOpen = false;
 
 		// Cache objects
-		this.modal = Dom.getOne(this.options.modal);
-		this.overlay = Dom.getOne(this.options.overlay);
-		this.container = Dom.getOne(this.options.container);
-		this.contentElement = Dom.getOne(this.options.content);
+		this.modal = Dom.get(this.options.modal);
+		this.overlay = Dom.get(this.options.overlay);
+		this.container = Dom.get(this.options.container);
+		this.contentElement = Dom.get(this.options.content);
 
 		Sushi.addPluginInstanceTo(this.modal, this);
 
@@ -167,7 +167,7 @@ var Sushi;
 	 * Create the main modals container if it doesn't already exist
 	 */
 	proto.createMainContainer = function () {
-		this.mainContainer = Dom.getOne(this.options.mainContainer || MAIN_CONTAINER);
+		this.mainContainer = Dom.get(this.options.mainContainer || MAIN_CONTAINER);
 
 		if (this.mainContainer.parentNode) {
 			document.body.appendChild(this.mainContainer);
@@ -196,7 +196,7 @@ var Sushi;
 		window.getComputedStyle(this.modal).height;
 
 		// Add a close button (if enabled)
-		this.closeButton = Dom.getOne(HTML_FACTORY.CLOSE_BUTTON);
+		this.closeButton = Dom.get(HTML_FACTORY.CLOSE_BUTTON);
 
 		if (this.options.insertCloseButton) {
 			this.modal.prepend(this.closeButton);
