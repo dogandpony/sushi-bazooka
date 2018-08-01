@@ -2,13 +2,13 @@
  * STYLED SELECT COMPONENT
  * ========================================================================= */
 
-.c-styledSelect {
+.c-select {
 	position: relative;
 	display: block;
 	width: 100%;
 }
 
-.c-styledSelect__label {
+.c-select__label {
 	@extend .o-form__input;
 
 	position: relative;
@@ -19,7 +19,7 @@
 	&:after {
 		@extend %materialIcons;
 
-		content: 'expand_more';
+		content: "expand_more";
 		position: absolute;
 		top: 50%;
 		right: -3px;
@@ -32,14 +32,14 @@
 	}
 }
 
-.c-styledSelect__label:hover,
-.c-styledSelect__label:focus,
-.c-styledSelect__select:focus + .c-styledSelect__label {
-	color: getColor(primary);
-	border-color: getColor(primary-50);
+.c-select__label:hover,
+.c-select__label:focus,
+.c-select__select:focus + .c-select__label {
+	color: getColor("primary");
+	border-color: getColor("primary");
 }
 
-.c-styledSelect__select {
+.c-select__select {
 	position: absolute;
 	opacity: 0;
 	top: 0;
@@ -56,27 +56,27 @@
 /* Bare (text only/dropdown-like)
    ========================================================================= */
 
-.c-styledSelect--bare {
+.c-select--bare {
 	display: inline-block;
 	width: auto;
 }
 
-.c-styledSelect--bare .c-styledSelect__label {
+.c-select--bare .c-select__label {
 	position: relative;
 	z-index: 2;
 	padding: 11px 14px 11px 0;
 	border: 0;
-	font-size: getFontSize(7);
-	color: getColor(gray80);
+	font-size: getFontSize(6);
+	color: getColor("gray");
 	cursor: pointer;
 
 	&:hover,
 	&:focus {
-		color: getColor(accent);
+		color: getColor("secondary");
 	}
 
 	&:after {
-		content: 'expand_more';
+		content: "expand_more";
 	}
 }
 
@@ -86,7 +86,7 @@
 /* Dropdown
    ========================================================================= */
 
-.c-styledSelect__dropdown {
+.c-select__dropdown {
 	@include elevation(8);
 	top: 0;
 	left: ($globalSpacingXxs * -1);
@@ -94,40 +94,40 @@
 	z-index: 3;
 }
 
-.c-styledSelect__item {
+.c-select__item {
 	padding: $globalSpacingXxs;
-	font-size: getFontSize(7);
-	color: getColor(gray);
+	font-size: getFontSize(6);
+	color: getColor("gray");
 	line-height: 1;
 	cursor: pointer;
 	white-space: nowrap;
 
 	&:hover,
 	&:focus {
-		color: getColor(accent);
+		color: getColor("secondary");
 	}
 
 	&.is-current {
-		color: getColor(accent);
+		color: getColor("secondary");
 	}
 }
 
-.c-styledSelect__title {
+.c-select__title {
 	display: block;
 	font-weight: 700;
 	line-height: 1.25;
 }
 
-.c-styledSelect__subtitle {
+.c-select__subtitle {
 	display: block;
-	color: getColor(gray80);
-	font-size: getFontSize(8);
+	color: getColor("gray");
+	font-size: getFontSize(6);
 	font-weight: 500;
 	line-height: 1.25;
 }
 
-.c-styledSelect__item.is-active .c-styledSelect__subtitle,
-.c-styledSelect__item:hover .c-styledSelect__subtitle,
-.c-styledSelect__item:focus .c-styledSelect__subtitle {
+.c-select__item.is-active .c-select__subtitle,
+.c-select__item:hover .c-select__subtitle,
+.c-select__item:focus .c-select__subtitle {
 	color: inherit;
 }

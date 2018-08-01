@@ -3,7 +3,7 @@
  * ===================================================================== */
 
 .o-tabbed__nav {
-	border-bottom: 1px solid getColor("gray90");
+	border-bottom: 1px solid getColor("gray");
 	margin-bottom: 0;
 }
 
@@ -11,7 +11,7 @@
 	display: inline-block;
 	margin-bottom: -1px;
 	background-color: getColor("gray");
-	border: 1px solid getColor("gray90");
+	border: 1px solid getColor("gray");
 }
 
 .o-tabbed__navItem + .o-tabbed__navItem {
@@ -25,13 +25,13 @@
 .o-tabbed__navLink {
 	display: inline-block;
 	padding: $globalSpacingXxs $globalSpacingXs;
-	color: getColor("gray50");
+	color: getColor("gray");
 }
 
 .o-tabbed__navItem.is-active .o-tabbed__navLink,
 .o-tabbed__navLink:hover,
 .o-tabbed__navLink:focus {
-	color: getColor("gray10");
+	color: getColor("gray");
 }
 
 .o-tabbed__tab {

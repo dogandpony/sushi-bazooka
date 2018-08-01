@@ -8,7 +8,7 @@
 	padding: 8px 10px;
 	visibility: hidden;
 	opacity: 0;
-	background-color: getColor("gray20");
+	background-color: getColor("gray");
 	border-radius: $baseBorderRadius;
 	font-weight: 400;
 	font-size: getFontSize(9);
@@ -24,7 +24,7 @@
 		z-index: 1;
 		width: 10px;
 		height: 10px;
-		background-color: getColor("gray20");
+		background-color: getColor("gray");
 		transform: rotateZ(45deg);
 	}
 }
