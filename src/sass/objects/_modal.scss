@@ -31,7 +31,7 @@
 	opacity: 0;
 	z-index: 160;
 	transition: visibility 0.3s 0.3s, opacity 0.3s ease 0.3s;
-	background: rgba(#f2f2f2, 0.9);
+	background: rgba(getColor("primary"), 0.9);
 
 	&.is-open {
 		visibility: visible;
@@ -104,17 +104,9 @@
 	align-content: flex-start;
 }
 
-.o-modalContainer--hCenter {
-	//justify-content: center;
-}
-
 .o-modalContainer--hCenter .o-modal {
 	margin-right: auto;
 	margin-left: auto;
-}
-
-.o-modalContainer--vCenter {
-	//align-items: center;
 }
 
 .o-modalContainer--vCenter .o-modal {
@@ -175,7 +167,7 @@
 		font-feature-settings: 'liga';
 	}
 
-	@include mq($from: tabletV) {
+	@include mq($from: "tabletV") {
 		font-size: 36px;
 		width: 48px;
 		height: 48px;
@@ -185,6 +177,6 @@
 .mobile .o-modal__close {
 	&:hover,
 	&:active {
-		color: getColor(primary);
+		color: getColor("primary");
 	}
 }

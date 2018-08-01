@@ -38,7 +38,7 @@
 	z-index: 100;
 	transition: visibility, opacity 0.2s ease-in-out;
 	transition-delay: 0.2s, 0s;
-	background: rgba(#fff, 0.7);
+	background: rgba(getColor("primary"), 0.7);
 
 	@include mq($until: tabletH) {
 		.has-offCanvasOpen & {

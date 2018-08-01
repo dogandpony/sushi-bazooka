@@ -28,7 +28,6 @@
    ========================================================================= */
 
 %revealAsyncAnimation {
-
 	&,
 	&.is-active > .o-reveal__content {
 		transition-delay: 0.15s;
@@ -38,7 +37,6 @@
 	> .o-reveal__content {
 		transition-delay: 0s;
 	}
-
 }
 
 

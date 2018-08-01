@@ -19,7 +19,7 @@
 	&:after {
 		@extend %materialIcons;
 
-		content: 'expand_more';
+		content: "expand_more";
 		position: absolute;
 		top: 50%;
 		right: -3px;
@@ -35,8 +35,8 @@
 .c-select__label:hover,
 .c-select__label:focus,
 .c-select__select:focus + .c-select__label {
-	color: getColor(primary);
-	border-color: getColor(primary-50);
+	color: getColor("primary");
+	border-color: getColor("primary");
 }
 
 .c-select__select {
@@ -66,17 +66,17 @@
 	z-index: 2;
 	padding: 11px 14px 11px 0;
 	border: 0;
-	font-size: getFontSize(7);
-	color: getColor(gray80);
+	font-size: getFontSize(6);
+	color: getColor("gray");
 	cursor: pointer;
 
 	&:hover,
 	&:focus {
-		color: getColor(accent);
+		color: getColor("secondary");
 	}
 
 	&:after {
-		content: 'expand_more';
+		content: "expand_more";
 	}
 }
 
@@ -96,19 +96,19 @@
 
 .c-select__item {
 	padding: $globalSpacingXxs;
-	font-size: getFontSize(7);
-	color: getColor(gray);
+	font-size: getFontSize(6);
+	color: getColor("gray");
 	line-height: 1;
 	cursor: pointer;
 	white-space: nowrap;
 
 	&:hover,
 	&:focus {
-		color: getColor(accent);
+		color: getColor("secondary");
 	}
 
 	&.is-current {
-		color: getColor(accent);
+		color: getColor("secondary");
 	}
 }
 
@@ -120,8 +120,8 @@
 
 .c-select__subtitle {
 	display: block;
-	color: getColor(gray80);
-	font-size: getFontSize(8);
+	color: getColor("gray");
+	font-size: getFontSize(6);
 	font-weight: 500;
 	line-height: 1.25;
 }
