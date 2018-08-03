@@ -14,9 +14,9 @@ var Sushi;
 			rgb = rgb.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+))?\)$/);
 
 			converted = "#"
-				+ Util.Maths.toHex(rgb[1])
-				+ Util.Maths.toHex(rgb[2])
-				+ Util.Maths.toHex(rgb[3]);
+				+ Util.Math.toHex(rgb[1])
+				+ Util.Math.toHex(rgb[2])
+				+ Util.Math.toHex(rgb[3]);
 		}
 
 		return converted;
