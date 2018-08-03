@@ -25,13 +25,13 @@
 .o-tabbed__navLink {
 	display: inline-block;
 	padding: $globalSpacingXxs $globalSpacingXs;
-	color: getColor("gray");
+	color: getColor("primary");
 }
 
 .o-tabbed__navItem.is-active .o-tabbed__navLink,
 .o-tabbed__navLink:hover,
 .o-tabbed__navLink:focus {
-	color: getColor("gray");
+	color: getColor("secondary");
 }
 
 .o-tabbed__tab {
