@@ -1,6 +1,6 @@
 var Sushi;
 
-(function (Sushi) {
+(function (Sushi, root) {
 	"use strict";
 
 	var Util = Sushi.Util;
@@ -14,9 +14,9 @@ var Sushi;
 			rgb = rgb.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+))?\)$/);
 
 			converted = "#"
-				+ Util.Maths.toHex(rgb[1])
-				+ Util.Maths.toHex(rgb[2])
-				+ Util.Maths.toHex(rgb[3]);
+				+ Util.Math.toHex(rgb[1])
+				+ Util.Math.toHex(rgb[2])
+				+ Util.Math.toHex(rgb[3]);
 		}
 
 		return converted;
@@ -39,22 +39,22 @@ var Sushi;
 		var py = Util.deltaTransformPoint(matrix, { x: 1, y: 0 });
 
 		// calculate skew
-		var skewX = ((180 / Math.PI) * Math.atan2(px.y, px.x) - 90);
-		var skewY = ((180 / Math.PI) * Math.atan2(py.y, py.x));
+		var skewX = ((180 / window.Math.PI) * window.Math.atan2(px.y, px.x) - 90);
+		var skewY = ((180 / window.Math.PI) * window.Math.atan2(py.y, py.x));
 
-		var radians = Math.atan2(matrix.b, matrix.a);
+		var radians = window.Math.atan2(matrix.b, matrix.a);
 
 		if (radians < 0) {
-			radians += (2 * Math.PI);
+			radians += (2 * window.Math.PI);
 		}
 
-		var angle = Math.round(radians * (180/Math.PI));
+		var angle = window.Math.round(radians * (180/window.Math.PI));
 
 		return {
 			translateX: matrix.e,
 			translateY: matrix.f,
-			scaleX: Math.sqrt(matrix.a * matrix.a + matrix.b * matrix.b),
-			scaleY: Math.sqrt(matrix.c * matrix.c + matrix.d * matrix.d),
+			scaleX: window.Math.sqrt(matrix.a * matrix.a + matrix.b * matrix.b),
+			scaleY: window.Math.sqrt(matrix.c * matrix.c + matrix.d * matrix.d),
 			skewX: skewX,
 			skewY: skewY,
 			rotation: angle,
@@ -99,16 +99,16 @@ var Sushi;
 		if (matrix) {
 			var a = matrix.a || matrix[0];
 			var b = matrix.b || matrix[1];
-			var radians = Math.atan2(b, a);
+			var radians = window.Math.atan2(b, a);
 
 			if (radians < 0) {
-				radians += (2 * Math.PI);
+				radians += (2 * window.Math.PI);
 			}
 
-			angle = (radians * (180/Math.PI));
+			angle = (radians * (180 / window.Math.PI));
 
 			if (round) {
-				angle = Math.round(angle);
+				angle = window.Math.round(angle);
 			}
 		}
 
@@ -146,7 +146,7 @@ var Sushi;
 				duration += parseFloat(transitionDelay[i]);
 			}
 
-			maxDuration = Math.max(duration, maxDuration);
+			maxDuration = window.Math.max(duration, maxDuration);
 		}
 
 		return maxDuration * 1000;
