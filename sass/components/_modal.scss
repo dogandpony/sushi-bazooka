@@ -1,11 +1,11 @@
 /* =========================================================================
- * MODAL COMPONENT
+ * MODAL
  * ========================================================================= */
 
 /* Container
    ========================================================================= */
 
-.o-modals {
+.c-modals {
 	visibility: hidden;
 	position: fixed;
 	top: 0;
@@ -21,7 +21,7 @@
 /* Overlay
    ========================================================================= */
 
-.o-modalOverlay {
+.c-modalOverlay {
 	visibility: hidden;
 	position: absolute;
 	top: 0;
@@ -46,14 +46,14 @@
 /* Modal
    ========================================================================= */
 
-.o-modalContainer {
+.c-modalContainer {
 	width: 100%;
 	height: 100%;
 	overflow-y: scroll;
 	-webkit-overflow-scrolling: touch;
 }
 
-.o-modal {
+.c-modal {
 	position: relative;
 	visibility: hidden;
 	padding: $globalSpacingSm;
@@ -77,14 +77,14 @@
 	}
 }
 
-.o-modal--full {
+.c-modal--full {
 	width: 100%;
 	height: 100%;
 	max-width: none;
 	max-height: none;
 }
 
-.o-modal--dark {
+.c-modal--dark {
 	background: #000;
 }
 
@@ -97,19 +97,19 @@
 // CSS-only centering
 // ---------------------------
 
-.o-modalContainer--hCenter,
-.o-modalContainer--vCenter {
+.c-modalContainer--hCenter,
+.c-modalContainer--vCenter {
 	display: flex;
 	align-items: flex-start;
 	align-content: flex-start;
 }
 
-.o-modalContainer--hCenter .o-modal {
+.c-modalContainer--hCenter .c-modal {
 	margin-right: auto;
 	margin-left: auto;
 }
 
-.o-modalContainer--vCenter .o-modal {
+.c-modalContainer--vCenter .c-modal {
 	margin-top: auto;
 	margin-bottom: auto;
 }
@@ -119,16 +119,16 @@
 // JavaScript centering
 // ---------------------------
 
-.o-modalContainer--calculatedHCenter .o-modal,
-.o-modalContainer--calculatedVCenter .o-modal {
+.c-modalContainer--calculatedHCenter .c-modal,
+.c-modalContainer--calculatedVCenter .c-modal {
 	position: absolute;
 }
 
-.o-modalContainer--calculatedHCenter .o-modal {
+.c-modalContainer--calculatedHCenter .c-modal {
 	left: 50%;
 }
 
-.o-modalContainer--calculatedVCenter .o-modal {
+.c-modalContainer--calculatedVCenter .c-modal {
 	top: 50%;
 }
 
@@ -138,7 +138,7 @@
 /* Close Button
    ========================================================================= */
 
-.o-modal__close {
+.c-modal__close {
 	position: absolute;
 	top: $globalSpacingSm;
 	right: $globalSpacingSm;
@@ -174,7 +174,7 @@
 	}
 }
 
-.mobile .o-modal__close {
+.mobile .c-modal__close {
 	&:hover,
 	&:active {
 		color: getColor("primary");

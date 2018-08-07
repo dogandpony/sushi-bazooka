@@ -10,7 +10,7 @@ var Sushi;
 	var BasePlugin = Plugins.BasePlugin;
 	var Events = Sushi.Events;
 
-	var BASE_CLASSNAME = "o-tooltip";
+	var BASE_CLASSNAME = "c-tooltip";
 
 	var Tooltip = function (triggerElement, options) {
 		BasePlugin.call(this, triggerElement, options);

@@ -2,7 +2,7 @@
  * DROPDOWN OBJECT
  * ========================================================================= */
 
-.o-dropdown {
+.c-dropdown {
 	@include elevation(4);
 	position: absolute;
 	visibility: hidden;
@@ -25,14 +25,14 @@
 	white-space: nowrap;
 }
 
-.is-open > .o-dropdown {
+.is-open > .c-dropdown {
 	visibility: visible;
 	opacity: 1;
 	transform: none;
 	transition: transform 0.2s $easeOutQuint, opacity 0.2s $easeOutQuint, visibility 0.2s;
 }
 
-.o-dropdown--reverse {
+.c-dropdown--reverse {
 	right: ($globalSpacingXxs * -1);
 	left: auto;
 }

@@ -38,16 +38,16 @@ var Sushi;
 
 		this.toasterElement = document.createElement("div");
 
-		this.toasterElement.classList.add("o-toaster");
+		this.toasterElement.classList.add("c-toaster");
 
 		if (this.options.stacked === true) {
-			this.toasterElement.classList.add("o-toaster--stacked");
+			this.toasterElement.classList.add("c-toaster--stacked");
 		}
 
 		for (var i = 0; i < positionArray.length; i++) {
 			var position = positionArray[i];
 
-			this.toasterElement.classList.add("o-toaster--" + position);
+			this.toasterElement.classList.add("c-toaster--" + position);
 		}
 
 		this.options.container.appendChild(this.toasterElement);

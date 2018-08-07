@@ -70,7 +70,7 @@ var Sushi;
 		// Dropdown
 		// ---------------------------
 
-		this.dropdownElement = Dom.parse("<ul class='c-styledSelect__dropdown o-dropdown'>");
+		this.dropdownElement = Dom.parse("<ul class='c-styledSelect__dropdown c-dropdown'>");
 
 		this.updateOptions();
 

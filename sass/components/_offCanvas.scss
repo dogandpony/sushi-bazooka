@@ -2,7 +2,7 @@
  * Off-canvas object
  * ========================================================================= */
 
-.o-offCanvas {
+.c-offCanvas {
 	position: fixed;
 	top: 0;
 	right: 0;
@@ -27,7 +27,7 @@
 /* Overlay
    ========================================================================= */
 
-.o-offCanvasOverlay {
+.c-offCanvasOverlay {
 	visibility: hidden;
 	opacity: 0;
 	position: fixed;

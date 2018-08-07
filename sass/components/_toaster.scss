@@ -2,7 +2,7 @@
  * TOASTER OBJECT
  * ===================================================================== */
 
-.o-toaster {
+.c-toaster {
 	position: fixed;
 	bottom: $globalSpacingXs;
 	left: calc(50% - 150px);
@@ -11,7 +11,7 @@
 	z-index: 100;
 }
 
-.o-toaster__toast {
+.c-toaster__toast {
 	display: block;
 	position: absolute;
 	bottom: 0;
@@ -28,7 +28,7 @@
 	transition: all 1.2s ease-in-out;
 }
 
-.o-toaster__toast.is-cooked {
+.c-toaster__toast.is-cooked {
 	visibility: visible;
 	transform: translate3d(0, 0, 0);
 	opacity: 1;
@@ -40,7 +40,7 @@
 // Close button
 // ---------------------------
 
-.o-toaster__toastCloseButton {
+.c-toaster__toastCloseButton {
 	position: absolute;
 	top: ($globalSpacingXxs / 2);
 	right: ($globalSpacingXxs / 2);
@@ -52,7 +52,7 @@
 	}
 }
 
-.o-toaster__toastCloseButton:before {
+.c-toaster__toastCloseButton:before {
 	@extend %fontAwesome;
 	content: '\f00d';
 }
@@ -63,26 +63,26 @@
 /* Position
    ===================================================================== */
 
-.o-toaster--right {
+.c-toaster--right {
 	right: $globalSpacingXs;
 	left: auto;
 }
 
-.o-toaster--right .o-toaster__toast {
+.c-toaster--right .c-toaster__toast {
 	right: 0;
 	left: auto;
 }
 
-.o-toaster--left {
+.c-toaster--left {
 	left: $globalSpacingXs;
 }
 
-.o-toaster--top {
+.c-toaster--top {
 	top: $globalSpacingXs;
 	bottom: auto;
 }
 
-.o-toaster--top .o-toaster__toast {
+.c-toaster--top .c-toaster__toast {
 	top: 0;
 	bottom: auto;
 }
@@ -92,12 +92,12 @@
 /* Stacked
    ===================================================================== */
 
-.o-toaster--stacked {
+.c-toaster--stacked {
 	width: auto;
 	height: auto;
 }
 
-.o-toaster--stacked .o-toaster__toast {
+.c-toaster--stacked .c-toaster__toast {
 	position: relative;
 	top: auto;
 	right: auto;

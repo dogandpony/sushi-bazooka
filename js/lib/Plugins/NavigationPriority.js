@@ -31,7 +31,7 @@ var Sushi;
 	NavigationPriority.DEFAULTS = {
 		itemSelector: "> li",
 		dropdownParent: "<li>",
-		dropdown: "<ul class=\"o-dropdown\">",
+		dropdown: "<ul class=\"c-dropdown\">",
 		cloneEvents: false,
 		hiddenClass: "_hidden",
 	};

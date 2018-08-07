@@ -3,20 +3,20 @@
  *
  * How to use:
  * - Create a markup like this:
- *   <div class="o-tabbed" data-plugin="Tabbed">
- *     <ul class="o-tabbed__nav o-inlineList">
- *       <li class="o-tabbed__navItem o-inlineList__item is-active" data-tab="1">
- *         <a href="#!" class="o-tabbed__navLink">Tab #1</a>
+ *   <div class="c-tabbed" data-plugin="Tabbed">
+ *     <ul class="c-tabbed__nav o-inlineList">
+ *       <li class="c-tabbed__navItem o-inlineList__item is-active" data-tab="1">
+ *         <a href="#!" class="c-tabbed__navLink">Tab #1</a>
  *       </li>
- *       <li class="o-tabbed__navItem o-inlineList__item" data-tab="2">
- *         <a href="#!" class="o-tabbed__navLink">Tab #2</a>
+ *       <li class="c-tabbed__navItem o-inlineList__item" data-tab="2">
+ *         <a href="#!" class="c-tabbed__navLink">Tab #2</a>
  *       </li>
  *     </ul>
- *     <div class="o-tabbed__tabs">
- *       <div class="o-tabbed__tab" data-tab="1">
+ *     <div class="c-tabbed__tabs">
+ *       <div class="c-tabbed__tab" data-tab="1">
  *         Tab #1 content
  *       </div>
- *       <div class="o-tabbed__tab" data-tab="2">
+ *       <div class="c-tabbed__tab" data-tab="2">
  *         Tab #2 content
  *       </div>
  *     </div>
@@ -35,12 +35,12 @@ var Sushi;
 	var Tabbed = function (triggerElement, options) {
 		BasePlugin.call(this, triggerElement, options);
 
-		var navElement = triggerElement.getElementsByClassName("o-tabbed__nav")[0];
-		var tabContainer = triggerElement.getElementsByClassName("o-tabbed__tabs")[0];
+		var navElement = triggerElement.getElementsByClassName("c-tabbed__nav")[0];
+		var tabContainer = triggerElement.getElementsByClassName("c-tabbed__tabs")[0];
 
-		this.navItems = navElement.getElementsByClassName("o-tabbed__navItem");
-		this.navLinks = navElement.getElementsByClassName("o-tabbed__navLink");
-		this.tabs = tabContainer.getElementsByClassName("o-tabbed__tab");
+		this.navItems = navElement.getElementsByClassName("c-tabbed__navItem");
+		this.navLinks = navElement.getElementsByClassName("c-tabbed__navLink");
+		this.tabs = tabContainer.getElementsByClassName("c-tabbed__tab");
 
 		this.registerListeners();
 	};
@@ -50,7 +50,7 @@ var Sushi;
 	Tabbed.DEFAULTS = {};
 
 	function onNavLinkClick(event) {
-		var navItem = event.target.closest(".o-tabbed__navItem");
+		var navItem = event.target.closest(".c-tabbed__navItem");
 
 		Dom.removeClass(this.navItems, "is-active");
 

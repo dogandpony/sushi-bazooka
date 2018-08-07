@@ -2,7 +2,7 @@
  * TOOLTIP OBJECT
  * ===================================================================== */
 
-.o-tooltip {
+.c-tooltip {
 	position: absolute;
 	z-index: 10;
 	padding: 8px 10px;
@@ -29,12 +29,12 @@
 	}
 }
 
-.o-tooltip.is-open {
+.c-tooltip.is-open {
 	visibility: visible;
 	opacity: 1;
 }
 
-.o-tooltip--top {
+.c-tooltip--top {
 	bottom: calc(100% + 6px);
 	left: 50%;
 
@@ -44,7 +44,7 @@
 	}
 }
 
-.o-tooltip--bottom {
+.c-tooltip--bottom {
 	top: calc(100% + 6px);
 	left: 50%;
 
@@ -54,7 +54,7 @@
 	}
 }
 
-.o-tooltip--right {
+.c-tooltip--right {
 	top: 50%;
 	left: calc(100% + 6px);
 
@@ -64,7 +64,7 @@
 	}
 }
 
-.o-tooltip--left {
+.c-tooltip--left {
 	top: 50%;
 	right: calc(100% + 6px);
 
@@ -74,7 +74,7 @@
 	}
 }
 
-.o-tooltip__content {
+.c-tooltip__content {
 	position: relative;
 	z-index: 2;
 }
