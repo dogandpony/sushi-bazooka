@@ -23,7 +23,7 @@ var Sushi;
 
 		// Cache elements
 		this.targetElement = Dom.get(this.options.target);
-		this.contentElement = this.targetElement.querySelector(".o-reveal__content");
+		this.contentElement = this.targetElement.querySelector(".c-reveal__content");
 
 		var maxHeight = window.getComputedStyle(this.targetElement).maxHeight;
 		var maxWidth = window.getComputedStyle(this.targetElement).maxWidth;
