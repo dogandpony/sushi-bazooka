@@ -1,7 +1,10 @@
+/* ==============================================================================================
+ * HISTORY STATE
+ * ============================================================================================== */
+
 var Sushi;
 
 (function (Sushi) {
-
 	"use strict";
 
 	var HistoryState = function (useBasePath, basePathname) {
@@ -32,9 +35,9 @@ var Sushi;
 		this.setNativePushStateSupport(nativePushStateSupport);
 
 		/*
-		 * By default, the base path is not used, let's check the
-		 * parameter value
-		 */
+			 * By default, the base path is not used, let's check the
+			 * parameter value
+			 */
 		if (typeof useBasePath !== "undefined") {
 			if (useBasePath) {
 				// Ok, it should use the base path
@@ -116,7 +119,7 @@ var Sushi;
 	HistoryState.prototype.setNativePushStateSupport = function (nativePushStateSupport) {
 		this.nativePushStateSupport = nativePushStateSupport;
 
-return this;
+		return this;
 	};
 
 
@@ -136,7 +139,7 @@ return this;
 	HistoryState.prototype.setCurrentState = function (state) {
 		this.currentState = state;
 
-return this;
+		return this;
 	};
 
 
@@ -283,12 +286,12 @@ return this;
 				}
 				else {
 					/*
-					 * It was caused by an user action
-					 * We need to get the state in one of the stacks
-					 * (History or Forward)
-					 * If we can't find the state, we would use a replaceState because the user
-					 * changed the URL manually by themselves
-					 */
+							   * It was caused by an user action
+							   * We need to get the state in one of the stacks
+							   * (History or Forward)
+							   * If we can't find the state, we would use a replaceState because the user
+							   * changed the URL manually by themselves
+							   */
 					var stateDataToDispatch = null;
 
 					var currentPath = window.location.hash.replace("#!", "");
@@ -303,10 +306,10 @@ return this;
 
 						if (oldState === null) {
 							/*
-							 * Ok, a new hash came from nothing.
-							 * We need to push it into the history
-							 * The state value will be null
-							 */
+										   * Ok, a new hash came from nothing.
+										   * We need to push it into the history
+										   * The state value will be null
+										   */
 							currentInstance.getHistoryAndCurrentStack().push({
 								state: stateDataToDispatch,
 								title: null,
@@ -325,10 +328,10 @@ return this;
 							else {
 								// New
 								/*
-								 * Ok, a new hash came from nothing.
-								 * We need to push it into the history
-								 * The state value will be null
-								 */
+												 * Ok, a new hash came from nothing.
+												 * We need to push it into the history
+												 * The state value will be null
+												 */
 								currentInstance.getHistoryAndCurrentStack().push({
 									state: stateDataToDispatch,
 									title: null,
@@ -357,11 +360,11 @@ return this;
 								if (secondOldState === null) {
 									// New
 									/*
-									 * Ok, a new hash came from nothing.
-									 * We need to push it into the history
-									 * The state value will be null
-									 * We also need to push the oldState
-									 */
+													   * Ok, a new hash came from nothing.
+													   * We need to push it into the history
+													   * The state value will be null
+													   * We also need to push the oldState
+													   */
 									currentInstance.getHistoryAndCurrentStack().push(oldState);
 									currentInstance.getHistoryAndCurrentStack().push({
 										state: stateDataToDispatch,
@@ -381,10 +384,10 @@ return this;
 									else {
 										// New
 										/*
-										 * Ok, a new hash came from nothing.
-										 * We need to push it into the history
-										 * The state value will be null
-										 */
+															 * Ok, a new hash came from nothing.
+															 * We need to push it into the history
+															 * The state value will be null
+															 */
 										currentInstance.getHistoryAndCurrentStack().push({
 											state: stateDataToDispatch,
 											title: null,
@@ -417,11 +420,11 @@ return this;
 									if (oldState === null) {
 										// New
 										/*
-										 * Ok, a new hash came from nothing.
-										 * We need to push it into the history
-										 * The state value will be null
-										 * We also need to push the oldState
-										 */
+															 * Ok, a new hash came from nothing.
+															 * We need to push it into the history
+															 * The state value will be null
+															 * We also need to push the oldState
+															 */
 										currentInstance.getHistoryAndCurrentStack().push({
 											state: stateDataToDispatch,
 											title: null,
@@ -442,11 +445,11 @@ return this;
 										else {
 											// New
 											/*
-											 * Ok, a new hash came from nothing.
-											 * We need to push it into the history
-											 * The state value will be null
-											 * We also need to push the oldState
-											 */
+																   * Ok, a new hash came from nothing.
+																   * We need to push it into the history
+																   * The state value will be null
+																   * We also need to push the oldState
+																   */
 											currentInstance.getHistoryAndCurrentStack().push({
 												state: stateDataToDispatch,
 												title: null,
@@ -515,8 +518,8 @@ return this;
 			if (currentStateData !== null) {
 				if (currentStateData.path === uniquePathValue) {
 					/*
-					 * We need to discriminate the path here
-					 */
+							   * We need to discriminate the path here
+							   */
 					if (uniquePathValue.indexOf("?") > -1) {
 						uniquePathValue += "&";
 					}
@@ -585,9 +588,9 @@ return this;
 			this.getHistoryAndCurrentStack().pop();
 
 			/*
-			 * We need to check if there is a previous or a next state with the same path.
-			 * If so, we should use the discriminator
-			 */
+				   * We need to check if there is a previous or a next state with the same path.
+				   * If so, we should use the discriminator
+				   */
 
 			var previousStateData = this.getHistoryAndCurrentStack().pop();
 
@@ -615,8 +618,8 @@ return this;
 
 			if (appendUniqueDiscriminator) {
 				/*
-				 * We need to discriminate the path here
-				 */
+						 * We need to discriminate the path here
+						 */
 				if (uniquePathValue.indexOf("?") > -1) {
 					uniquePathValue += "&";
 				}

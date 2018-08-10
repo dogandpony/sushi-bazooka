@@ -3,22 +3,22 @@
  * ============================================================================================== */
 
 .c-videoPlayer {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  opacity: 0;
-  visibility: hidden;
-  transition: $videoPlayerTransitionDuration $videoPlayerTransitionTimingFunction;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	opacity: 0;
+	visibility: hidden;
+	transition: $videoPlayerTransitionDuration $videoPlayerTransitionTimingFunction;
 
 }
 
 .is-playing > .c-videoPlayer {
-  opacity: 1;
-  visibility: visible;
+	opacity: 1;
+	visibility: visible;
 }
 
 .ios .c-videoPlayer {
-  visibility: visible;
+	visibility: visible;
 }

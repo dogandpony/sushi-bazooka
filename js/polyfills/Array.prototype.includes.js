@@ -3,6 +3,7 @@
  * @url https://tc39.github.io/ecma262/#sec-array.prototype.includes
  */
 if (Array.prototype.includes === void 0) {
+	// eslint-disable-next-line no-console
 	console.warn("Polyfilling Array.prototype.includes");
 
 	// eslint-disable-next-line no-extend-native

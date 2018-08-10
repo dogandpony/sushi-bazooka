@@ -1,5 +1,5 @@
-/* =====================================================================
- * Sushi DOM library
+/* ==============================================================================================
+ * DOM LIBRARY
  *
  * In regards to get(), getAll(), parse(), parseAll(), query()
  * and queryAll():
@@ -15,7 +15,7 @@
  * With that in mind, please note all those methods are at best 3 times
  * slower than their native counterparts, so it really pays off if you
  * filter the input beforehand and stick to the native methods.
- * ===================================================================== */
+ * ============================================================================================== */
 
 var Sushi;
 
@@ -61,7 +61,7 @@ var Sushi;
 		// We have to close these tags to support XHTML (#13200)
 		var wrapMap = {
 			// Support: IE9
-			option: [1, "<select multiple='multiple'>", "</select>"],
+			option: [1, "<select multiple=\"multiple\">", "</select>"],
 
 			thead: [1, "<table>", "</table>"],
 			col: [2, "<table><colgroup>", "</colgroup></table>"],

@@ -1,8 +1,6 @@
-/* =========================================================================
- * Dropdown Menu
- *
- * @TODO implement resize so the dropdown doesn't overflow the page
- * ========================================================================= */
+/* ==============================================================================================
+ * DROPDOWN
+ * ============================================================================================== */
 
 var Sushi;
 
@@ -52,7 +50,10 @@ var Sushi;
 				preventClickOnElement = this.targetElement;
 			}
 			else {
-				preventClickOnElement = Dom.queryAll(this.options.preventClickOn, this.targetElement);
+				preventClickOnElement = Dom.queryAll(
+					this.options.preventClickOn,
+					this.targetElement
+				);
 			}
 
 			Events(preventClickOnElement).on("click", function (event) {
@@ -83,7 +84,7 @@ var Sushi;
 				}.bind(this));
 
 			// [3]
-			Events(this.triggerElement).on("Dropdown.open", function (event) {
+			Events(this.triggerElement).on("Dropdown.open", function () {
 				setTimeout(function () {
 					Events(document).one("Dropdown.click", function (event) {
 						if (this.isOpen && (!this.triggerElement.contains(event.target))) {

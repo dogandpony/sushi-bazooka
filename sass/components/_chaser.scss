@@ -3,14 +3,14 @@
  * ============================================================================================== */
 
 .c-chaser {
-  position: absolute;
-  width: 100%;
+	position: absolute;
+	width: 100%;
 
-  &.is-chasing {
-    position: fixed;
-  }
+	&.is-chasing {
+		position: fixed;
+	}
 }
 
 .c-chaserPlaceholder {
-  display: block;
+	display: block;
 }

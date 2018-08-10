@@ -1,6 +1,6 @@
-/* =========================================================================
- * Chaser Plugin
- * ========================================================================= */
+/* ==============================================================================================
+ * CHASER
+ * ============================================================================================== */
 
 var Sushi;
 
@@ -87,13 +87,13 @@ var Sushi;
 				var elementHeightOverflow = Math.max(0, (elementHeight - windowHeight));
 
 				var overflow = (
-					scrollY +
-					Math.min(elementHeight, windowHeight) +
-					this.topMargin +
-					elementHeightOverflow -
-					(
-						Css.getOffset(this.limitElement, this.limitElement.parentElement).top +
-						Css.getHeight(this.limitElement)
+					scrollY
+					+ Math.min(elementHeight, windowHeight)
+					+ this.topMargin
+					+ elementHeightOverflow
+					- (
+						Css.getOffset(this.limitElement, this.limitElement.parentElement).top
+						+ Css.getHeight(this.limitElement)
 					)
 				);
 

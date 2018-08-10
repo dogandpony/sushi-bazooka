@@ -3,78 +3,78 @@
  * ============================================================================================== */
 
 .c-tooltip {
-  position: absolute;
-  z-index: map_get($zIndexes, "tooltip");
-  padding: $tooltipPadding;
-  background: $tooltipBackground;
-  border-radius: $tooltipBorderRadius;
-  font-size: $tooltipFontSize;
-  line-height: $tooltipLineHeight;
-  color: $tooltipColor;
-  text-align: center;
-  white-space: nowrap;
-  visibility: hidden;
-  opacity: 0;
-  transition: visibility $tooltipTransitionDuration,
-    opacity $tooltipTransitionDuration $tooltipTransitionTimingFunction;
+	position: absolute;
+	z-index: map_get($zIndexes, "tooltip");
+	padding: $tooltipPadding;
+	background: $tooltipBackground;
+	border-radius: $tooltipBorderRadius;
+	font-size: $tooltipFontSize;
+	line-height: $tooltipLineHeight;
+	color: $tooltipColor;
+	text-align: center;
+	white-space: nowrap;
+	visibility: hidden;
+	opacity: 0;
+	transition: visibility $tooltipTransitionDuration,
+	opacity $tooltipTransitionDuration $tooltipTransitionTimingFunction;
 
-  &:before {
-    content: "";
-    position: absolute;
-    z-index: 1;
-    width: $tooltipArrowSize;
-    height: $tooltipArrowSize;
-    background: $tooltipBackground;
-    transform: rotateZ(45deg);
-  }
+	&:before {
+		content: "";
+		position: absolute;
+		z-index: 1;
+		width: $tooltipArrowSize;
+		height: $tooltipArrowSize;
+		background: $tooltipBackground;
+		transform: rotateZ(45deg);
+	}
 }
 
 .c-tooltip.is-open {
-  visibility: visible;
-  opacity: 1;
+	visibility: visible;
+	opacity: 1;
 }
 
 .c-tooltip--top {
-  bottom: calc(100% + #{($tooltipArrowSize / 2)});
-  left: 50%;
+	bottom: calc(100% + #{($tooltipArrowSize / 2)});
+	left: 50%;
 
-  &:before {
-    top: calc(100% - #{($tooltipArrowSize / 2)});
-    left: calc(50% - #{($tooltipArrowSize / 2)});
-  }
+	&:before {
+		top: calc(100% - #{($tooltipArrowSize / 2)});
+		left: calc(50% - #{($tooltipArrowSize / 2)});
+	}
 }
 
 .c-tooltip--bottom {
-  top: calc(100% + #{($tooltipArrowSize / 2)});
-  left: 50%;
+	top: calc(100% + #{($tooltipArrowSize / 2)});
+	left: 50%;
 
-  &:before {
-    bottom: calc(100% - #{($tooltipArrowSize / 2)});
-    left: calc(50% - #{($tooltipArrowSize / 2)});
-  }
+	&:before {
+		bottom: calc(100% - #{($tooltipArrowSize / 2)});
+		left: calc(50% - #{($tooltipArrowSize / 2)});
+	}
 }
 
 .c-tooltip--right {
-  top: 50%;
-  left: calc(100% + #{($tooltipArrowSize / 2)});
+	top: 50%;
+	left: calc(100% + #{($tooltipArrowSize / 2)});
 
-  &:before {
-    top: calc(50% - #{($tooltipArrowSize / 2)});
-    right: calc(100% - #{($tooltipArrowSize / 2)});
-  }
+	&:before {
+		top: calc(50% - #{($tooltipArrowSize / 2)});
+		right: calc(100% - #{($tooltipArrowSize / 2)});
+	}
 }
 
 .c-tooltip--left {
-  top: 50%;
-  right: calc(100% + #{($tooltipArrowSize / 2)});
+	top: 50%;
+	right: calc(100% + #{($tooltipArrowSize / 2)});
 
-  &:before {
-    top: calc(50% - #{($tooltipArrowSize / 2)});
-    left: calc(100% - #{($tooltipArrowSize / 2)});
-  }
+	&:before {
+		top: calc(50% - #{($tooltipArrowSize / 2)});
+		left: calc(100% - #{($tooltipArrowSize / 2)});
+	}
 }
 
 .c-tooltip__content {
-  position: relative;
-  z-index: 2;
+	position: relative;
+	z-index: 2;
 }

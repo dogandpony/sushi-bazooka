@@ -4,20 +4,20 @@
  * ================================================================================================== */
 
 .c-reveal {
-  overflow: hidden;
+	overflow: hidden;
 }
 
 .c-reveal.is-animating,
 .c-reveal.is-animating > .c-reveal__content {
-  transition-duration: $revealTransitionDuration;
-  transition-timing-function: $revealTransitionTimingFunction;
+	transition-duration: $revealTransitionDuration;
+	transition-timing-function: $revealTransitionTimingFunction;
 }
 
 /**
  * Hides the Reveal while the JS doesn't run
  */
 .#{$noJsClass} .c-reveal {
-  display: none;
+	display: none;
 }
 
 /**
@@ -25,7 +25,7 @@
  * May be used with other classes to collapse the content box while it's hidden
  */
 .c-reveal--hidden {
-  max-height: 0;
+	max-height: 0;
 }
 
 
@@ -35,15 +35,15 @@
    ================================================================================================== */
 
 %revealAsyncAnimation {
-  &,
-  &.is-active > .c-reveal__content {
-    transition-delay: ($revealTransitionDuration / 2);
-  }
+	&,
+	&.is-active > .c-reveal__content {
+		transition-delay: ($revealTransitionDuration / 2);
+	}
 
-  &.is-active,
-  > .c-reveal__content {
-    transition-delay: 0s;
-  }
+	&.is-active,
+	> .c-reveal__content {
+		transition-delay: 0s;
+	}
 }
 
 
@@ -53,19 +53,19 @@
    ============================================================================================== */
 
 .c-reveal--unfold {
-  max-height: 0;
-  perspective: 1000px;
+	max-height: 0;
+	perspective: 1000px;
 
-  @extend %revealAsyncAnimation;
+	@extend %revealAsyncAnimation;
 }
 
 .c-reveal--unfold > .c-reveal__content {
-  transform: rotateX(-107deg) translate3d(0, 0, 0);
-  transform-origin: 0 0;
+	transform: rotateX(-107deg) translate3d(0, 0, 0);
+	transform-origin: 0 0;
 }
 
 .c-reveal--unfold.is-active > .c-reveal__content {
-  transform: rotateX(0deg) translate3d(0, 0, 0);
+	transform: rotateX(0deg) translate3d(0, 0, 0);
 }
 
 
@@ -75,11 +75,11 @@
    ============================================================================================== */
 
 .c-reveal--fade > .c-reveal__content {
-  opacity: 0;
+	opacity: 0;
 }
 
 .c-reveal--fade.is-active > .c-reveal__content {
-  opacity: 1;
+	opacity: 1;
 }
 
 
@@ -92,41 +92,41 @@
 .c-reveal--appearFromRight,
 .c-reveal--appearFromTop,
 .c-reveal--appearFromBottom {
-  overflow: hidden;
-  @extend %revealAsyncAnimation;
+	overflow: hidden;
+	@extend %revealAsyncAnimation;
 }
 
 .c-reveal--appearFromLeft > .c-reveal__content,
 .c-reveal--appearFromRight > .c-reveal__content,
 .c-reveal--appearFromTop > .c-reveal__content,
 .c-reveal--appearFromBottom > .c-reveal__content {
-  opacity: 0;
+	opacity: 0;
 }
 
 .c-reveal--appearFromLeft.is-active > .c-reveal__content,
 .c-reveal--appearFromRight.is-active > .c-reveal__content,
 .c-reveal--appearFromTop.is-active > .c-reveal__content,
 .c-reveal--appearFromBottom.is-active > .c-reveal__content {
-  transform: translateX(0);
-  opacity: 1;
+	transform: translateX(0);
+	opacity: 1;
 }
 
 // Left
 .c-reveal--appearFromLeft > .c-reveal__content {
-  transform: translateX(-100%);
+	transform: translateX(-100%);
 }
 
 // Right
 .c-reveal--appearFromRight > .c-reveal__content {
-  transform: translateX(100%);
+	transform: translateX(100%);
 }
 
 // Top
 .c-reveal--appearFromTop > .c-reveal__content {
-  transform: translateY(-100%);
+	transform: translateY(-100%);
 }
 
 // Bottom
 .c-reveal--appearFromBottom > .c-reveal__content {
-  transform: translateY(100%);
+	transform: translateY(100%);
 }
