@@ -1,80 +1,80 @@
-/* =====================================================================
- * TOOLTIP OBJECT
- * ===================================================================== */
+/* ==============================================================================================
+ * TOOLTIP
+ * ============================================================================================== */
 
 .c-tooltip {
-	position: absolute;
-	z-index: 10;
-	padding: 8px 10px;
-	visibility: hidden;
-	opacity: 0;
-	background-color: getColor("gray");
-	border-radius: $baseBorderRadius;
-	font-weight: 400;
-	font-size: getFontSize(9);
-	line-height: getLineHeight("title");
-	color: getColor("black");
-	text-align: center;
-	white-space: nowrap;
-	transition: visibility 0.2s, opacity 0.2s $easeInQuint;
+  position: absolute;
+  z-index: map_get($zIndexes, "tooltip");
+  padding: $tooltipPadding;
+  background: $tooltipBackground;
+  border-radius: $tooltipBorderRadius;
+  font-size: $tooltipFontSize;
+  line-height: $tooltipLineHeight;
+  color: $tooltipColor;
+  text-align: center;
+  white-space: nowrap;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility $tooltipTransitionDuration,
+    opacity $tooltipTransitionDuration $tooltipTransitionTimingFunction;
 
-	&:before {
-		content: '';
-		position: absolute;
-		z-index: 1;
-		width: 10px;
-		height: 10px;
-		background-color: getColor("gray");
-		transform: rotateZ(45deg);
-	}
+  &:before {
+    content: "";
+    position: absolute;
+    z-index: 1;
+    width: $tooltipArrowSize;
+    height: $tooltipArrowSize;
+    background: $tooltipBackground;
+    transform: rotateZ(45deg);
+  }
 }
 
 .c-tooltip.is-open {
-	visibility: visible;
-	opacity: 1;
+  visibility: visible;
+  opacity: 1;
 }
 
 .c-tooltip--top {
-	bottom: calc(100% + 6px);
-	left: 50%;
+  bottom: calc(100% + #{($tooltipArrowSize / 2)});
+  left: 50%;
 
-	&:before {
-		top: calc(100% - 5px);
-		left: calc(50% - 5px);
-	}
+  &:before {
+    top: calc(100% - #{($tooltipArrowSize / 2)});
+    left: calc(50% - #{($tooltipArrowSize / 2)});
+  }
 }
 
 .c-tooltip--bottom {
-	top: calc(100% + 6px);
-	left: 50%;
+  top: calc(100% + #{($tooltipArrowSize / 2)});
+  left: 50%;
 
-	&:before {
-		bottom: calc(100% - 5px);
-		left: calc(50% - 5px);
-	}
+  &:before {
+    bottom: calc(100% - #{($tooltipArrowSize / 2)});
+    left: calc(50% - #{($tooltipArrowSize / 2)});
+  }
 }
 
 .c-tooltip--right {
-	top: 50%;
-	left: calc(100% + 6px);
+  top: 50%;
+  left: calc(100% + #{($tooltipArrowSize / 2)});
 
-	&:before {
-		top: calc(50% - 5px);
-		right: calc(100% - 5px);
-	}
+  &:before {
+    top: calc(50% - #{($tooltipArrowSize / 2)});
+    right: calc(100% - #{($tooltipArrowSize / 2)});
+  }
 }
 
 .c-tooltip--left {
-	top: 50%;
-	right: calc(100% + 6px);
+  top: 50%;
+  right: calc(100% + #{($tooltipArrowSize / 2)});
 
-	&:before {
-		top: calc(50% - 5px);
-		left: calc(100% - 5px);
-	}
+  &:before {
+    top: calc(50% - #{($tooltipArrowSize / 2)});
+    left: calc(100% - #{($tooltipArrowSize / 2)});
+  }
 }
 
 .c-tooltip__content {
-	position: relative;
-	z-index: 2;
+  position: relative;
+  z-index: 2;
 }

@@ -1,111 +1,111 @@
-/* =====================================================================
- * TOASTER OBJECT
- * ===================================================================== */
+/* ==============================================================================================
+ * TOASTER
+ * ============================================================================================== */
 
 .c-toaster {
-	position: fixed;
-	bottom: $globalSpacingXs;
-	left: calc(50% - 150px);
-	width: 0;
-	height: 0;
-	z-index: 100;
+  position: fixed;
+  bottom: $toastScreenOffset;
+  left: calc(50% - (#{$toastWidth} / 2));
+  width: 0;
+  height: 0;
+  z-index: map_get($zIndexes, "toaster");
 }
 
 .c-toaster__toast {
-	display: block;
-	position: absolute;
-	bottom: 0;
-	left: 0;
-	width: 300px;
-	padding: $globalSpacingXxs $globalSpacingXs;
-	background-color: getColor("gray");
-	border-radius: $baseBorderRadius;
-	font-size: getFontSize(6);
-	line-height: getLineHeight("title");
-	text-align: center;
-	visibility: hidden;
-	opacity: 0;
-	transition: all 1.2s ease-in-out;
+  display: block;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: $toastPadding;
+  width: $toastWidth;
+  background: $toastBackground;
+  border-radius: $toastBorderRadius;
+  color: $toastColor;
+  line-height: getLineHeight("title");
+  text-align: center;
+  visibility: hidden;
+  opacity: 0;
+  transition: all $toastTransitionDuration $toastTransitionTimingFunction;
 }
 
 .c-toaster__toast.is-cooked {
-	visibility: visible;
-	transform: translate3d(0, 0, 0);
-	opacity: 1;
-	transition: all 0.4s ease-in-out;
+  visibility: visible;
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  transition: all $toastTransitionDuration $toastTransitionTimingFunction;
 }
 
 
 
-// Close button
-// ---------------------------
+/* Close button
+   --------------------------- */
 
 .c-toaster__toastCloseButton {
-	position: absolute;
-	top: ($globalSpacingXxs / 2);
-	right: ($globalSpacingXxs / 2);
-	opacity: .8;
-	cursor: pointer;
+  position: absolute;
+  top: ($globalSpacingXxs / 2);
+  right: ($globalSpacingXxs / 2);
+  opacity: .8;
+  cursor: pointer;
 
-	&:hover {
-		opacity: 1;
-	}
+  &:hover {
+    opacity: 1;
+  }
 }
 
 .c-toaster__toastCloseButton:before {
-	@extend %fontAwesome;
-	content: '\f00d';
+  @extend %icon;
+  content: "close";
 }
 
 
 
 
 /* Position
-   ===================================================================== */
+   ============================================================================================== */
 
 .c-toaster--right {
-	right: $globalSpacingXs;
-	left: auto;
+  right: $toastScreenOffset;
+  left: auto;
 }
 
 .c-toaster--right .c-toaster__toast {
-	right: 0;
-	left: auto;
+  right: 0;
+  left: auto;
 }
 
 .c-toaster--left {
-	left: $globalSpacingXs;
+  left: $toastScreenOffset;
 }
 
 .c-toaster--top {
-	top: $globalSpacingXs;
-	bottom: auto;
+  top: $toastScreenOffset;
+  bottom: auto;
 }
 
 .c-toaster--top .c-toaster__toast {
-	top: 0;
-	bottom: auto;
+  top: 0;
+  bottom: auto;
 }
 
 
 
 /* Stacked
-   ===================================================================== */
+   ============================================================================================== */
 
 .c-toaster--stacked {
-	width: auto;
-	height: auto;
+  width: auto;
+  height: auto;
 }
 
 .c-toaster--stacked .c-toaster__toast {
-	position: relative;
-	top: auto;
-	right: auto;
-	bottom: auto;
-	left: auto;
-	margin-bottom: $globalSpacingXs;
+  position: relative;
+  top: auto;
+  right: auto;
+  bottom: auto;
+  left: auto;
+  margin-bottom: $toastScreenOffset;
 
-	&:last-child {
-		margin-bottom: 0;
-	}
+  &:last-child {
+    margin-bottom: 0;
+  }
 }

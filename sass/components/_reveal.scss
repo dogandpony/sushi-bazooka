@@ -1,127 +1,132 @@
-/* =========================================================================
+/* ==================================================================================================
  * REVEAL
- * ========================================================================= */
+ * Sometimes people may call this an "accordion".
+ * ================================================================================================== */
 
-.o-reveal {
-	overflow: hidden;
+.c-reveal {
+  overflow: hidden;
 }
 
-.o-reveal.is-animating,
-.o-reveal.is-animating > .o-reveal__content {
-	transition-duration: 0.3s;
-	transition-timing-function: $easeInOutQuart;
+.c-reveal.is-animating,
+.c-reveal.is-animating > .c-reveal__content {
+  transition-duration: $revealTransitionDuration;
+  transition-timing-function: $revealTransitionTimingFunction;
 }
 
-.no-js .o-reveal {
-	display: none;
+/**
+ * Hides the Reveal while the JS doesn't run
+ */
+.#{$noJsClass} .c-reveal {
+  display: none;
+}
+
+/**
+ * Hidden (helper class)
+ * May be used with other classes to collapse the content box while it's hidden
+ */
+.c-reveal--hidden {
+  max-height: 0;
 }
 
 
 
 
-/* Animations
-   ========================================================================= */
+/* Async Animation Placeholder Class
+   ================================================================================================== */
 
 %revealAsyncAnimation {
-	&,
-	&.is-active > .o-reveal__content {
-		transition-delay: 0.15s;
-	}
+  &,
+  &.is-active > .c-reveal__content {
+    transition-delay: ($revealTransitionDuration / 2);
+  }
 
-	&.is-active,
-	> .o-reveal__content {
-		transition-delay: 0s;
-	}
+  &.is-active,
+  > .c-reveal__content {
+    transition-delay: 0s;
+  }
 }
 
 
 
-// Hidden (helper class)
-// May be used with other classes to collapse the content box while it's hidden
-// ---------------------------
 
-.o-reveal--hidden {
-	max-height: 0;
+/* Unfold
+   ============================================================================================== */
+
+.c-reveal--unfold {
+  max-height: 0;
+  perspective: 1000px;
+
+  @extend %revealAsyncAnimation;
+}
+
+.c-reveal--unfold > .c-reveal__content {
+  transform: rotateX(-107deg) translate3d(0, 0, 0);
+  transform-origin: 0 0;
+}
+
+.c-reveal--unfold.is-active > .c-reveal__content {
+  transform: rotateX(0deg) translate3d(0, 0, 0);
 }
 
 
 
-// Unfold
-// ---------------------------
 
-.o-reveal--unfold {
-	max-height: 0;
-	perspective: 1000px;
+/* Fade
+   ============================================================================================== */
 
-	@extend %revealAsyncAnimation;
+.c-reveal--fade > .c-reveal__content {
+  opacity: 0;
 }
 
-.o-reveal--unfold > .o-reveal__content {
-	transform: rotateX(-107deg) translate3d(0, 0, 0);
-	transform-origin: 0 0;
-}
-
-.o-reveal--unfold.is-active > .o-reveal__content {
-	transform: rotateX(0deg) translate3d(0, 0, 0);
+.c-reveal--fade.is-active > .c-reveal__content {
+  opacity: 1;
 }
 
 
 
-// Fade
-// ---------------------------
 
-.o-reveal--fade > .o-reveal__content {
-	opacity: 0;
+/* Appear
+   ============================================================================================== */
+
+.c-reveal--appearFromLeft,
+.c-reveal--appearFromRight,
+.c-reveal--appearFromTop,
+.c-reveal--appearFromBottom {
+  overflow: hidden;
+  @extend %revealAsyncAnimation;
 }
 
-.o-reveal--fade.is-active > .o-reveal__content {
-	opacity: 1;
+.c-reveal--appearFromLeft > .c-reveal__content,
+.c-reveal--appearFromRight > .c-reveal__content,
+.c-reveal--appearFromTop > .c-reveal__content,
+.c-reveal--appearFromBottom > .c-reveal__content {
+  opacity: 0;
 }
 
-
-
-// Appear
-// ---------------------------
-
-.o-reveal--appearFromLeft,
-.o-reveal--appearFromRight,
-.o-reveal--appearFromTop,
-.o-reveal--appearFromBottom {
-	overflow: hidden;
-	@extend %revealAsyncAnimation;
+.c-reveal--appearFromLeft.is-active > .c-reveal__content,
+.c-reveal--appearFromRight.is-active > .c-reveal__content,
+.c-reveal--appearFromTop.is-active > .c-reveal__content,
+.c-reveal--appearFromBottom.is-active > .c-reveal__content {
+  transform: translateX(0);
+  opacity: 1;
 }
 
-.o-reveal--appearFromLeft > .o-reveal__content,
-.o-reveal--appearFromRight > .o-reveal__content,
-.o-reveal--appearFromTop > .o-reveal__content,
-.o-reveal--appearFromBottom > .o-reveal__content {
-	opacity: 0;
-}
-
-.o-reveal--appearFromLeft.is-active > .o-reveal__content,
-.o-reveal--appearFromRight.is-active > .o-reveal__content,
-.o-reveal--appearFromTop.is-active > .o-reveal__content,
-.o-reveal--appearFromBottom.is-active > .o-reveal__content {
-	transform: translateX(0);
-	opacity: 1;
-}
-
-// left
-.o-reveal--appearFromLeft > .o-reveal__content {
-	transform: translateX(-100%);
+// Left
+.c-reveal--appearFromLeft > .c-reveal__content {
+  transform: translateX(-100%);
 }
 
 // Right
-.o-reveal--appearFromRight > .o-reveal__content {
-	transform: translateX(100%);
+.c-reveal--appearFromRight > .c-reveal__content {
+  transform: translateX(100%);
 }
 
 // Top
-.o-reveal--appearFromTop > .o-reveal__content {
-	transform: translateY(-100%);
+.c-reveal--appearFromTop > .c-reveal__content {
+  transform: translateY(-100%);
 }
 
 // Bottom
-.o-reveal--appearFromBottom > .o-reveal__content {
-	transform: translateY(100%);
+.c-reveal--appearFromBottom > .c-reveal__content {
+  transform: translateY(100%);
 }

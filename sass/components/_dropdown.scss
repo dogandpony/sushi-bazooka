@@ -1,38 +1,42 @@
-/* =========================================================================
- * DROPDOWN OBJECT
- * ========================================================================= */
+/* ==============================================================================================
+ * DROPDOWN
+ * ============================================================================================== */
 
 .c-dropdown {
-	@include elevation(4);
-	position: absolute;
-	visibility: hidden;
-	opacity: 0;
-	top: 100%;
-	left: 0;
-	margin: 0;
-	padding: ($globalSpacingXxs / 2) 0;
-	z-index: 100;
-	list-style-type: none;
-	min-width: 100%;
-	border: 1px solid getColor("gray80");
-	border-radius: 3px;
-	background-color: getColor("gray");
-	text-align: left;
-	transform: translateY($globalSpacing) scale(0.95);
-	transition: transform 0.2s $easeOutQuint, opacity 0.2s $easeOutQuint, visibility 0.2s;
-	transition-delay: 50ms;
-	overflow-y: auto;
-	white-space: nowrap;
+  @include elevation(4);
+  position: absolute;
+  visibility: hidden;
+  opacity: 0;
+  top: 100%;
+  left: 0;
+  margin: $dropdownMargin;
+  padding: $dropdownPadding;
+  z-index: map_get($zIndexes, "dropdown");
+  background: $dropdownBackground;
+  border-radius: $dropdownBorderRadius;
+  min-width: 100%;
+  list-style-type: none;
+  text-align: left;
+  overflow-y: auto;
+  white-space: nowrap;
+  transform: translateY($globalSpacing) scale(0.95);
+  transition: transform $dropdownTransitionDuration $dropdownTransitionTimingFunction,
+    opacity $dropdownTransitionDuration $dropdownTransitionTimingFunction,
+    visibility $dropdownTransitionDuration;
+  transition-delay: $dropdownCloseIntention; // CSS-only "close intention"
 }
 
 .is-open > .c-dropdown {
-	visibility: visible;
-	opacity: 1;
-	transform: none;
-	transition: transform 0.2s $easeOutQuint, opacity 0.2s $easeOutQuint, visibility 0.2s;
+  visibility: visible;
+  opacity: 1;
+
+  transform: none;
+  transition: transform $dropdownTransitionDuration $dropdownTransitionTimingFunction,
+    opacity $dropdownTransitionDuration $dropdownTransitionTimingFunction,
+    visibility $dropdownTransitionDuration;
 }
 
 .c-dropdown--reverse {
-	right: ($globalSpacingXxs * -1);
-	left: auto;
+  right: 0;
+  left: auto;
 }
