@@ -1,0 +1,49 @@
+/* =================================================================================================
+ * TABBED
+ *
+ * HOW TO USE
+ * See Tabbed.js
+ *
+ * Some opinionated properties are commented-out. You might want to add them
+ * to your own code. See README.md for more info.
+ * ============================================================================================== */
+
+.c-tabbed__nav {
+	// border-bottom: 1px solid getColor("gray");
+	margin-bottom: 0;
+}
+
+.c-tabbed__navItem {
+	display: inline-block;
+	margin-bottom: -1px;
+	// background-color: getColor("gray");
+	// border: 1px solid getColor("gray");
+}
+
+.c-tabbed__navItem + .c-tabbed__navItem {
+	// margin-left: -1px; // this counters the "double-border effect" between items
+}
+
+.c-tabbed__navItem.is-active {
+	// border-bottom-color: getColor("gray");
+}
+
+.c-tabbed__navLink {
+	display: inline-block;
+	// padding: $globalSpacingXxs $globalSpacingXs;
+	// color: getColor("primary");
+}
+
+.c-tabbed__navItem.is-active .c-tabbed__navLink,
+.c-tabbed__navLink:hover,
+.c-tabbed__navLink:focus {
+	// color: getColor("secondary");
+}
+
+.c-tabbed__tab {
+	display: none;
+}
+
+.c-tabbed__tab.is-active {
+	display: block;
+}

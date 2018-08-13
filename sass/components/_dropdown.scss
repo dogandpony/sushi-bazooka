@@ -1,0 +1,42 @@
+/* ==============================================================================================
+ * DROPDOWN
+ * ============================================================================================== */
+
+.c-dropdown {
+	@include elevation(4);
+	position: absolute;
+	visibility: hidden;
+	opacity: 0;
+	top: 100%;
+	left: 0;
+	margin: $dropdownMargin;
+	padding: $dropdownPadding;
+	z-index: map_get($zIndexes, "dropdown");
+	background: $dropdownBackground;
+	border-radius: $dropdownBorderRadius;
+	min-width: 100%;
+	list-style-type: none;
+	text-align: left;
+	overflow-y: auto;
+	white-space: nowrap;
+	transform: translateY($globalSpacing) scale(0.95);
+	transition: transform $dropdownTransitionDuration $dropdownTransitionTimingFunction,
+	opacity $dropdownTransitionDuration $dropdownTransitionTimingFunction,
+	visibility $dropdownTransitionDuration;
+	transition-delay: $dropdownCloseIntention; // CSS-only "close intention"
+}
+
+.is-open > .c-dropdown {
+	visibility: visible;
+	opacity: 1;
+
+	transform: none;
+	transition: transform $dropdownTransitionDuration $dropdownTransitionTimingFunction,
+	opacity $dropdownTransitionDuration $dropdownTransitionTimingFunction,
+	visibility $dropdownTransitionDuration;
+}
+
+.c-dropdown--reverse {
+	right: 0;
+	left: auto;
+}

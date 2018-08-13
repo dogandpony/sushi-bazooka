@@ -1,0 +1,349 @@
+/* ==============================================================================================
+ * GLOBAL SETTINGS FILE
+ *
+ * You may copy this file to your project or use you own files to customize the variables.
+ * Additionally, you may also just override the styles with your own. See README.md to know more
+ * about that.
+ * ============================================================================================== */
+
+
+/* Base Variables
+   These variables aren't tied to specific components neither are used as a base for any
+   component values.
+   ============================================================================================== */
+
+/**
+ * No JS Class
+ * Some components (like Reveal) may hide themselves by default to prevent flash of unstyled content
+ * in your page. This is the class you should be removing from the HTML tag when your JS main file
+ * runs, making the components visible again.
+ */
+$noJsClass: "noJs";
+
+/**
+ * Z-Indexes
+ * Components like Modal and OffCanvas work by using pop-ups in the user's screen and they have a
+ * precedence over another. Usually you will want to display toasts at the very top, then modals
+ * underneath them, then off-canvases underneath modals. We recommend spacing these values out by
+ * increments of ten units just in case you create a component that needs to be between any other
+ * two components.
+ */
+$zIndexes: (
+  "toaster": 100,
+  "modal": 90,
+  "offCanvas": 80,
+  "dropdown": 70,
+  "tooltip": 10,
+) !default;
+
+
+
+
+/* Global Variables (common use variables)
+   Some components may have specific variables that will default to the ones found in
+   this section.
+   ============================================================================================== */
+
+/**
+ * Border radius
+ */
+$globalBorderRadius: 3px !default;
+
+/**
+ * Transition Timing Function
+ * Any easing function from easings.net should work on all major browsers.
+ */
+$globalTransitionTimingFunction: ease-in-out !default;
+
+/**
+ * Transition Duration
+ */
+$globalTransitionDuration: 0.3s !default;
+
+/**
+ * Overlay Background
+ * Some components (like Modal and Off Canvas) show things in the user's screen and beneath those
+ * things they place a transparent background that nearly hides the site to help shift the user's
+ * attention to the content in the component (or... "thing"). Here we set that background color
+ * and transparency.
+ */
+$globalOverlayBackground: rgba(#000, 0.8) !default;
+
+
+
+
+
+
+/* Component-specific Variables
+   ===================================================================== */
+
+/* Dropdown
+   --------------------------- */
+
+/**
+ * Padding of the dropdown list
+ */
+$dropdownBackground: #fff !default;
+
+/**
+ * @see $globalBorderRadius
+ */
+$dropdownBorderRadius: $globalBorderRadius !default;
+
+/**
+ * Time taken by the dropdown to begin the close animation after the use requests it to close. This
+ * is useful for mouseout/mouseleave close events, but a bit odd when the close event is a click. In
+ * that case, you may set this to `0s`.
+ */
+$dropdownCloseIntention: 50ms !default;
+
+/**
+ * Margin of the dropdown list
+ */
+$dropdownMargin: 0 !default;
+
+/**
+ * Padding of the dropdown list
+ */
+$dropdownPadding: ($globalSpacingXxs / 2) 0 !default;
+
+/**
+ * @see $globalTransitionDuration
+ */
+$dropdownTransitionDuration: $globalTransitionDuration !default;
+
+/**
+ * @see $globalTransitionTimingFunction
+ */
+$dropdownTransitionTimingFunction: $globalTransitionTimingFunction !default;
+
+
+
+/* Modal
+   --------------------------- */
+
+/**
+ * @see $globalBorderRadius
+ */
+$modalBorderRadius: $globalBorderRadius !default;
+
+/**
+ * Padding of the modal
+ */
+$modalPadding: ($globalSpacingXxs / 2) 0 !default;
+
+/**
+ * Background property of the modal
+ */
+$modalBackground: #fff !default;
+
+/**
+ * Max width of the modal
+ */
+$modalMaxWidth: (800px - ($globalSpacing * 2)) !default;
+
+/**
+ * @see $globalOverlayBackground
+ */
+$modalOverlayBackground: $globalOverlayBackground !default;
+
+/**
+ * @see $globalTransitionDuration
+ */
+$modalTransitionDuration: $globalTransitionDuration !default;
+
+/**
+ * @see $globalTransitionTimingFunction
+ */
+$modalTransitionTimingFunction: $globalTransitionTimingFunction !default;
+
+
+
+/* Off Canvas
+   --------------------------- */
+
+/**
+ * @see $globalTransitionDuration
+ */
+$offCanvasTransitionDuration: $globalTransitionDuration !default;
+
+/**
+ * @see $globalTransitionTimingFunction
+ */
+$offCanvasTransitionTimingFunction: $globalTransitionTimingFunction !default;
+
+/**
+ * @see $globalOverlayBackground
+ */
+$offCanvasOverlayBackground: $globalOverlayBackground !default;
+
+
+
+/* Reveal
+   --------------------------- */
+
+/**
+ * Transition duration of component effects. Total time of the animation is this value plus the
+ * second step delay (see below).
+ *
+ * @see $globalTransitionDuration
+ */
+$revealTransitionDuration: $globalTransitionDuration !default;
+
+/**
+ * @see $globalTransitionTimingFunction
+ */
+$revealTransitionTimingFunction: $globalTransitionTimingFunction !default;
+
+/**
+ * Some animations will asynchronously change two properties of the element. This variable sets the
+ * amount of time between each transition. If you want to disable async animations, set this
+ * to `0s`.
+ */
+$revealAsyncAnimationSecondStepDelay: ($revealTransitionDuration / 2) !default;
+
+
+
+/* Select
+   --------------------------- */
+
+/**
+ * Bare select color
+ * Usually this is the default color of the links in your site.
+ */
+$selectBareLabelColor: #333 !default;
+
+/**
+ * Bare select hover color
+ * Usually this is the hover color of the links in your site.
+ */
+$selectBareLabelHoverColor: #000 !default;
+
+/**
+ * Bare select padding
+ */
+$selectBareLabelPadding: 12px 16px 12px 0 !default;
+
+/**
+ * Padding of the items inside the dropdown
+ */
+$selectDropdownItemPadding: $globalSpacingXxs !default;
+
+/**
+ * Padding of the dropdown itself
+ */
+$selectDropdownPadding: $globalSpacingXs $globalSpacingSm !default;
+
+/**
+ * Default color of the select item
+ */
+$selectItemColor: #333;
+
+/**
+ * Hover color of the select item
+ */
+$selectItemHoverColor: #000;
+
+/**
+ * Color of the selected item(s) in the select
+ */
+$selectItemCurrentColor: #36c;
+
+/**
+ * Padding of the default select style
+ */
+$selectLabelPadding: 12px 40px 12px 16px !default;
+
+/**
+ * Hover color of the default select style
+ */
+$selectLabelHoverColor: #000 !default;
+
+
+
+/* Toaster/Toast
+   --------------------------- */
+
+/**
+ * Background property of the toast
+ */
+$toastBackground: #333 !default;
+
+/**
+ * @see $globalBorderRadius
+ */
+$toastBorderRadius: $globalBorderRadius !default;
+
+/**
+ * Text color of the toast
+ */
+$toastColor: #fff !default;
+
+/**
+ * Padding of the toast
+ */
+$toastPadding: $globalSpacingXxs $globalSpacingXs !default;
+
+/**
+ * Space from the outside border of the screen to the toast element
+ */
+$toastScreenOffset: $globalSpacingXs !default;
+
+/**
+ * @see $globalTransitionDuration
+ */
+$toastTransitionDuration: $globalTransitionDuration !default;
+
+/**
+ * @see $globalTransitionTimingFunction
+ */
+$toastTransitionTimingFunction: $globalTransitionTimingFunction !default;
+
+/**
+ * Fixed width of the toast
+ */
+$toastWidth: 300px !default;
+
+
+
+/* Tooltip
+   --------------------------- */
+
+$tooltipArrowSize: 10px !default;
+
+$tooltipBackground: #333 !default;
+
+$tooltipBorderRadius: $globalBorderRadius !default;
+
+$tooltipColor: #fff !default;
+
+$tooltipFontSize: 12px !default;
+
+$tooltipLineHeight: getLineHeight("title") !default;
+
+$tooltipPadding: 8px 10px !default;
+
+/**
+ * @see $globalTransitionDuration
+ */
+$tooltipTransitionDuration: $globalTransitionDuration !default;
+
+/**
+ * @see $globalTransitionTimingFunction
+ */
+$tooltipTransitionTimingFunction: $globalTransitionTimingFunction !default;
+
+
+
+/* Video Player
+   --------------------------- */
+
+/**
+ * @see $globalTransitionDuration
+ */
+$videoPlayerTransitionDuration: $globalTransitionDuration !default;
+
+/**
+ * @see $globalTransitionTimingFunction
+ */
+$videoPlayerTransitionTimingFunction: $globalTransitionTimingFunction !default;

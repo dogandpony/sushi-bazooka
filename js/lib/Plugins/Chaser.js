@@ -1,6 +1,6 @@
-/* =========================================================================
- * Chaser Plugin
- * ========================================================================= */
+/* ==============================================================================================
+ * CHASER
+ * ============================================================================================== */
 
 var Sushi;
 
@@ -24,7 +24,7 @@ var Sushi;
 		this.hasReachedLimit = false;
 
 		this.triggerElement.insertAdjacentElement("afterend", this.placeholder);
-		this.triggerElement.classList.add("o-chaser");
+		this.triggerElement.classList.add("c-chaser");
 
 		this.enable();
 		this.update();
@@ -33,7 +33,7 @@ var Sushi;
 	Chaser.displayName = "Chaser";
 
 	Chaser.DEFAULTS = {
-		placeholder: "<i class=\"o-chaserPlaceholder\">",
+		placeholder: "<i class=\"c-chaserPlaceholder\">",
 		updateThreshold: 30,
 		updatePlaceholderHeight: true,
 	};
@@ -87,13 +87,13 @@ var Sushi;
 				var elementHeightOverflow = Math.max(0, (elementHeight - windowHeight));
 
 				var overflow = (
-					scrollY +
-					Math.min(elementHeight, windowHeight) +
-					this.topMargin +
-					elementHeightOverflow -
-					(
-						Css.getOffset(this.limitElement, this.limitElement.parentElement).top +
-						Css.getHeight(this.limitElement)
+					scrollY
+					+ Math.min(elementHeight, windowHeight)
+					+ this.topMargin
+					+ elementHeightOverflow
+					- (
+						Css.getOffset(this.limitElement, this.limitElement.parentElement).top
+						+ Css.getHeight(this.limitElement)
 					)
 				);
 

@@ -1,3 +1,7 @@
+/* ==============================================================================================
+ * TOAST
+ * ============================================================================================== */
+
 var Sushi;
 
 (function (Sushi) {
@@ -36,7 +40,7 @@ var Sushi;
 	proto.prepare = function () {
 		this.bread = document.createElement("div");
 
-		this.bread.classList.add("o-toaster__toast");
+		this.bread.classList.add("c-toaster__toast");
 
 		if (this.options.className) {
 			var classNames = this.options.className.split(" ");
@@ -49,7 +53,7 @@ var Sushi;
 		}
 
 		if (this.options.autoDismiss === false) {
-			this.bread.classList.add("o-toaster__toast--sticky");
+			this.bread.classList.add("c-toaster__toast--sticky");
 		}
 
 		this.bread.innerHTML = this.message;
@@ -62,7 +66,7 @@ var Sushi;
 	proto.createCloseButton = function () {
 		var closeButtonElement = document.createElement("i");
 
-		closeButtonElement.classList.add("o-toaster__toastCloseButton");
+		closeButtonElement.classList.add("c-toaster__toastCloseButton");
 
 		if (this.options.closeButtonClassName) {
 			var classNames = this.options.className.split(" ");

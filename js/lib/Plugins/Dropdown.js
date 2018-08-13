@@ -1,8 +1,6 @@
-/* =========================================================================
- * Dropdown Menu
- *
- * @TODO implement resize so the dropdown doesn't overflow the page
- * ========================================================================= */
+/* ==============================================================================================
+ * DROPDOWN
+ * ============================================================================================== */
 
 var Sushi;
 
@@ -18,7 +16,7 @@ var Sushi;
 	var Dropdown = function (triggerElement, options) {
 		BasePlugin.call(this, triggerElement, options);
 
-		this.dropdownElement = Dom.query("> .o-dropdown", this.triggerElement);
+		this.dropdownElement = Dom.query("> .c-dropdown", this.triggerElement);
 
 		this.isOpen = false;
 		this.hasCloseIntention = false;
@@ -52,7 +50,10 @@ var Sushi;
 				preventClickOnElement = this.targetElement;
 			}
 			else {
-				preventClickOnElement = Dom.queryAll(this.options.preventClickOn, this.targetElement);
+				preventClickOnElement = Dom.queryAll(
+					this.options.preventClickOn,
+					this.targetElement
+				);
 			}
 
 			Events(preventClickOnElement).on("click", function (event) {
@@ -83,7 +84,7 @@ var Sushi;
 				}.bind(this));
 
 			// [3]
-			Events(this.triggerElement).on("Dropdown.open", function (event) {
+			Events(this.triggerElement).on("Dropdown.open", function () {
 				setTimeout(function () {
 					Events(document).one("Dropdown.click", function (event) {
 						if (this.isOpen && (!this.triggerElement.contains(event.target))) {
@@ -136,10 +137,10 @@ var Sushi;
 		var leftOffset = Css.getOffset(this.dropdownElement).left;
 		var outerWidth = Css.getWidth(this.dropdownElement, true);
 
-		this.dropdownElement.classList.remove("o-dropdown--reverse");
+		this.dropdownElement.classList.remove("c-dropdown--reverse");
 
 		if ((leftOffset + outerWidth) > window.offsetWidth) {
-			this.dropdownElement.classList.add("o-dropdown--reverse");
+			this.dropdownElement.classList.add("c-dropdown--reverse");
 		}
 	};
 

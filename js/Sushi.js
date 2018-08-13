@@ -1,3 +1,7 @@
+/* ==============================================================================================
+ * SUSHI MAIN
+ * ============================================================================================== */
+
 var Sushi;
 
 (function (Sushi) {
@@ -21,7 +25,13 @@ var Sushi;
 				var element = pluggableElements[i];
 				var pluginName = element.dataset[Sushi.pluginNamespace];
 
-				new Sushi.Plugins[pluginName](element);
+				if (Sushi.Plugins[pluginName] !== void 0) {
+					new Sushi.Plugins[pluginName](element);
+				}
+				else {
+					// eslint-disable-next-line no-console
+					console.warn("Plugin " + pluginName + " doesn't exist");
+				}
 			}
 		}
 	};

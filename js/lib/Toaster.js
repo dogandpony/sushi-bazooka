@@ -1,3 +1,7 @@
+/* ==============================================================================================
+ * TOASTER
+ * ============================================================================================== */
+
 var Sushi;
 
 (function (Sushi) {
@@ -38,16 +42,16 @@ var Sushi;
 
 		this.toasterElement = document.createElement("div");
 
-		this.toasterElement.classList.add("o-toaster");
+		this.toasterElement.classList.add("c-toaster");
 
 		if (this.options.stacked === true) {
-			this.toasterElement.classList.add("o-toaster--stacked");
+			this.toasterElement.classList.add("c-toaster--stacked");
 		}
 
 		for (var i = 0; i < positionArray.length; i++) {
 			var position = positionArray[i];
 
-			this.toasterElement.classList.add("o-toaster--" + position);
+			this.toasterElement.classList.add("c-toaster--" + position);
 		}
 
 		this.options.container.appendChild(this.toasterElement);
@@ -86,7 +90,7 @@ var Sushi;
 
 			toast.cookingTime = (fadeInDuration + toast.duration);
 
-			Events(toast.bread).trigger("open", { toast: toast });
+			Events(toast.bread).trigger("open", {toast: toast});
 
 			if (toast.options.autoDismiss === true) {
 				this.scheduleAutoDismiss(toast);
@@ -113,7 +117,7 @@ var Sushi;
 				this.cook();
 			}
 
-			Events(toast.bread).trigger("close", { toast: toast });
+			Events(toast.bread).trigger("close", {toast: toast});
 
 			this.clean(toast);
 		}.bind(this), fadeOutDuration);
