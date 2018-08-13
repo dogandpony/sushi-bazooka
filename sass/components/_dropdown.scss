@@ -13,6 +13,7 @@
 	padding: $dropdownPadding;
 	z-index: map_get($zIndexes, "dropdown");
 	background: $dropdownBackground;
+	border: $dropdownBorder;
 	border-radius: $dropdownBorderRadius;
 	min-width: 100%;
 	list-style-type: none;

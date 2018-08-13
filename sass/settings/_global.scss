@@ -86,6 +86,11 @@ $globalOverlayBackground: rgba(#000, 0.8) !default;
 $dropdownBackground: #fff !default;
 
 /**
+ * Border property of the dropdown
+ */
+$dropdownBorder: none !default;
+
+/**
  * @see $globalBorderRadius
  */
 $dropdownBorderRadius: $globalBorderRadius !default;
