@@ -86,6 +86,11 @@ $globalOverlayBackground: rgba(#000, 0.8) !default;
 $dropdownBackground: #fff !default;
 
 /**
+ * Border property of the dropdown
+ */
+$dropdownBorder: 0 !default;
+
+/**
  * @see $globalBorderRadius
  */
 $dropdownBorderRadius: $globalBorderRadius !default;
@@ -268,6 +273,72 @@ $selectItemLineHeight: getLineHeight("solid") !default;
  * Padding of the items inside the dropdown
  */
 $selectItemPadding: $globalSpacingXxs 0 !default;
+
+
+
+/* Tabbed
+   --------------------------- */
+
+/**
+ * This enables the fix for the "double border" effect that happens when you put two items with the
+ * same border width side-by-side. You must also set $tabbedFixDoubleBorderEffectMargin for this
+ * to work.
+ */
+$tabbedFixDoubleBorderEffect: true !default;
+
+/**
+ * Negative margin that will be applied to items following other items in the navigation. This must
+ * be equal to the border width of the items set in $tabbedNavItemBorder.
+ */
+$tabbedFixDoubleBorderEffectMargin: -1px !default;
+
+/**
+ * Set this to a reasonable border property if you'd like a divider between the navigation and the
+ * contents of the tabs
+ */
+$tabbedNavBorderBottom: 1px solid #ccc !default;
+
+/**
+ * This border will be applied to active items and will override the border set
+ * in $tabbedNavBorderBottom
+ */
+$tabbedNavItemActiveBorder: 1px solid #ccc !default;
+
+/**
+ * Background property of navigation items
+ */
+$tabbedNavItemBackground: #f1f1f1 !default;
+
+/**
+ * Border of the navigation items
+ */
+$tabbedNavItemBorder: 1px solid #ccc !default;
+
+/**
+ * Set this to a negative value based on the nav item border set in $tabbedNavItemBorder if you'd
+ * like the tabs to be displayed like real life folder tabs
+ */
+$tabbedNavItemMarginBottom: -1px !default;
+
+/**
+ * Default text color of the nav links
+ */
+$tabbedNavLinkColor: #333 !default;
+
+/**
+ * Text color of active nav links
+ */
+$tabbedNavLinkActiveColor: #000 !default;
+
+/**
+ * Text color of hovered/focused nav links
+ */
+$tabbedNavLinkHoverColor: #000 !default;
+
+/**
+ * Padding of the nav links
+ */
+$tabbedNavLinkPadding: $globalSpacingXxs $globalSpacingXs !default;
 
 
 
