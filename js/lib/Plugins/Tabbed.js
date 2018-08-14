@@ -4,14 +4,16 @@
  * How to use:
  * - Create a markup like this:
  *   <div class="c-tabbed" data-plugin="Tabbed">
- *     <ul class="c-tabbed__nav o-inlineList">
- *       <li class="c-tabbed__navItem o-inlineList__item is-active" data-tab="1">
- *         <a href="#!" class="c-tabbed__navLink">Tab #1</a>
- *       </li>
- *       <li class="c-tabbed__navItem o-inlineList__item" data-tab="2">
- *         <a href="#!" class="c-tabbed__navLink">Tab #2</a>
- *       </li>
- *     </ul>
+ *     <div class="c-tabbed__navContainer">
+ *       <ul class="c-tabbed__nav o-inlineList">
+ *         <li class="c-tabbed__navItem o-inlineList__item is-active" data-tab="1">
+ *           <a href="#!" class="c-tabbed__navLink">Tab #1</a>
+ *         </li>
+ *         <li class="c-tabbed__navItem o-inlineList__item" data-tab="2">
+ *           <a href="#!" class="c-tabbed__navLink">Tab #2</a>
+ *         </li>
+ *       </ul>
+ *     </div>
  *     <div class="c-tabbed__tabs">
  *       <div class="c-tabbed__tab" data-tab="1">
  *         Tab #1 content
