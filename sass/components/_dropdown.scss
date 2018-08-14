@@ -13,6 +13,7 @@
 	padding: $dropdownPadding;
 	z-index: map_get($zIndexes, "dropdown");
 	background: $dropdownBackground;
+	border: $dropdownBorder;
 	border-radius: $dropdownBorderRadius;
 	min-width: 100%;
 	list-style-type: none;
@@ -21,8 +22,8 @@
 	white-space: nowrap;
 	transform: translateY($globalSpacing) scale(0.95);
 	transition: transform $dropdownTransitionDuration $dropdownTransitionTimingFunction,
-	opacity $dropdownTransitionDuration $dropdownTransitionTimingFunction,
-	visibility $dropdownTransitionDuration;
+		opacity $dropdownTransitionDuration $dropdownTransitionTimingFunction,
+		visibility $dropdownTransitionDuration;
 	transition-delay: $dropdownCloseIntention; // CSS-only "close intention"
 }
 
@@ -32,11 +33,15 @@
 
 	transform: none;
 	transition: transform $dropdownTransitionDuration $dropdownTransitionTimingFunction,
-	opacity $dropdownTransitionDuration $dropdownTransitionTimingFunction,
-	visibility $dropdownTransitionDuration;
+		opacity $dropdownTransitionDuration $dropdownTransitionTimingFunction,
+		visibility $dropdownTransitionDuration;
 }
 
 .c-dropdown--reverse {
 	right: 0;
 	left: auto;
+}
+
+.c-dropdown__item {
+	padding: $dropdownItemPadding;
 }

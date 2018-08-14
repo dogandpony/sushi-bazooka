@@ -8,11 +8,12 @@
 	width: 100%;
 }
 
-.c-select__label {
+.c-select__button {
 	@extend .o-form__input;
 	position: relative;
 	z-index: 2;
-	padding: $selectLabelPadding;
+	padding: $selectButtonPadding;
+	text-align: left;
 	cursor: pointer;
 
 	&:after {
@@ -21,7 +22,7 @@
 		content: "expand_more";
 		position: absolute;
 		top: 50%;
-		right: -3px;
+		right: 4px;
 		z-index: 2;
 		margin-top: -0.5em;
 		font-size: inherit;
@@ -31,10 +32,10 @@
 	}
 }
 
-.c-select__label:hover,
-.c-select__label:focus,
-.c-select__select:focus + .c-select__label {
-	color: $selectLabelHoverColor;
+.c-select__button:hover,
+.c-select__button:focus,
+.c-select__select:focus + .c-select__button {
+	color: $selectButtonHoverColor;
 }
 
 .c-select__select {
@@ -59,17 +60,17 @@
 	width: auto;
 }
 
-.c-select--bare .c-select__label {
+.c-select--bare .c-select__button {
 	position: relative;
 	z-index: 2;
-	padding: $selectBareLabelPadding;
+	padding: $selectBareButtonPadding;
 	border: 0;
 	cursor: pointer;
-	color: $selectBareLabelColor;
+	color: $selectBareButtonColor;
 
 	&:hover,
 	&:focus {
-		color: $selectBareLabelHoverColor;
+		color: $selectBareButtonHoverColor;
 	}
 
 	&:after {
@@ -83,18 +84,16 @@
 /* Dropdown
    ============================================================================================== */
 
-.c-select__dropdown {
-	@include elevation(8); // drop shadow
+.c-select .c-dropdown {
+	position: absolute;
 	top: 0;
-	left: ($globalSpacingXxs * -1);
 	padding: $selectDropdownPadding;
-	z-index: 3;
 }
 
 .c-select__item {
-	padding: $selectDropdownItemPadding;
+	padding: $selectItemPadding;
 	color: $selectItemColor;
-	line-height: getLineHeight("solid");
+	line-height: $selectItemLineHeight;
 	white-space: nowrap;
 	cursor: pointer;
 
@@ -103,8 +102,8 @@
 		color: $selectItemHoverColor;
 	}
 
-	&.is-current {
-		color: $selectItemCurrentColor;
+	&.is-active {
+		color: $selectItemActiveColor;
 	}
 }
 
