@@ -103,8 +103,8 @@
 		color: $selectItemHoverColor;
 	}
 
-	&.is-current {
-		color: $selectItemCurrentColor;
+	&.is-active {
+		color: $selectItemActiveColor;
 	}
 }
 

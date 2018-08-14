@@ -252,7 +252,7 @@ $selectItemHoverColor: #000;
 /**
  * Color of the selected item(s) in the select
  */
-$selectItemCurrentColor: #36c;
+$selectItemActiveColor: #36c !default;
 
 /**
  * Padding of the default select style

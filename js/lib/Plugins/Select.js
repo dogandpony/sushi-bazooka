@@ -43,10 +43,10 @@ var Sushi;
 	proto.constructor = Select;
 
 	proto.createContainer = function () {
-		this.containerElement = Dom.parse("<div class='c-styledSelect'>");
+		this.containerElement = Dom.parse("<div class='c-select'>");
 
 		this.buttonElement = Dom.parse(
-			"<button class='c-styledSelect__button' type='button'>"
+			"<button class='c-select__button' type='button'>"
 		);
 
 		this.triggerElement.classList.add("c-select__select");
@@ -70,7 +70,7 @@ var Sushi;
 		/* Dropdown
 		   --------------------------- */
 
-		this.dropdownElement = Dom.parse("<ul class='c-styledSelect__dropdown c-dropdown'>");
+		this.dropdownElement = Dom.parse("<ul class='c-select__dropdown c-dropdown'>");
 
 		this.updateOptions();
 
@@ -117,8 +117,8 @@ var Sushi;
 
 	proto.handleDropdownOpen = function () {
 		var currentItem = (
-			Dom.query(".c-styledSelect__item.is-current", this.dropdownElement)
-			|| Dom.query(".c-styledSelect__item", this.dropdownElement)
+			Dom.query(".c-select__item.is-active", this.dropdownElement)
+			|| Dom.query(".c-select__item", this.dropdownElement)
 		);
 
 		setTimeout(function () {
@@ -172,9 +172,9 @@ var Sushi;
 				case 13:
 				case 32:
 					if (this.isMultiple) {
-						var itemElement = activeElement.closest(".c-styledSelect__item");
+						var itemElement = activeElement.closest(".c-select__item");
 						var checkboxElement = Dom.query(
-							".c-styledSelect__checkbox",
+							".c-select__checkbox",
 							itemElement
 						);
 
@@ -222,7 +222,7 @@ var Sushi;
 		var itemValue = itemElement.dataset.value;
 		var optionElement = Dom.query("option[value='" + itemValue + "']", this.triggerElement);
 		var checkboxElement = Dom.query(
-			".c-styledSelect__checkbox",
+			".c-select__checkbox",
 			itemElement
 		);
 
@@ -235,12 +235,12 @@ var Sushi;
 
 	proto.registerItemListeners = function () {
 		if (this.isMultiple) {
-			Events(Dom.queryAll(".c-styledSelect__checkbox", this.dropdownElement))
-				.on("StyledSelect.change", this.handleCheckboxChange.bind(this));
+			Events(Dom.queryAll(".c-select__checkbox", this.dropdownElement))
+				.on("select.change", this.handleCheckboxChange.bind(this));
 		}
 		else {
-			Events(Dom.queryAll(".c-styledSelect__item", this.dropdownElement))
-				.on("StyledSelect.click", this.handleItemClick.bind(this));
+			Events(Dom.queryAll(".c-select__item", this.dropdownElement))
+				.on("select.click", this.handleItemClick.bind(this));
 		}
 	};
 
@@ -324,14 +324,14 @@ var Sushi;
 				dropdownElement.classList.add("_hidden");
 			}
 			else if (Array.prototype.slice.call(selectedOptions).includes(optionElement)) {
-				dropdownElement.classList.add("is-current");
+				dropdownElement.classList.add("is-active");
 
 				if (this.options.hideSelected) {
 					dropdownElement.classList.add("_hidden");
 				}
 			}
 			else {
-				dropdownElement.classList.remove("is-current");
+				dropdownElement.classList.remove("is-active");
 			}
 		}
 
