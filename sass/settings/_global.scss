@@ -29,11 +29,11 @@ $noJsClass: "noJs";
  * two components.
  */
 $zIndexes: (
-  "toaster": 100,
-  "modal": 90,
-  "offCanvas": 80,
-  "dropdown": 70,
-  "tooltip": 10,
+	"toaster": 100,
+	"modal": 90,
+	"offCanvas": 80,
+	"dropdown": 70,
+	"tooltip": 10,
 ) !default;
 
 
@@ -86,11 +86,6 @@ $globalOverlayBackground: rgba(#000, 0.8) !default;
 $dropdownBackground: #fff !default;
 
 /**
- * Border property of the dropdown
- */
-$dropdownBorder: none !default;
-
-/**
  * @see $globalBorderRadius
  */
 $dropdownBorderRadius: $globalBorderRadius !default;
@@ -101,6 +96,11 @@ $dropdownBorderRadius: $globalBorderRadius !default;
  * that case, you may set this to `0s`.
  */
 $dropdownCloseIntention: 50ms !default;
+
+/**
+ * Padding of the `<li>`s in the dropdown
+ */
+$dropdownItemPadding: 0 !default;
 
 /**
  * Margin of the dropdown list
@@ -216,38 +216,38 @@ $revealAsyncAnimationSecondStepDelay: ($revealTransitionDuration / 2) !default;
  * Bare select color
  * Usually this is the default color of the links in your site.
  */
-$selectBareLabelColor: #333 !default;
+$selectBareButtonColor: #333 !default;
 
 /**
  * Bare select hover color
  * Usually this is the hover color of the links in your site.
  */
-$selectBareLabelHoverColor: #000 !default;
+$selectBareButtonHoverColor: #000 !default;
 
 /**
  * Bare select padding
  */
-$selectBareLabelPadding: 12px 16px 12px 0 !default;
+$selectBareButtonPadding: 4px 16px 4px 0 !default;
 
 /**
- * Padding of the items inside the dropdown
+ * Hover color of the default select style
  */
-$selectDropdownItemPadding: $globalSpacingXxs !default;
+$selectButtonHoverColor: #000 !default;
+
+/**
+ * Padding of the default select style
+ */
+$selectButtonPadding: 4px 40px 4px 8px !default;
 
 /**
  * Padding of the dropdown itself
  */
-$selectDropdownPadding: $globalSpacingXs $globalSpacingSm !default;
+$selectDropdownPadding: $dropdownPadding !default;
 
 /**
  * Default color of the select item
  */
-$selectItemColor: #333;
-
-/**
- * Hover color of the select item
- */
-$selectItemHoverColor: #000;
+$selectItemColor: #333 !default;
 
 /**
  * Color of the selected item(s) in the select
@@ -255,14 +255,19 @@ $selectItemHoverColor: #000;
 $selectItemActiveColor: #36c !default;
 
 /**
- * Padding of the default select style
+ * Hover color of the select item
  */
-$selectLabelPadding: 12px 40px 12px 16px !default;
+$selectItemHoverColor: #000 !default;
 
 /**
- * Hover color of the default select style
+ * Item line height
  */
-$selectLabelHoverColor: #000 !default;
+$selectItemLineHeight: getLineHeight("solid") !default;
+
+/**
+ * Padding of the items inside the dropdown
+ */
+$selectItemPadding: $globalSpacingXxs 0 !default;
 
 
 

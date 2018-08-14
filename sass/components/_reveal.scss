@@ -3,7 +3,7 @@
  * Sometimes people may call this an "accordion".
  * ================================================================================================== */
 
-.c-reveal {
+.c-reveal:not(.is-active) {
 	overflow: hidden;
 }
 
@@ -92,7 +92,6 @@
 .c-reveal--appearFromRight,
 .c-reveal--appearFromTop,
 .c-reveal--appearFromBottom {
-	overflow: hidden;
 	@extend %revealAsyncAnimation;
 }
 
