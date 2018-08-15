@@ -48,7 +48,7 @@ var Sushi;
 			document.head.appendChild(styleElement);
 		}
 
-		bodyScrollPosition = window.scrollY;
+		bodyScrollPosition = window.pageYOffset;
 
 		document.documentElement.classList.add("is-scrollLocked");
 
@@ -66,7 +66,7 @@ var Sushi;
 
 		document.documentElement.classList.remove("is-scrollLocked");
 
-		window.scrollTo(window.scrollX, bodyScrollPosition);
+		window.scrollTo(window.pageXOffset, bodyScrollPosition);
 	};
 
 	Sushi.BodyScroll = BodyScroll;

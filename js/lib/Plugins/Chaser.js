@@ -76,7 +76,7 @@ var Sushi;
 	};
 
 	proto.checkPosition = function () {
-		if (this.isChasingAt(window.scrollY)) {
+		if (this.isChasingAt(window.pageYOffset)) {
 			this.triggerElement.classList.add("is-chasing");
 			this.isChasing = true;
 

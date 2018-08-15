@@ -64,13 +64,13 @@ var Sushi;
 
 		switch (this.options.triggerPosition) {
 			case "top":
-				triggerOffset = window.scrollY;
+				triggerOffset = window.pageYOffset;
 				activationPoint = (elementOffset - offset);
 				limitPoint -= offset;
 				break;
 
 			case "bottom":
-				triggerOffset = window.scrollY + window.innerHeight;
+				triggerOffset = window.pageYOffset + window.innerHeight;
 				activationPoint = (elementOffset + offset);
 				limitPoint += offset;
 				break;
