@@ -170,7 +170,7 @@ var Sushi;
 			if (typeof window.CustomEvent === "function") {
 				event = new window.CustomEvent(eventName, {
 					detail: data,
-					bubbles: true
+					bubbles: true,
 				});
 			}
 			else if (document.createEvent) {
