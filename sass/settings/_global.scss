@@ -293,14 +293,8 @@ $tabbedFixDoubleBorderEffect: true !default;
 $tabbedFixDoubleBorderEffectMargin: -1px !default;
 
 /**
- * Set this to a reasonable border property if you'd like a divider between the navigation and the
- * contents of the tabs
- */
-$tabbedNavBorderBottom: 1px solid #ccc !default;
-
-/**
  * This border will be applied to active items and will override the border set
- * in $tabbedNavBorderBottom
+ * in $tabbedNavItemBorder.
  */
 $tabbedNavItemActiveBorder: 1px solid #ccc !default;
 
@@ -313,12 +307,6 @@ $tabbedNavItemBackground: #f1f1f1 !default;
  * Border of the navigation items
  */
 $tabbedNavItemBorder: 1px solid #ccc !default;
-
-/**
- * Set this to a negative value based on the nav item border set in $tabbedNavItemBorder if you'd
- * like the tabs to be displayed like real life folder tabs
- */
-$tabbedNavItemMarginBottom: -1px !default;
 
 /**
  * Default text color of the nav links
@@ -339,6 +327,18 @@ $tabbedNavLinkHoverColor: #000 !default;
  * Padding of the nav links
  */
 $tabbedNavLinkPadding: $globalSpacingXxs $globalSpacingXs !default;
+
+/**
+ * Set this to a negative value based on the nav item border set in $tabbedNavItemBorder if you'd
+ * like the tabs to be displayed like real life folder tabs.
+ */
+$tabbedNavMarginBottom: -1px !default;
+
+/**
+ * Set this to a reasonable border property if you'd like a divider between the navigation and the
+ * contents of the tabs.
+ */
+$tabbedNavBorderBottom: 1px solid #ccc !default;
 
 
 

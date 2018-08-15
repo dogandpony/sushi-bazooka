@@ -5,14 +5,16 @@
  * See Tabbed.js
  * ============================================================================================== */
 
-.c-tabbed__nav {
+.c-tabbed__navContainer {
 	border-bottom: $tabbedNavBorderBottom;
-	margin-bottom: 0;
+}
+
+.c-tabbed__nav {
+	margin-bottom: $tabbedNavMarginBottom;
 }
 
 .c-tabbed__navItem {
 	display: inline-block;
-	margin-bottom: $tabbedNavItemMarginBottom;
 	background: $tabbedNavItemBackground;
 	border: $tabbedNavItemBorder;
 }

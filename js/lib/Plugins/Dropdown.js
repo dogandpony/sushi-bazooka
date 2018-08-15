@@ -152,7 +152,7 @@ var Sushi;
 		setTimeout(function () {
 			var topOffset = Css.getOffset(this.dropdownElement).top;
 			var pageHeight = window.offsetHeight;
-			var scroll = window.scrollY;
+			var scroll = window.pageYOffset;
 			var remainingHeight = Math.floor(pageHeight - Math.max(0, (topOffset - scroll)));
 			var minHeight = this.options.minHeight;
 
