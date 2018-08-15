@@ -76,16 +76,22 @@ var Sushi;
 
 
 	proto.removeAnimationClass = function () {
-		Events(this.targetElement)
-			.off("Reveal." + transitionEndEvent)
-			.one("Reveal." + transitionEndEvent, function () {
-				this.targetElement.classList.remove("is-animating");
+		var transitionDuration = window.Math.max(
+			Util.Css.getMaxTransitionDuration(this.targetElement),
+			Util.Css.getMaxTransitionDuration(this.contentElement)
+		);
 
-				if (this.isOpen) {
-					this.targetElement.style.maxHeight = "none";
-					this.targetElement.style.maxWidth = "none";
-				}
-			}.bind(this));
+		clearTimeout(this.removeAnimationClassTimeout);
+		this.removeAnimationClassTimeout = null;
+
+		this.removeAnimationClassTimeout = setTimeout(function () {
+			this.targetElement.classList.remove("is-animating");
+
+			if (this.isOpen) {
+				this.targetElement.style.maxHeight = "none";
+				this.targetElement.style.maxWidth = "none";
+			}
+		}.bind(this), transitionDuration);
 	};
 
 
