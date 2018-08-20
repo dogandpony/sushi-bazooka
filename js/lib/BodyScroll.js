@@ -27,15 +27,15 @@ var Sushi;
 			var scrollbarWidth = Sushi.Util.getScrollbarWidth();
 
 			var css = ""
-				+ ".is-scroll-locked,"
-				+ ".is-scroll-locked body {"
+				+ ".is-scrollLocked,"
+				+ ".is-scrollLocked body {"
 				+ "   position: fixed !important;"
 				+ "   overflow: hidden !important;"
 				+ "   height: 100% !important;"
 				+ "   width: 100% !important;"
 				+ "}"
 				+ ""
-				+ ".is-scroll-locked body {"
+				+ ".is-scrollLocked body {"
 				+ "   padding-right:" + scrollbarWidth + "px !important;"
 				+ "}";
 
