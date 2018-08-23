@@ -24,7 +24,7 @@ var Sushi;
 		this.hasReachedLimit = false;
 
 		this.triggerElement.insertAdjacentElement("afterend", this.placeholder);
-		this.triggerElement.classList.add("c-chaser");
+		this.triggerElement.classList.add("o-chaser");
 
 		this.enable();
 		this.update();
@@ -33,7 +33,7 @@ var Sushi;
 	Chaser.displayName = "Chaser";
 
 	Chaser.DEFAULTS = {
-		placeholder: "<i class=\"c-chaserPlaceholder\">",
+		placeholder: "<i class=\"o-chaserPlaceholder\">",
 		updateThreshold: 30,
 		updatePlaceholderHeight: true,
 	};
