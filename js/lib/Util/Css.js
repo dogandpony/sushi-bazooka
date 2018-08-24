@@ -176,15 +176,13 @@ var Sushi;
 
 		return (
 			element.clientWidth
-			+ style.paddingRight
-			+ style.paddingLeft
-			+ style.borderRightWidth
-			+ style.borderLeftWidth
+			+ parseInt(style.borderRightWidth)
+			+ parseInt(style.borderLeftWidth)
 		)
-		+ accountForMargins
-			? (style.marginRight + style.marginLeft)
+		+ (accountForMargins
+			? (parseInt(style.marginRight) + parseInt(style.marginLeft))
 			: 0
-		;
+		);
 	};
 
 	Css.getHeight = function (element, accountForMargins) {
@@ -192,15 +190,13 @@ var Sushi;
 
 		return (
 			element.clientHeight
-			+ style.paddingTop
-			+ style.paddingBottom
-			+ style.borderRightHeight
-			+ style.borderLeftHeight
+			+ parseInt(style.borderRightWidth)
+			+ parseInt(style.borderLeftWidth)
 		)
-		+ accountForMargins
-			? (style.marginTop + style.marginBottom)
+		+ (accountForMargins
+			? (parseInt(style.marginTop) + parseInt(style.marginBottom))
 			: 0
-		;
+		);
 	};
 
 	Util.Css = Css;

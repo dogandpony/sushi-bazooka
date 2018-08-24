@@ -7,7 +7,6 @@ var Sushi;
 (function (Sushi, root) {
 	"use strict";
 
-	var Events = Sushi.Events;
 	var Util = Sushi.Util;
 
 	var Actions = function (element, actions) {
@@ -19,39 +18,36 @@ var Sushi;
 
 		for (var eventType in eventConfig) {
 			if (eventConfig.hasOwnProperty(eventType)) {
-				var controllers = parseControllers(eventConfig[eventType]);
+				var controller = Actions.parseController(eventConfig[eventType]);
 
-				for (var i = 0; i < controllers.length; i++) {
-					var controller = controllers[i];
-
-					Events(element).off(eventType, controller);
-					Events(element).on(eventType, controller);
+				if (controller !== null) {
+					Sushi.Events(element).off(eventType, controller);
+					Sushi.Events(element).on(eventType, controller);
 				}
 			}
 		}
 	};
 
-	var parseControllers = function (controllerReferences) {
-		var controllers = [];
+	Actions.parseController = function (controllerReference) {
+		var reference = controllerReference.split(".");
+		var controller = root;
+		var controllerTreeString = "";
 
-		if (typeof controllerReferences === "string") {
-			controllerReferences = [controllerReferences];
-		}
+		for (var i = 0; i < reference.length; i++) {
+			controller = controller[reference[i]];
+			controllerTreeString += "." + reference[i];
 
-		for (var i = 0; i < controllerReferences.length; i++) {
-			var reference = controllerReferences[i].split(".");
-			var controllerTree = root;
+			if (controller == null) {
+				// eslint-disable-next-line no-console
+				console.warn(
+					"Function " + controllerTreeString.replace(/^\./, "") + " doesn't exist."
+				);
 
-			for (var j = 0; j < reference.length; j++) {
-				var index = reference[j];
-
-				controllerTree = controllerTree[index];
+				return null;
 			}
-
-			controllers.push(controllerTree);
 		}
 
-		return controllers;
+		return controller;
 	};
 
 	Sushi.Actions = Actions;

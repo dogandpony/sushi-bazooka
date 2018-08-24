@@ -23,11 +23,9 @@ var Sushi;
 		updateThreshold: 30,
 		offset: 0,
 		triggerPosition: "top",
-		events: {
-			before: null,
-			while: null,
-			after: null,
-		},
+		eventBefore: null,
+		eventWhile: null,
+		eventAfter: null,
 	};
 
 	ScrollTrigger.prototype = Object.create(BasePlugin.prototype);
@@ -52,6 +50,7 @@ var Sushi;
 		var triggerOffset;
 		var activationPoint;
 		var limitPoint = (elementOffset + Util.Css.getHeight(this.triggerElement));
+		var fn = null;
 
 		var offset;
 
@@ -76,24 +75,22 @@ var Sushi;
 				break;
 		}
 
-		if (
-			(typeof this.options.events.before === "function")
-			&& (triggerOffset < activationPoint)
-		) {
-			this.options.events.before(this.triggerElement, this.options);
+		if (triggerOffset < activationPoint) {
+			fn = this.options.eventBefore;
 		}
-		else if (
-			(typeof this.options.events.while === "function")
-			&& (triggerOffset >= activationPoint)
-			&& (triggerOffset < limitPoint)
-		) {
-			this.options.events.while(this.triggerElement, this.options);
+		else if ((this.options.eventWhile !== null) && (triggerOffset < limitPoint)) {
+			fn = this.options.eventWhile;
 		}
-		else if (
-			(typeof this.options.events.after === "function")
-			&& (triggerOffset >= activationPoint)
-		) {
-			this.options.events.after(this.triggerElement, this.options);
+		else {
+			fn = this.options.eventAfter;
+		}
+
+		if (typeof fn === "string") {
+			fn = Sushi.Actions.parseController(fn);
+		}
+
+		if (typeof fn === "function") {
+			fn(this.triggerElement, this.options);
 		}
 	};
 

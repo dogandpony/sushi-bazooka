@@ -2,15 +2,16 @@
  * CHASER
  * ============================================================================================== */
 
-.c-chaser {
+.o-chaser {
 	position: absolute;
 	width: 100%;
+	z-index: map_get($zIndexes, "chaser");
 
 	&.is-chasing {
 		position: fixed;
 	}
 }
 
-.c-chaserPlaceholder {
+.o-chaserPlaceholder {
 	display: block;
 }
