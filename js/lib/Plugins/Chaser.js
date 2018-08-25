@@ -68,7 +68,7 @@ var Sushi;
 	};
 
 	proto.updatePlaceholderHeight = function () {
-		this.placeholder.style.height = Css.getHeight(this.triggerElement, true);
+		this.placeholder.style.height = Css.getHeight(this.triggerElement, true) + "px";
 	};
 
 	proto.isChasingAt = function (scrollY) {
