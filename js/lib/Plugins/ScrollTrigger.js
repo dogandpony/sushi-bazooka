@@ -58,7 +58,7 @@ var Sushi;
 			offset = this.options.offset();
 		}
 		else {
-			offset = this.options.offset;
+			offset = parseInt(this.options.offset);
 		}
 
 		switch (this.options.triggerPosition) {
@@ -66,12 +66,14 @@ var Sushi;
 				triggerOffset = window.pageYOffset;
 				activationPoint = (elementOffset - offset);
 				limitPoint -= offset;
+
 				break;
 
 			case "bottom":
 				triggerOffset = window.pageYOffset + window.innerHeight;
 				activationPoint = (elementOffset + offset);
 				limitPoint += offset;
+
 				break;
 		}
 
