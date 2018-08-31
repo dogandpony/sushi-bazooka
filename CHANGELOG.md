@@ -11,6 +11,7 @@ Version currently being worked on. Click the link above for more details.
 
 ### Added
 - Added changelog file.
+- Added Progressive Images plugin.
 
 
 ## [0.4.7] - 2018-08-31
