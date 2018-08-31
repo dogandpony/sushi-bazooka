@@ -220,6 +220,20 @@ var Sushi;
 		traverseClassNames(target, "remove", classNames);
 	};
 
+	Dom.each = function (target, fn) {
+		if (target instanceof HTMLElement) {
+			target = [target];
+		}
+
+		if (Dom.isIterable(target)) {
+			for (var i = 0; i < target.length; i++) {
+				var element = target[i];
+
+				fn.call(element);
+			}
+		}
+	};
+
 	/**
 	 * Checks if the target is either an instance of NodeList, HTMLCollection or Array
 	 *

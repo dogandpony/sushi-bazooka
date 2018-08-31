@@ -12,6 +12,8 @@ Version currently being worked on. Click the link above for more details.
 ### Added
 - Added changelog file.
 - Added Progressive Images plugin.
+- Added `Dom.each()` function to make it easier to implement repeating code across HTML Element 
+  lists.
 
 
 ## [0.4.7] - 2018-08-31
