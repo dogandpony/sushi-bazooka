@@ -15,6 +15,9 @@ Version currently being worked on. Click the link above for more details.
 - Added `Dom.each()` function to make it easier to implement repeating code across HTML Element 
   lists.
 
+### Changed
+- Changed No JS class from `noJs` to `no-js`.
+
 
 ## [0.4.7] - 2018-08-31
 
