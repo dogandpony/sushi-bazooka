@@ -15,6 +15,10 @@ Version currently being worked on. Click the link above for more details.
 - Added `Dom.each()` function to make it easier to implement repeating code across HTML Element 
   lists.
 
+## Fixed
+- `Plugins.Modal`
+  - Fixed main container placement check for its parent element.
+
 ### Changed
 - Changed No JS class from `noJs` to `no-js`.
 

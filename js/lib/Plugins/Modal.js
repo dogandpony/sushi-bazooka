@@ -18,8 +18,6 @@ var Sushi;
 		CLOSE_BUTTON: "<a href=\"#!\" data-modal-trigger-close class=\"c-modal__close\"/>",
 	};
 
-	var MAIN_CONTAINER = Dom.parse("<div class=\"c-modals\">");
-
 	var CENTERING_CLASSES = {
 		CALCULATED_HORIZONTAL: "c-modalContainer--calculatedHCenter",
 		CALCULATED_VERTICAL: "c-modalContainer--calculatedVCenter",
@@ -76,6 +74,7 @@ var Sushi;
 		modal: "<div class=\"c-modal\">",
 		overlay: "<div class=\"c-modalOverlay\">",
 		container: "<div class=\"c-modalContainer\">",
+		mainContainer: Dom.parse("<div class=\"c-modals\">"),
 	};
 
 	Modal.openModals = [];
@@ -160,9 +159,9 @@ var Sushi;
 	 * Create the main modals container if it doesn't already exist
 	 */
 	proto.createMainContainer = function () {
-		this.mainContainer = Dom.get(this.options.mainContainer || MAIN_CONTAINER);
+		this.mainContainer = Dom.get(this.options.mainContainer);
 
-		if (this.mainContainer.parentNode) {
+		if (this.mainContainer.parentElement === null) {
 			document.body.appendChild(this.mainContainer);
 		}
 	};
