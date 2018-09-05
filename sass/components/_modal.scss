@@ -5,13 +5,13 @@
 /* Global Container
    ============================================================================================== */
 
-.c-modals {
+.c-modal {
 	visibility: hidden;
 	position: fixed;
 	top: 0;
+	right: 0;
+	bottom: 0;
 	left: 0;
-	width: 100vw;
-	height: 100vh;
 	z-index: map_get($zIndexes, "modal");
 }
 
@@ -21,7 +21,7 @@
 /* Overlay
    ============================================================================================== */
 
-.c-modalOverlay {
+.c-modal__overlay {
 	visibility: hidden;
 	position: absolute;
 	top: 0;
@@ -30,28 +30,15 @@
 	left: 0;
 	opacity: 0;
 	background: $modalOverlayBackground;
-	z-index: (map_get($zIndexes, "modal") + 1);
 	transition: visibility $modalTransitionDuration $modalTransitionDuration,
-	opacity $modalTransitionDuration $modalTransitionTimingFunction $modalTransitionDuration;
-
+		opacity $modalTransitionDuration $modalTransitionTimingFunction $modalTransitionDuration;
 }
 
-.c-modalOverlay.is-open {
+.c-modal.is-open .c-modal__overlay {
 	visibility: visible;
 	opacity: 1;
 	transition: visibility $modalTransitionDuration,
-	opacity $modalTransitionDuration $modalTransitionTimingFunction;
-}
-
-
-
-
-/* Single Container
-   ============================================================================================== */
-
-.c-modalContainer {
-	width: 100%;
-	height: 100%;
+		opacity $modalTransitionDuration $modalTransitionTimingFunction;
 	overflow-y: scroll;
 	-webkit-overflow-scrolling: touch;
 }
@@ -59,10 +46,10 @@
 
 
 
-/* Modal
+/* Content Container
    ============================================================================================== */
 
-.c-modal {
+.c-modal__content {
 	position: relative;
 	visibility: hidden;
 	padding: $modalPadding;
@@ -71,15 +58,15 @@
 	width: 100%;
 	max-width: $modalMaxWidth;
 	transition: visibility $modalTransitionDuration,
-	opacity $modalTransitionDuration $modalTransitionTimingFunction;
-
-	&.is-open {
-		visibility: visible;
-		opacity: 1;
-	}
+		opacity $modalTransitionDuration $modalTransitionTimingFunction;
 }
 
-.c-modal--full {
+.c-modal.is-open .c-modal__content {
+	visibility: visible;
+	opacity: 1;
+}
+
+.c-modal--full .c-modal__content {
 	width: 100%;
 	height: 100%;
 	max-width: none;
@@ -95,19 +82,19 @@
 /* CSS-only centering
    --------------------------- */
 
-.c-modalContainer--hCenter,
-.c-modalContainer--vCenter {
+.c-modal--hCenter .c-modal__overlay,
+.c-modal--vCenter .c-modal__overlay {
 	display: flex;
 	align-items: flex-start;
 	align-content: flex-start;
 }
 
-.c-modalContainer--hCenter .c-modal {
+.c-modal--hCenter .c-modal__content {
 	margin-right: auto;
 	margin-left: auto;
 }
 
-.c-modalContainer--vCenter .c-modal {
+.c-modal--vCenter .c-modal__content {
 	margin-top: auto;
 	margin-bottom: auto;
 }
@@ -117,16 +104,16 @@
 /* JavaScript centering
    --------------------------- */
 
-.c-modalContainer--calculatedHCenter .c-modal,
-.c-modalContainer--calculatedVCenter .c-modal {
+.c-modal--calculatedHCenter .c-modal__content,
+.c-modal--calculatedVCenter .c-modal__content {
 	position: absolute;
 }
 
-.c-modalContainer--calculatedHCenter .c-modal {
+.c-modal--calculatedHCenter .c-modal__content {
 	left: 50%;
 }
 
-.c-modalContainer--calculatedVCenter .c-modal {
+.c-modal--calculatedVCenter .c-modal__content {
 	top: 50%;
 }
 
