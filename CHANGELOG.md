@@ -9,15 +9,32 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 Version currently being worked on. Click the link above for more details.
 
-### Added
-- Added changelog file.
-- Added Progressive Images plugin.
-- Added `Dom.each()` function to make it easier to implement repeating code across HTML Element 
-  lists.
+### Breaking changes
+#### `Plugins.Modal`
+- `.c-modals` (aka `mainContainer`) functionality has been removed. Now every modal has its own
+  container, which by default is appended to the `<body>`.
+ 
+##### JavaScript
+- `mainContainer` option has been removed.
+- `overlayExtraClasses` option has been removed.
+- `appendTo` option has been added and points to an arbitrary element on the page which will contain
+  the modal element. Defaults to `document.body`.
+- `container` option is now called `contentContainer`.
+- `Modal.first.open` and `Modal.last.close` event triggers have been removed. If you need info on 
+  the current state (and number) of open modals, get the value of `Sushi.Plugins.Modal.openModals`.
 
-## Fixed
-- `Plugins.Modal`
-  - Fixed main container placement check for its parent element.
+##### CSS
+- `c-modals` class has been removed.
+- `c-modal` class is now used in the modal container, rather than `c-modals`.
+- `c-modalOverlay` was renamed to `c-modal__overlay`.
+- `c-modalContainer` was renamed to `c-modal__content`.
+- `is-open` class is now only added to the `.c-modal` container.
+
+
+### Added
+- Changelog file.
+- Progressive Images plugin.
+- `Dom.each()` function to make it easier to implement repeating code across HTML Element lists.
 
 ### Changed
 - Changed No JS class from `noJs` to `no-js`.
@@ -26,10 +43,11 @@ Version currently being worked on. Click the link above for more details.
 ## [0.4.7] - 2018-08-31
 
 ### Fixed
-- `Plugins.Chaser`
-  - Fixed placeholder height setter not setting any height.
-- `Plugins.ScrollTrigger`
-  - Fixed offset parameter not working when `triggerPosition` was set to `bottom`.
+#### `Plugins.Chaser`
+- Fixed placeholder height setter not setting any height.
+
+#### `Plugins.ScrollTrigger`
+- Fixed offset parameter not working when `triggerPosition` was set to `bottom`.
 
 
 [Unreleased version]: https://github.com/dogandpony/sushi-bazooka/compare/v0.4.7...HEAD
