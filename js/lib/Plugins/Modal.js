@@ -18,8 +18,6 @@ var Sushi;
 		CLOSE_BUTTON: "<a href=\"#!\" data-modal-trigger-close class=\"c-modal__close\"/>",
 	};
 
-	var MAIN_CONTAINER = Dom.parse("<div class=\"c-modals\">");
-
 	var CENTERING_CLASSES = {
 		CALCULATED_HORIZONTAL: "c-modalContainer--calculatedHCenter",
 		CALCULATED_VERTICAL: "c-modalContainer--calculatedVCenter",
@@ -35,8 +33,9 @@ var Sushi;
 		// Cache objects
 		this.modal = Dom.get(this.options.modal);
 		this.overlay = Dom.get(this.options.overlay);
-		this.container = Dom.get(this.options.container);
+		this.contentContainer = Dom.get(this.options.contentContainer);
 		this.contentElement = Dom.get(this.options.content);
+		this.appendTo = Dom.get(this.options.appendTo);
 
 		Sushi.addPluginInstanceTo(this.modal, this);
 
@@ -57,7 +56,6 @@ var Sushi;
 	Modal.DEFAULTS = {
 		content: "",
 		extraClasses: "",
-		overlayExtraClasses: "",
 		contentOperation: "copy",
 		registerClickListener: true,
 		insertCloseButton: true,
@@ -74,8 +72,9 @@ var Sushi;
 
 		// Containers
 		modal: "<div class=\"c-modal\">",
-		overlay: "<div class=\"c-modalOverlay\">",
-		container: "<div class=\"c-modalContainer\">",
+		overlay: "<div class=\"c-modal__overlay\">",
+		contentContainer: "<div class=\"c-modal__content\">",
+		appendTo: document.body,
 	};
 
 	Modal.openModals = [];
@@ -90,10 +89,6 @@ var Sushi;
 	 * Create the modal and overlay HTML and append it to the body
 	 */
 	proto.create = function () {
-		// Create main container
-		this.createMainContainer();
-
-		// Add centering classes to modal
 		var classes = [];
 
 		if (this.options.calculatedCentering) {
@@ -115,14 +110,18 @@ var Sushi;
 			}
 		}
 
-		if (classes.length > 0) {
-			Dom.addClass(this.container, classes);
+		if (this.options.size !== "") {
+			classes.push("c-modal--" + this.options.size);
 		}
+
+		classes = classes.concat(this.options.extraClasses);
+
+		Dom.addClass(this.modal, classes);
 
 		// Register overlay close listener
 		if (this.options.closeOnOverlayClick) {
 			Events(this.overlay).on("Modal.close.click", function (event) {
-				if (event.target === this.container) {
+				if (event.target === this.overlay) {
 					event.preventDefault();
 
 					this.close();
@@ -135,35 +134,15 @@ var Sushi;
 			this.updateContent();
 		}
 
-		// Place elements on the main container
-		Dom.addClass(this.modal, this.options.extraClasses);
-		Dom.addClass(this.overlay, this.options.overlayExtraClasses);
-
-		if (this.options.size !== "") {
-			Dom.addClass(this.modal, "c-modal--" + this.options.size);
-		}
-
-		this.container.appendChild(this.modal);
-		this.overlay.appendChild(this.container);
-		this.mainContainer.appendChild(this.overlay);
+		this.overlay.appendChild(this.contentContainer);
+		this.modal.appendChild(this.overlay);
+		this.appendTo.appendChild(this.modal);
 
 		// Only register listeners that call updatePosition() if the modal does horizontal or
 		// vertical auto-centering
 		if (this.options.calculatedCentering
 			&& (this.options.horizontalCentering || this.options.verticalCentering)) {
 			this.enableCalculatedCentering();
-		}
-	};
-
-
-	/**
-	 * Create the main modals container if it doesn't already exist
-	 */
-	proto.createMainContainer = function () {
-		this.mainContainer = Dom.get(this.options.mainContainer || MAIN_CONTAINER);
-
-		if (this.mainContainer.parentNode) {
-			document.body.appendChild(this.mainContainer);
 		}
 	};
 
@@ -201,11 +180,11 @@ var Sushi;
 		this.closeButton = Dom.get(HTML_FACTORY.CLOSE_BUTTON);
 
 		if (this.options.insertCloseButton) {
-			this.modal.prepend(this.closeButton);
+			this.contentContainer.prepend(this.closeButton);
 		}
 
 		// Register close button listener
-		Events(Dom.get("[data-modal-trigger-close]", this.modal))
+		Events(Dom.getAll("[data-modal-trigger-close]", this.modal))
 			.off("Modal.close.click")
 			.on("Modal.close.click", function (event) {
 				event.preventDefault();
@@ -215,14 +194,9 @@ var Sushi;
 
 		// Show modal and overlay
 		Dom.addClass(this.modal, "is-open");
-		Dom.addClass(this.overlay, "is-open");
 
 		// Trigger open events
 		Events(this.modal).trigger("open Modal.open", { modal: this });
-
-		if (Modal.openModals.length === 1) {
-			Events(this.modal).trigger("Modal.first.open", { modal: this });
-		}
 
 		// Update calculated position, if enabled
 		if (this.options.calculatedCentering
@@ -239,7 +213,6 @@ var Sushi;
 		this.isOpen = false;
 
 		Dom.removeClass(this.modal, "is-open");
-		Dom.removeClass(this.overlay, "is-open");
 
 		var duration = Util.Css.getMaxTransitionDuration(this.modal);
 		var overlayDuration = Util.Css.getMaxTransitionDuration(this.overlay);
@@ -254,8 +227,6 @@ var Sushi;
 			if (this.options.lockScrollWhileOpen) {
 				Sushi.BodyScroll.unlock(this.id);
 			}
-
-			Events(this.modal).trigger("Modal.last.close", { modal: this });
 		}
 
 		// @TODO: implement this with transitionend event
@@ -289,11 +260,11 @@ var Sushi;
 		switch (this.options.contentOperation) {
 			default:
 			case "copy":
-				this.modal.innerHTML = this.contentElement.innerHTML;
+				this.contentContainer.innerHTML = this.contentElement.innerHTML;
 				break;
 
 			case "move":
-				this.modal.appendChild(this.contentElement.children);
+				this.contentContainer.appendChild(this.contentElement.children);
 				break;
 		}
 
@@ -307,19 +278,19 @@ var Sushi;
 	proto.updatePosition = function () {
 		var windowWidth = window.innerWidth;
 		var windowHeight = window.innerHeight;
-		var modalStyles = window.getComputedStyle(this.modal);
+		var modalStyles = window.getComputedStyle(this.contentContainer);
 		var modalWidth = modalStyles.width;
 		var modalHeight = modalStyles.height;
 
 		if (this.options.horizontalCentering) {
-			this.modal.style.marginLeft = (
+			this.contentContainer.style.marginLeft = (
 				(windowWidth > modalWidth)
 					? (-1 * Math.ceil(modalWidth / 2)) : (-1 * Math.ceil(windowWidth / 2))
 			);
 		}
 
 		if (this.options.verticalCentering) {
-			this.modal.style.marginTop = (
+			this.contentContainer.style.marginTop = (
 				(windowHeight > modalHeight)
 					? (-1 * Math.ceil(modalHeight / 2)) : (-1 * Math.ceil(windowHeight / 2))
 			);
