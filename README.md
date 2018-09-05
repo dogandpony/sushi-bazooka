@@ -57,7 +57,7 @@ on their use.
 
 ### No JS
 
-[Sushi Base]:(https://github.com/dogandpony/sushi-base)
-[easings.net]:(https://easings.net)
-[clean-css]:(https://github.com/jakubpawlowicz/clean-css)
-[Level 2 Optimizations]:(https://github.com/jakubpawlowicz/clean-css#level-2-optimizations)
+[Sushi Base]:https://github.com/dogandpony/sushi-base
+[easings.net]:https://easings.net
+[clean-css]:https://github.com/jakubpawlowicz/clean-css
+[Level 2 Optimizations]:https://github.com/jakubpawlowicz/clean-css#level-2-optimizations
