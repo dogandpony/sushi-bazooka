@@ -219,10 +219,6 @@ var Sushi;
 		// Trigger open events
 		Events(this.modal).trigger("open Modal.open", { modal: this });
 
-		if (Modal.openModals.length === 1) {
-			Events(this.modal).trigger("Modal.first.open", { modal: this });
-		}
-
 		// Update calculated position, if enabled
 		if (this.options.calculatedCentering
 			&& (this.options.horizontalCentering || this.options.verticalCentering)) {
@@ -253,8 +249,6 @@ var Sushi;
 			if (this.options.lockScrollWhileOpen) {
 				Sushi.BodyScroll.unlock(this.id);
 			}
-
-			Events(this.modal).trigger("Modal.last.close", { modal: this });
 		}
 
 		// @TODO: implement this with transitionend event
