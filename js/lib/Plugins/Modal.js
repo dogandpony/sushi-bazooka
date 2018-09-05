@@ -184,7 +184,7 @@ var Sushi;
 		}
 
 		// Register close button listener
-		Events(Dom.get("[data-modal-trigger-close]", this.modal))
+		Events(Dom.getAll("[data-modal-trigger-close]", this.modal))
 			.off("Modal.close.click")
 			.on("Modal.close.click", function (event) {
 				event.preventDefault();
