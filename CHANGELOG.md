@@ -5,9 +5,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
-## [Unreleased version]
-
-Version currently being worked on. Click the link above for more details.
+## [0.5.0] - 2018-09-05
 
 ### Breaking changes
 #### `Plugins.Modal`
@@ -50,5 +48,6 @@ Version currently being worked on. Click the link above for more details.
 - Fixed offset parameter not working when `triggerPosition` was set to `bottom`.
 
 
-[Unreleased version]: https://github.com/dogandpony/sushi-bazooka/compare/v0.4.7...HEAD
+[Unreleased version]: https://github.com/dogandpony/sushi-bazooka/compare/v0.5.0...HEAD
+[0.5.0]: https://github.com/dogandpony/sushi-bazooka/compare/v0.4.7...v0.5.0
 [0.4.7]: https://github.com/dogandpony/sushi-bazooka/compare/v0.4.6...v0.4.7
