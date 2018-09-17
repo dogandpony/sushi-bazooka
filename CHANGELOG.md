@@ -58,6 +58,24 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - Fixed offset parameter not working when `triggerPosition` was set to `bottom`.
 
 
+## [0.4.6] - 2018-08-24
+
+### Fixed
+- Fix undefined variable in the Actions controller parsing method.
+- Actions controller parsing does not depend on the loading order of the scripts anymore.
+- Fix "double-padding" issue in `width()` and `height()` in `Util.Css`.
+
+### Added
+- Chaser z-index variable setting.
+
+### Changed
+- Chaser now uses object classes instead of component classes.
+- Improved ScrollTrigger event handling by using Actions library methods.
+- ScrollTrigger's `events.before`, `events.while` and `events.after` options to `eventBefore`,
+  `eventWhile` and `eventAfter`, respectively.
+- Rename Actions' `parseControllers()` to `parseController()` and make it public.
+
+
 [Unreleased version]: https://github.com/dogandpony/sushi-bazooka/compare/v0.5.1...HEAD
 [0.5.0]: https://github.com/dogandpony/sushi-bazooka/compare/v0.5.0...v0.5.1
 [0.5.0]: https://github.com/dogandpony/sushi-bazooka/compare/v0.4.7...v0.5.0
