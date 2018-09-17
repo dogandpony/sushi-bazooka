@@ -6,10 +6,10 @@
 	position: absolute;
 	width: 100%;
 	z-index: map_get($zIndexes, "chaser");
+}
 
-	&.is-chasing {
-		position: fixed;
-	}
+.o-chaser.is-chasing {
+	position: fixed;
 }
 
 .o-chaserPlaceholder {

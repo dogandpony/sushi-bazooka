@@ -235,6 +235,10 @@ var Sushi;
 				this.contentElement.appendChild(this.modal.children);
 			}
 
+			if (this.options.populate === "onOpen") {
+				this.clearContent();
+			}
+
 			// Trigger closed event
 			Events(this.modal).trigger("closed Modal.closed", { modal: this });
 		}.bind(this), maxDuration);
@@ -267,6 +271,16 @@ var Sushi;
 				this.contentContainer.appendChild(this.contentElement.children);
 				break;
 		}
+
+		Events(this.modal).trigger("contentchange Modal.contentchange");
+	};
+
+
+	/**
+	 * Clears the modal
+	 */
+	proto.clearContent = function () {
+		this.modal.html = "";
 
 		Events(this.modal).trigger("contentchange Modal.contentchange");
 	};

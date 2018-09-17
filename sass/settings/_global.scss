@@ -190,6 +190,17 @@ $offCanvasOverlayBackground: $globalOverlayBackground !default;
 
 
 
+/* Progressive Images
+   --------------------------- */
+
+$progressiveImageBackground: rgba(0, 0, 0, 0.05) !default;
+
+$progressiveImageThumbnailLoadedTransitionDuration: 0.4s !default;
+
+$progressiveImageImageLoadedTransitionDuration: 1s !default;
+
+
+
 /* Reveal
    --------------------------- */
 

@@ -75,8 +75,10 @@ var Sushi;
 	};
 
 	Sushi.init = function (parentElement) {
-		parsePluggableElements(parentElement);
-		parseActionableElements(parentElement);
+		if (parentElement.querySelectorAll !== void 0) {
+			parsePluggableElements(parentElement);
+			parseActionableElements(parentElement);
+		}
 	};
 
 	Sushi.pluginNamespace = "plugin";

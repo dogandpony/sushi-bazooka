@@ -47,9 +47,9 @@ var Sushi;
 
 	proto.createContainers = function () {
 		this.container = document.createElement("div");
-		this.fill = Dom.parse("<div class='o-progressiveImage__fill'>");
-		this.imageFrame = Dom.parse("<div class='o-progressiveImage__imageFrame'>");
-		this.canvas = Dom.parse("<canvas class='o-progressiveImage__canvas'>");
+		this.fill = Dom.parse("<div class='c-progressiveImage__fill'>");
+		this.imageFrame = Dom.parse("<div class='c-progressiveImage__imageFrame'>");
+		this.canvas = Dom.parse("<canvas class='c-progressiveImage__canvas'>");
 		this.originalImage = document.createElement("img");
 
 		for (var containerAttribute in this.containerAttributes) {
@@ -75,9 +75,9 @@ var Sushi;
 		this.thumbnail.removeAttribute("data-progressive-image-container-attributes");
 		this.thumbnail.removeAttribute("data-progressive-image-image-attributes");
 
-		this.container.classList.add("o-progressiveImage");
-		this.originalImage.classList.add("o-progressiveImage__originalImage");
-		this.thumbnail.classList.add("o-progressiveImage__thumbnail");
+		this.container.classList.add("c-progressiveImage");
+		this.originalImage.classList.add("c-progressiveImage__originalImage");
+		this.thumbnail.classList.add("c-progressiveImage__thumbnail");
 
 		this.thumbnail.insertAdjacentElement("afterend", this.container);
 
