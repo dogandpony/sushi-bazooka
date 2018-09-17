@@ -58,6 +58,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - Fixed offset parameter not working when `triggerPosition` was set to `bottom`.
 
 
-[Unreleased version]: https://github.com/dogandpony/sushi-bazooka/compare/v0.5.0...HEAD
+[Unreleased version]: https://github.com/dogandpony/sushi-bazooka/compare/v0.5.1...HEAD
+[0.5.0]: https://github.com/dogandpony/sushi-bazooka/compare/v0.5.0...v0.5.1
 [0.5.0]: https://github.com/dogandpony/sushi-bazooka/compare/v0.4.7...v0.5.0
 [0.4.7]: https://github.com/dogandpony/sushi-bazooka/compare/v0.4.6...v0.4.7
