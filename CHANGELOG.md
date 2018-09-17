@@ -5,6 +5,19 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
+## [0.5.1] - 2018-09-17
+
+### Changed
+- Improve CHANGELOG file format.
+- `Plugins.ProgressiveImage` 
+  - Plugin now uses component classes (`.c-progressiveImage`) instead of object classes.
+
+### Fixed
+- Links in README file now point to the right URLs.
+- Do not let `Sushi.init()` try to init elements that can't have children.
+- Clear the contents of modals after they close if the content was put there when they opened.
+
+
 ## [0.5.0] - 2018-09-05
 
 ### Breaking changes
