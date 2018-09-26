@@ -76,6 +76,8 @@ var Sushi;
 		this.thumbnail.removeAttribute("data-progressive-image-image-attributes");
 
 		this.container.classList.add("c-progressiveImage");
+		this.container.classList.add("is-loadingThumbnail");
+
 		this.originalImage.classList.add("c-progressiveImage__originalImage");
 		this.thumbnail.classList.add("c-progressiveImage__thumbnail");
 
