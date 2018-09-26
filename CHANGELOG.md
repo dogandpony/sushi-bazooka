@@ -5,6 +5,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
+## [0.5.3] - 2018-09-26
+
+### Fixed
+- `Sushi.Dom.addClass()` failing if class string had tabs and/or line breaks.
+- `Plugins.ProgressiveImage`
+  - Prevent flash of unstyled content while image is loading.
+
+
 ## [0.5.2] - 2018-09-20
 
 ### Added
@@ -15,7 +23,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 - Improve CHANGELOG file format.
-- `Plugins.ProgressiveImage` 
+- `Plugins.ProgressiveImage`
   - Plugin now uses component classes (`.c-progressiveImage`) instead of object classes.
 
 ### Fixed
@@ -82,8 +90,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Rename Actions' `parseControllers()` to `parseController()` and make it public.
 
 
-[Unreleased version]: https://github.com/dogandpony/sushi-bazooka/compare/v0.5.2...HEAD
-[0.5.1]: https://github.com/dogandpony/sushi-bazooka/compare/v0.5.1...v0.5.2
+[Unreleased version]: https://github.com/dogandpony/sushi-bazooka/compare/v0.5.3...HEAD
+[0.5.3]: https://github.com/dogandpony/sushi-bazooka/compare/v0.5.2...v0.5.3
+[0.5.2]: https://github.com/dogandpony/sushi-bazooka/compare/v0.5.1...v0.5.2
 [0.5.1]: https://github.com/dogandpony/sushi-bazooka/compare/v0.5.0...v0.5.1
 [0.5.0]: https://github.com/dogandpony/sushi-bazooka/compare/v0.4.7...v0.5.0
 [0.4.7]: https://github.com/dogandpony/sushi-bazooka/compare/v0.4.6...v0.4.7
