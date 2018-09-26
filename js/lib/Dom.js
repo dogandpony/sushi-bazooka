@@ -33,10 +33,16 @@ var Sushi;
 			}
 		}
 		else {
-			var classNamesArray = Array.isArray(classNames) ? classNames : classNames.split(" ");
+			var classNamesArray = (Array.isArray(classNames)
+				? classNames
+				: classNames
+					.replace(/[\t\n]/, " ")
+					.replace(/\s+/, " ")
+					.split(" ")
+			);
 
 			for (var j = 0; j < classNamesArray.length; j++) {
-				var className = classNamesArray[j];
+				var className = classNamesArray[j].trim();
 
 				if (className !== "") {
 					target.classList[method](className);
