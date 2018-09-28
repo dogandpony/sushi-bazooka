@@ -180,7 +180,7 @@ var Sushi;
 		this.closeButton = Dom.get(HTML_FACTORY.CLOSE_BUTTON);
 
 		if (this.options.insertCloseButton) {
-			this.contentContainer.prepend(this.closeButton);
+			this.contentContainer.append(this.closeButton);
 		}
 
 		// Register close button listener
