@@ -152,6 +152,10 @@ var Sushi;
 			&& (this.options.horizontalCentering || this.options.verticalCentering)) {
 			this.enableCalculatedCentering();
 		}
+
+		if (this.modal.classList.contains("is-open")) {
+			this.open();
+		}
 	};
 
 
