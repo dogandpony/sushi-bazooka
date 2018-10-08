@@ -18,11 +18,11 @@ var Sushi;
 		CLOSE_BUTTON: "<a href=\"#!\" data-modal-trigger-close class=\"c-modal__close\"/>",
 	};
 
-	var CENTERING_CLASSES = {
-		CALCULATED_HORIZONTAL: "c-modalContainer--calculatedHCenter",
-		CALCULATED_VERTICAL: "c-modalContainer--calculatedVCenter",
-		HORIZONTAL: "c-modalContainer--hCenter",
-		VERTICAL: "c-modalContainer--vCenter",
+	var CENTERING_MODIFIERS = {
+		calculatedHorizontal: "calculatedHCenter",
+		calculatedVertical: "calculatedVCenter",
+		horizontal: "hCenter",
+		vertical: "vCenter",
 	};
 
 	var Modal = function (triggerElement, options) {
@@ -93,20 +93,20 @@ var Sushi;
 
 		if (this.options.calculatedCentering) {
 			if (this.options.horizontalCentering) {
-				classes.push(CENTERING_CLASSES.CALCULATED_HORIZONTAL);
+				classes.push("c-modal--" + CENTERING_MODIFIERS.calculatedHorizontal);
 			}
 
 			if (this.options.verticalCentering) {
-				classes.push(CENTERING_CLASSES.CALCULATED_VERTICAL);
+				classes.push("c-modal--" + CENTERING_MODIFIERS.calculatedVertical);
 			}
 		}
 		else {
 			if (this.options.horizontalCentering) {
-				classes.push(CENTERING_CLASSES.HORIZONTAL);
+				classes.push("c-modal--" + CENTERING_MODIFIERS.horizontal);
 			}
 
 			if (this.options.verticalCentering) {
-				classes.push(CENTERING_CLASSES.VERTICAL);
+				classes.push("c-modal--" + CENTERING_MODIFIERS.vertical);
 			}
 		}
 
