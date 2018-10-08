@@ -134,9 +134,17 @@ var Sushi;
 			this.updateContent();
 		}
 
-		this.overlay.appendChild(this.contentContainer);
-		this.modal.appendChild(this.overlay);
-		this.appendTo.appendChild(this.modal);
+		if (this.contentContainer.parent !== this.overlay) {
+			this.overlay.appendChild(this.contentContainer);
+		}
+
+		if (this.overlay.parent !== this.modal) {
+			this.modal.appendChild(this.overlay);
+		}
+
+		if (this.modal.parent !== this.appendTo) {
+			this.appendTo.appendChild(this.modal);
+		}
 
 		// Only register listeners that call updatePosition() if the modal does horizontal or
 		// vertical auto-centering
