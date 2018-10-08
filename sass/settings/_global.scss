@@ -141,7 +141,7 @@ $modalBorderRadius: $globalBorderRadius !default;
 /**
  * Padding of the modal
  */
-$modalPadding: ($globalSpacingXxs / 2) 0 !default;
+$modalPadding: $globalSpacingXs $globalSpacingSm !default;
 
 /**
  * Background property of the modal
