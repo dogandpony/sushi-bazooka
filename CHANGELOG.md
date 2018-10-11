@@ -36,8 +36,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 - `Sushi.Dom.addClass()` failing if class string had tabs and/or line breaks.
-- **Plugins.ProgressiveImage**
-  - Prevent flash of unstyled content while image is loading.
+- **Plugins.ProgressiveImage**: Prevent flash of unstyled content while image is loading.
 
 
 ## [0.5.2] - 2018-09-20
@@ -48,15 +47,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [0.5.1] - 2018-09-17
 
-### Changed
-- Improve CHANGELOG file format.
-- `Plugins.ProgressiveImage`
-  - Plugin now uses component classes (`.c-progressiveImage`) instead of object classes.
-
 ### Fixed
 - Links in README file now point to the right URLs.
 - Do not let `Sushi.init()` try to init elements that can't have children.
 - Clear the contents of modals after they close if the content was put there when they opened.
+
+### Changed
+- Improve CHANGELOG file format.
+- **Plugins.ProgressiveImage**: Plugin now uses component classes (`.c-progressiveImage`) instead of 
+  object classes.
 
 
 ## [0.5.0] - 2018-09-05
@@ -93,10 +92,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [0.4.7] - 2018-08-31
 
 ### Fixed
-- **Plugins.Chaser**
-  - Fixed placeholder height setter not setting any height.
-- **Plugins.ScrollTrigger**
-  - Fixed offset parameter not working when `triggerPosition` was set to `bottom`.
+- **Plugins.Chaser**: Fixed placeholder height setter not setting any height.
+- **Plugins.ScrollTrigger**: Fixed offset parameter not working when `triggerPosition` was set to 
+  `bottom`.
 
 
 ## [0.4.6] - 2018-08-24
@@ -106,15 +104,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Actions controller parsing does not depend on the loading order of the scripts anymore.
 - Fix "double-padding" issue in `width()` and `height()` in `Util.Css`.
 
-### Added
-- Chaser z-index variable setting.
-
 ### Changed
 - Chaser now uses object classes instead of component classes.
 - Improved ScrollTrigger event handling by using Actions library methods.
 - ScrollTrigger's `events.before`, `events.while` and `events.after` options to `eventBefore`,
   `eventWhile` and `eventAfter`, respectively.
 - Rename Actions' `parseControllers()` to `parseController()` and make it public.
+
+### Added
+- Chaser z-index variable setting.
 
 
 [Unreleased version]: https://github.com/dogandpony/sushi-bazooka/compare/v0.6.0...HEAD
