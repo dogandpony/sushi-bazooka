@@ -2,8 +2,8 @@
 >Component-based JavaScript library
 
 Sushi Bazooka has a set of reusable, little opinionated components — what means they will be most
-likely be missing styling until you add them yourself. Opinionated properties will be commented-out 
-in the code to serve as examples of where you should be styling things.
+likely be missing styling until you add it yourself. Opinionated properties will be commented-out in
+the code to serve as examples of where you should be styling things.
 
 
 ### Including your styles
