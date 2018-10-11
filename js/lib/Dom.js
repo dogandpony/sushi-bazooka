@@ -246,19 +246,26 @@ var Sushi;
 	 *
 	 * If you are appending a single element just use native .append() instead.
 	 *
-	 * @param {HTMLElement | Node | Array | NodeList | HTMLCollection} child Elements to append
-	 * @param {HTMLElement} parent Parent element where elements will be appended
+	 * @param {HTMLElement | Node | Array | NodeList | HTMLCollection} elements Elements to append
+	 * @param {HTMLElement} parentElement Parent element where elements will be appended
 	 *
 	 * @return {void}
 	 */
-	Dom.append = function (child, parent) {
-		if (!Dom.isIterable(child)) {
-			child = [child];
+	Dom.append = function (elements, parentElement) {
+		if (elements instanceof HTMLCollection) {
+			elements = Array.prototype.slice.call(elements);
+		}
+		else {
+			elements = Dom.isIterable(elements) ? elements : [elements];
 		}
 
-		while (child.length > 0) {
-			parent.append(child.shift());
-		}
+		var documentFragment = document.createDocumentFragment();
+
+		elements.forEach(function (element) {
+			documentFragment.appendChild(element);
+		});
+
+		parentElement.appendChild(documentFragment);
 	};
 
 	/**
