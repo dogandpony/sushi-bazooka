@@ -6,12 +6,12 @@
    ============================================================================================== */
 
 .c-modal {
-	visibility: hidden;
 	position: fixed;
 	top: 0;
 	right: 0;
 	bottom: 0;
 	left: 0;
+	visibility: hidden;
 	z-index: map_get($zIndexes, "modal");
 }
 
@@ -22,13 +22,13 @@
    ============================================================================================== */
 
 .c-modal__overlay {
-	visibility: hidden;
 	position: absolute;
 	top: 0;
 	right: 0;
 	bottom: 0;
 	left: 0;
 	opacity: 0;
+	visibility: hidden;
 	background: $modalOverlayBackground;
 	transition: visibility $modalTransitionDuration $modalTransitionDuration,
 		opacity $modalTransitionDuration $modalTransitionTimingFunction $modalTransitionDuration;
@@ -49,7 +49,7 @@
 /* Content Container
    ============================================================================================== */
 
-.c-modal__content {
+.c-modal__contentWrapper {
 	position: relative;
 	visibility: hidden;
 	padding: $modalPadding;
@@ -61,12 +61,12 @@
 		opacity $modalTransitionDuration $modalTransitionTimingFunction;
 }
 
-.c-modal.is-open .c-modal__content {
+.c-modal.is-open .c-modal__contentWrapper {
 	visibility: visible;
 	opacity: 1;
 }
 
-.c-modal--full .c-modal__content {
+.c-modal--full .c-modal__contentWrapper {
 	width: 100%;
 	height: 100%;
 	max-width: none;
@@ -89,32 +89,14 @@
 	align-content: flex-start;
 }
 
-.c-modal--hCenter .c-modal__content {
+.c-modal--hCenter .c-modal__contentWrapper {
 	margin-right: auto;
 	margin-left: auto;
 }
 
-.c-modal--vCenter .c-modal__content {
+.c-modal--vCenter .c-modal__contentWrapper {
 	margin-top: auto;
 	margin-bottom: auto;
-}
-
-
-
-/* JavaScript centering
-   --------------------------- */
-
-.c-modal--calculatedHCenter .c-modal__content,
-.c-modal--calculatedVCenter .c-modal__content {
-	position: absolute;
-}
-
-.c-modal--calculatedHCenter .c-modal__content {
-	left: 50%;
-}
-
-.c-modal--calculatedVCenter .c-modal__content {
-	top: 50%;
 }
 
 

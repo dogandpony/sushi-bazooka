@@ -175,7 +175,7 @@ var Sushi;
 			return Dom.queryAll("#" + context.id + " " + selector, document, onlyOne);
 		}
 
-		var isSimpleSelector = (/[^a-zA-Z#.]/.test(selector) === false);
+		var isSimpleSelector = (/[^a-zA-Z#.\-_]/.test(selector) === false);
 		var isIdSelector = (isSimpleSelector && (selector.indexOf("#") === 0));
 		var isClassSelector = (isSimpleSelector && !isIdSelector && (selector.indexOf(".") === 0));
 		var isTagSelector = (isSimpleSelector && !isIdSelector && !isClassSelector);
@@ -238,6 +238,66 @@ var Sushi;
 				fn.call(element);
 			}
 		}
+	};
+
+
+	/**
+	 * Appends an arbitrary number of elements to a parent
+	 *
+	 * If you are appending a single element just use native .append() instead.
+	 *
+	 * @param {HTMLElement | Node | Array | NodeList | HTMLCollection} elements Elements to append
+	 * @param {HTMLElement} parentElement Parent element where elements will be appended
+	 *
+	 * @return {void}
+	 */
+	Dom.append = function (elements, parentElement) {
+		if (elements instanceof HTMLCollection) {
+			elements = Array.prototype.slice.call(elements);
+		}
+		else {
+			elements = Dom.isIterable(elements) ? elements : [elements];
+		}
+
+		var documentFragment = document.createDocumentFragment();
+
+		elements.forEach(function (element) {
+			documentFragment.appendChild(element);
+		});
+
+		parentElement.appendChild(documentFragment);
+	};
+
+	/**
+	 * Clones a given target
+	 *
+	 * @param {HTMLElement | Node | Array} target Target to be cloned
+	 * @param {Boolean} cloneEvents Whether or not to also clone events
+	 * @returns {HTMLElement | Node | Array} Cloned target
+	 */
+	Dom.clone = function (target, cloneEvents) {
+		cloneEvents = cloneEvents || false;
+
+		var clonedTarget = null;
+
+		if (Dom.isIterable(target)) {
+			clonedTarget = [];
+
+			for (var i = 0; i < target.length; i++) {
+				var targetItem = target[i];
+
+				clonedTarget.push(Dom.clone(targetItem));
+			}
+		}
+		else {
+			clonedTarget = target.cloneNode(true);
+
+			if (cloneEvents === true) {
+				Sushi.Events.clone(target, clonedTarget);
+			}
+		}
+
+		return clonedTarget;
 	};
 
 	/**

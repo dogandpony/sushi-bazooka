@@ -4,12 +4,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [0.6.0] - 2018-10-11
+
+### Changed
+- **Modal**
+  - `modal`, `overlay` and `contentContainer` options have been replaced with the option `template`.
+  - `modal` property has been renamed to `element`.
+
+### Removed
+- **Modal**
+  - Extended event triggers like `Modal.open` and `Modal.close`.
+
+### Fixed
+- **Modal**
+  - `copy` and `move` content operations, which would sometimes break depending on the type of data
+    passed to the `content` option.
+
 
 ## [0.5.3] - 2018-09-26
 
 ### Fixed
 - `Sushi.Dom.addClass()` failing if class string had tabs and/or line breaks.
-- `Plugins.ProgressiveImage`
+- **Plugins.ProgressiveImage**
   - Prevent flash of unstyled content while image is loading.
 
 
@@ -35,7 +51,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [0.5.0] - 2018-09-05
 
 ### Breaking changes
-- `Plugins.Modal`
+- **Plugins.Modal**
   - `.c-modals` (aka `mainContainer`) functionality has been removed. Now every modal has its own
     container, which by default is appended to the `<body>`.
   - **JavaScript**
@@ -66,9 +82,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [0.4.7] - 2018-08-31
 
 ### Fixed
-- `Plugins.Chaser`
+- **Plugins.Chaser**
   - Fixed placeholder height setter not setting any height.
-- `Plugins.ScrollTrigger`
+- **Plugins.ScrollTrigger**
   - Fixed offset parameter not working when `triggerPosition` was set to `bottom`.
 
 
@@ -90,7 +106,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Rename Actions' `parseControllers()` to `parseController()` and make it public.
 
 
-[Unreleased version]: https://github.com/dogandpony/sushi-bazooka/compare/v0.5.3...HEAD
+[Unreleased version]: https://github.com/dogandpony/sushi-bazooka/compare/v0.6.0...HEAD
+[0.6.0]: https://github.com/dogandpony/sushi-bazooka/compare/v0.5.3...v0.6.0
 [0.5.3]: https://github.com/dogandpony/sushi-bazooka/compare/v0.5.2...v0.5.3
 [0.5.2]: https://github.com/dogandpony/sushi-bazooka/compare/v0.5.1...v0.5.2
 [0.5.1]: https://github.com/dogandpony/sushi-bazooka/compare/v0.5.0...v0.5.1
