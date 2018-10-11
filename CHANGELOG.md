@@ -6,19 +6,30 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [0.6.0] - 2018-10-11
 
+### Fixed
+- **Dom**
+  - Re-added `Dom.append()` and `Dom.clone()`.
+  - Fixed `Dom.append()` failing to append all elements if they come from a document fragment.
+  - Fixed "single selector" conditional when valid class selectors where passed straight to 
+- **Plugins.Modal**: fixed `copy` and `move` content operations, which would sometimes break 
+  depending on the type of data passed to the `content` option.
+
 ### Changed
-- **Modal**
+- **Plugins.Modal**
   - `modal`, `overlay` and `contentContainer` options have been replaced with the option `template`.
   - `modal` property has been renamed to `element`.
+  - Increased modal content padding.
+  - Set modal with to 800px.
 
 ### Removed
-- **Modal**
+- **Plugins.Modal**
   - Extended event triggers like `Modal.open` and `Modal.close`.
+  - Removed unused `size` parameter.
+  - Removed `calculatedCentering` option. Only flexbox-based centering is supported from now on.
 
-### Fixed
-- **Modal**
-  - `copy` and `move` content operations, which would sometimes break depending on the type of data
-    passed to the `content` option.
+### Added
+- **Plugins.Modal**: Added feature to use a pre-rendered modal template.
+- Added `ChildNode.remove()` polyfill.
 
 
 ## [0.5.3] - 2018-09-26
