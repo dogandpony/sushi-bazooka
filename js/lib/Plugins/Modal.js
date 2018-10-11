@@ -61,7 +61,6 @@ var Sushi;
 		populate: "onOpen", // "onCreate", false
 		closeOnOverlayClick: true,
 		closeOnEscape: true,
-		size: "",
 
 		// Centering
 		horizontalCentering: true,
@@ -94,10 +93,6 @@ var Sushi;
 
 		if (this.options.verticalCentering) {
 			classes.push("c-modal--" + CENTERING_MODIFIERS.vertical);
-		}
-
-		if (this.options.size !== "") {
-			classes.push("c-modal--" + this.options.size);
 		}
 
 		classes = classes.concat(this.options.extraClasses);
