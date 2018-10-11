@@ -256,8 +256,8 @@ var Sushi;
 			child = [child];
 		}
 
-		for (var i = 0; i < child.length; i++) {
-			parent.append(child[i]);
+		while (child.length > 0) {
+			parent.append(child.shift());
 		}
 	};
 
