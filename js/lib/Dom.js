@@ -175,7 +175,7 @@ var Sushi;
 			return Dom.queryAll("#" + context.id + " " + selector, document, onlyOne);
 		}
 
-		var isSimpleSelector = (/[^a-zA-Z#.]/.test(selector) === false);
+		var isSimpleSelector = (/[^a-zA-Z#.\-_]/.test(selector) === false);
 		var isIdSelector = (isSimpleSelector && (selector.indexOf("#") === 0));
 		var isClassSelector = (isSimpleSelector && !isIdSelector && (selector.indexOf(".") === 0));
 		var isTagSelector = (isSimpleSelector && !isIdSelector && !isClassSelector);
