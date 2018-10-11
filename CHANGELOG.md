@@ -115,6 +115,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Chaser z-index variable setting.
 
 
+## [0.4.5] - 2018-08-21
+
+### Fixed
+- **BodyScroll**
+  - Fix class names generated in the custom style tag.
+  - Remove dependency of specific script load order.
+
+### Added
+- **Plugins.Modal**: Check if BodyScroll library exists and warn user if it doesn't.
+
+
 [Unreleased version]: https://github.com/dogandpony/sushi-bazooka/compare/v0.6.0...HEAD
 [0.6.0]: https://github.com/dogandpony/sushi-bazooka/compare/v0.5.3...v0.6.0
 [0.5.3]: https://github.com/dogandpony/sushi-bazooka/compare/v0.5.2...v0.5.3
@@ -123,3 +134,4 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 [0.5.0]: https://github.com/dogandpony/sushi-bazooka/compare/v0.4.7...v0.5.0
 [0.4.7]: https://github.com/dogandpony/sushi-bazooka/compare/v0.4.6...v0.4.7
 [0.4.6]: https://github.com/dogandpony/sushi-bazooka/compare/v0.4.5...v0.4.6
+[0.4.5]: https://github.com/dogandpony/sushi-bazooka/compare/v0.4.4...v0.4.5
