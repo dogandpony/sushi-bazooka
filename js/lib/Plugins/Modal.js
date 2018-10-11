@@ -19,8 +19,6 @@ var Sushi;
 	};
 
 	var CENTERING_MODIFIERS = {
-		calculatedHorizontal: "calculatedHCenter",
-		calculatedVertical: "calculatedVCenter",
 		horizontal: "hCenter",
 		vertical: "vCenter",
 	};
@@ -68,7 +66,6 @@ var Sushi;
 		// Centering
 		horizontalCentering: true,
 		verticalCentering: false,
-		calculatedCentering: false,
 
 		// Containers
 		modal: "<div class=\"c-modal\">",
@@ -91,23 +88,12 @@ var Sushi;
 	proto.create = function () {
 		var classes = [];
 
-		if (this.options.calculatedCentering) {
-			if (this.options.horizontalCentering) {
-				classes.push("c-modal--" + CENTERING_MODIFIERS.calculatedHorizontal);
-			}
-
-			if (this.options.verticalCentering) {
-				classes.push("c-modal--" + CENTERING_MODIFIERS.calculatedVertical);
-			}
+		if (this.options.horizontalCentering) {
+			classes.push("c-modal--" + CENTERING_MODIFIERS.horizontal);
 		}
-		else {
-			if (this.options.horizontalCentering) {
-				classes.push("c-modal--" + CENTERING_MODIFIERS.horizontal);
-			}
 
-			if (this.options.verticalCentering) {
-				classes.push("c-modal--" + CENTERING_MODIFIERS.vertical);
-			}
+		if (this.options.verticalCentering) {
+			classes.push("c-modal--" + CENTERING_MODIFIERS.vertical);
 		}
 
 		if (this.options.size !== "") {
@@ -144,13 +130,6 @@ var Sushi;
 
 		if (this.modal.parent !== this.appendTo) {
 			this.appendTo.appendChild(this.modal);
-		}
-
-		// Only register listeners that call updatePosition() if the modal does horizontal or
-		// vertical auto-centering
-		if (this.options.calculatedCentering
-			&& (this.options.horizontalCentering || this.options.verticalCentering)) {
-			this.enableCalculatedCentering();
 		}
 
 		if (this.modal.classList.contains("is-open")) {
@@ -209,12 +188,6 @@ var Sushi;
 
 		// Trigger open events
 		Events(this.modal).trigger("open Modal.open", { modal: this });
-
-		// Update calculated position, if enabled
-		if (this.options.calculatedCentering
-			&& (this.options.horizontalCentering || this.options.verticalCentering)) {
-			this.updatePosition();
-		}
 	};
 
 
@@ -345,25 +318,6 @@ var Sushi;
 		}
 	};
 
-
-	/**
-	 * Register listeners
-	 */
-	proto.enableCalculatedCentering = function () {
-		Events(this.modal)
-			.on("Modal.open", function () {
-				Events(window).on(this.id + ".Modal.resize", function () {
-					if (this.isOpen) {
-						this.updatePosition();
-					}
-				});
-
-				this.updatePosition();
-			}.bind(this))
-			.on("Modal.close", function () {
-				Events(window).off(this.id + ".Modal.resize");
-			});
-	};
 
 
 	/**
