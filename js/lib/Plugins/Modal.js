@@ -1,6 +1,46 @@
 /* ==============================================================================================
  * MODAL
  *
+ * How To Use
+ * Create an element and add data-plugin="Modal" to it. A click listener will be registered to that
+ * element if it exists in the page.
+ *
+ * Options
+ * - content: HTMLElement or selector string to be used in the modal content. It may be moved or
+ *   copied depending on the `contentOperation` option.
+ * - contentOperation: How to handle the content passed by the `content` option. Defaults to `copy`.
+ *   Available options:
+ *     - `copy` (default): copies the content to the modal. This operation does not copy events that
+ *       might be registered throughout the content elements.
+ *     - `move`: Moves the entire content element to the modal. This will also move all events that
+ *       might be registered throughout the content elements. Only works if the parsed value of the
+ *       `content` option is an HTMLElement (i.e. not an HTMLCollection or NodeList).
+ * - lockScroll: Makes the modal lock the page scroll while open. Defaults to `false`.
+ * - closeOnOverlayClick: Makes the modal close itself when the overlay is clicked. Defaults to
+ *   `true`.
+ * - closeOnEscape: Makes the modal close itself when the Escape key is hit. Defaults to `true`.
+ * - extraClasses: Array or space-separated list of classes to be applied to the class list of the
+ *   modal element.
+ * - populate: Changes the moment when the modal content is populated. Defaults to `onCreate`.
+ *   Available options:
+ *   - `onCreate` (default): Populates the modal once, at modal markup creation.
+ *   - `onOpen`: Populates the modal every time it's open. Useful for dynamic content.
+ *   - `false`: Never populates the modal. Useful for pre-rendered modals.
+ * - horizontalCentering: Whether to horizontally center the modal or not. Defaults to `true`.
+ * - verticalCentering: Whether to vertically center the modal or not. Defaults to `false`.
+ * - template: HTML string, selector string or HTMLElement to be used as the modal template. If it
+ *   is an HTMLElement it will be appended to the element set in `appendTo` option.
+ * - appendTo: Container to append the modal to. Set to `false` to not move the modal if it is
+ *   already in the page.
+ *
+ * Tips
+ * - I want to create a modal that can't be closed
+ *   A modal can't close if there are no elements with "data-modal-close" attribute inside it and if
+ *   the `closeOnEscape` option is set to `false`.
+ * - I want to use a pre-rendered modal markup
+ *   1. Set the `template` option to a selector or the actual pre-rendered HTML string.
+ *   2. Set the `appendTo` option to `false` if you'd like the modal element to stay where it is.
+ *
  * "What a fool believes"
  * ============================================================================================== */
 
@@ -14,13 +54,22 @@ var Sushi;
 	var Events = Sushi.Events;
 	var Util = Sushi.Util;
 
-	var HTML_FACTORY = {
-		CLOSE_BUTTON: "<a href=\"#!\" data-modal-trigger-close class=\"c-modal__close\"/>",
-	};
-
 	var CENTERING_MODIFIERS = {
 		horizontal: "hCenter",
 		vertical: "vCenter",
+	};
+
+	var parseTarget = function (target) {
+		var element = Dom.get(target);
+
+		if (
+			(element !== null)
+			&& ["script", "template"].includes(element.tagName.toLowerCase())
+		) {
+			element = Dom.parseAll(element.innerHTML);
+		}
+
+		return element;
 	};
 
 	var Modal = function (triggerElement, options) {
@@ -29,18 +78,26 @@ var Sushi;
 		this.isOpen = false;
 
 		// Cache objects
-		this.modal = Dom.get(this.options.modal);
-		this.overlay = Dom.get(this.options.overlay);
-		this.contentContainer = Dom.get(this.options.contentContainer);
-		this.contentElement = Dom.get(this.options.content);
+		var template = parseTarget(this.options.template);
+
+		this.element = template.classList.contains("c-modal")
+			? template
+			: template.getElementsByClassName("c-modal").item(0)
+		;
+		this.overlay = this.element.getElementsByClassName("c-modal__overlay").item(0);
+		this.content = this.element.getElementsByClassName("c-modal__content").item(0);
+
+		this.contentSource = parseTarget(this.options.content);
 		this.appendTo = Dom.get(this.options.appendTo);
 
-		Sushi.addPluginInstanceTo(this.modal, this);
+		this.validateOptions();
+
+		Sushi.addPluginInstanceTo(this.element, this);
 
 		this.create();
 
 		// Register click listener on triggering element
-		if (this.options.registerClickListener) {
+		if (this.triggerElement.parentElement !== null) {
 			Events(this.triggerElement).on("Modal.click", function (event) {
 				event.preventDefault();
 
@@ -53,23 +110,27 @@ var Sushi;
 
 	Modal.DEFAULTS = {
 		content: "",
-		extraClasses: "",
 		contentOperation: "copy",
-		registerClickListener: true,
-		insertCloseButton: true,
-		lockScrollWhileOpen: false,
-		populate: "onOpen", // "onCreate", false
+		lockScroll: false,
 		closeOnOverlayClick: true,
 		closeOnEscape: true,
+		extraClasses: "",
+		populate: "onOpen", // "onCreate", false
 
 		// Centering
 		horizontalCentering: true,
 		verticalCentering: false,
 
 		// Containers
-		modal: "<div class=\"c-modal\">",
-		overlay: "<div class=\"c-modal__overlay\">",
-		contentContainer: "<div class=\"c-modal__content\">",
+		template: ""
+			+ "<div class=\"c-modal\">"
+			+ "    <div class=\"c-modal__overlay\">"
+			+ "        <div class=\"c-modal__contentWrapper\">"
+			+ "            <div class=\"c-modal__content\"></div>"
+			+ "            <a href=\"#!\" class=\"c-modal__close\" data-modal-close></a>"
+			+ "        </div>"
+			+ "    </div>"
+			+ "</div>",
 		appendTo: document.body,
 	};
 
@@ -80,6 +141,23 @@ var Sushi;
 	var proto = Modal.prototype;
 
 	proto.constructor = Modal;
+
+	proto.validateOptions = function () {
+		if (
+			(this.options.contentOperation === "move")
+			&& !(this.contentSource instanceof HTMLElement)
+		) {
+			// eslint-disable-next-line no-console
+			console.warn(
+				"Modal doesn't support the `move` content operation when the content is not an"
+				+ " HTMLElement.\nPlease wrap your content within a tag or add"
+				+ " data-modal-content=\"outer\" attribute to the tag you are using.\nThe content"
+				+ " operation will be set to `copy`."
+			);
+
+			this.options.contentOperation = "copy";
+		}
+	};
 
 	/**
 	 * Create the modal and overlay HTML and append it to the body
@@ -97,7 +175,11 @@ var Sushi;
 
 		classes = classes.concat(this.options.extraClasses);
 
-		Dom.addClass(this.modal, classes);
+		Dom.addClass(this.element, classes);
+
+		if (this.element.parentElement === null) {
+			this.appendTo.appendChild(this.element);
+		}
 
 		// Register overlay close listener
 		if (this.options.closeOnOverlayClick) {
@@ -115,19 +197,7 @@ var Sushi;
 			this.updateContent();
 		}
 
-		if (this.contentContainer.parent !== this.overlay) {
-			this.overlay.appendChild(this.contentContainer);
-		}
-
-		if (this.overlay.parent !== this.modal) {
-			this.modal.appendChild(this.overlay);
-		}
-
-		if (this.modal.parent !== this.appendTo) {
-			this.appendTo.appendChild(this.modal);
-		}
-
-		if (this.modal.classList.contains("is-open")) {
+		if (this.element.classList.contains("is-open")) {
 			this.open();
 		}
 	};
@@ -160,17 +230,10 @@ var Sushi;
 		}
 
 		// Force redraw so animations can take place
-		window.getComputedStyle(this.modal).height;
-
-		// Add a close button (if enabled)
-		this.closeButton = Dom.get(HTML_FACTORY.CLOSE_BUTTON);
-
-		if (this.options.insertCloseButton) {
-			this.contentContainer.append(this.closeButton);
-		}
+		window.getComputedStyle(this.element).height;
 
 		// Register close button listener
-		Events(Dom.getAll("[data-modal-trigger-close]", this.modal))
+		Events(this.element.querySelectorAll("[data-modal-close]"))
 			.off("Modal.close.click")
 			.on("Modal.close.click", function (event) {
 				event.preventDefault();
@@ -179,10 +242,10 @@ var Sushi;
 			}.bind(this));
 
 		// Show modal and overlay
-		Dom.addClass(this.modal, "is-open");
+		Dom.addClass(this.element, "is-open");
 
 		// Trigger open events
-		Events(this.modal).trigger("open Modal.open", { modal: this });
+		Events(this.element).trigger("open", { modal: this });
 	};
 
 
@@ -192,15 +255,15 @@ var Sushi;
 	proto.close = function () {
 		this.isOpen = false;
 
-		Dom.removeClass(this.modal, "is-open");
+		Dom.removeClass(this.element, "is-open");
 
-		var duration = Util.Css.getMaxTransitionDuration(this.modal);
+		var duration = Util.Css.getMaxTransitionDuration(this.element);
 		var overlayDuration = Util.Css.getMaxTransitionDuration(this.overlay);
 		var maxDuration = Math.max(duration, overlayDuration, 0);
 
 		this.removeFromOpenModalsList();
 
-		Events(this.modal).trigger("close Modal.close", { modal: this });
+		Events(this.element).trigger("close", { modal: this });
 
 		// Release body scroll if this is the last modal open
 		if (Modal.openModals.length === 0) {
@@ -211,16 +274,18 @@ var Sushi;
 
 		// @TODO: implement this with transitionend event
 		setTimeout(function () {
-			if (this.options.contentOperation === "move") {
-				this.contentElement.appendChild(this.modal.children);
-			}
-
 			if (this.options.populate === "onOpen") {
 				this.clearContent();
+
+				if (this.options.contentOperation === "move") {
+					this.contentSourcePlaceholder
+						.insertAdjacentElement("afterend", this.contentSource);
+					this.contentSourcePlaceholder.remove();
+				}
 			}
 
 			// Trigger closed event
-			Events(this.modal).trigger("closed Modal.closed", { modal: this });
+			Events(this.element).trigger("closed", { modal: this });
 		}.bind(this), maxDuration);
 	};
 
@@ -239,20 +304,30 @@ var Sushi;
 	 * Updates the content inside the modal
 	 */
 	proto.updateContent = function () {
-		this.modal.html = "";
+		this.content.innerHTML = "";
 
 		switch (this.options.contentOperation) {
 			default:
 			case "copy":
-				this.contentContainer.innerHTML = this.contentElement.innerHTML;
+				Dom.append(Dom.clone(this.contentSource, true), this.content);
+
 				break;
 
 			case "move":
-				this.contentContainer.appendChild(this.contentElement.children);
+				if (this.options.populate === "onOpen") {
+					this.contentSourcePlaceholder = document.createElement("div");
+					this.contentSourcePlaceholder.dataset.modalContentPlaceholder = "";
+
+					this.contentSource
+						.insertAdjacentElement("afterend", this.contentSourcePlaceholder);
+				}
+
+				Dom.append(this.contentSource, this.content);
+
 				break;
 		}
 
-		Events(this.modal).trigger("contentchange Modal.contentchange");
+		Events(this.element).trigger("contentchange");
 	};
 
 
@@ -260,9 +335,9 @@ var Sushi;
 	 * Clears the modal
 	 */
 	proto.clearContent = function () {
-		this.modal.html = "";
+		this.content.innerHTML = "";
 
-		Events(this.modal).trigger("contentchange Modal.contentchange");
+		Events(this.element).trigger("contentchange");
 	};
 
 
@@ -272,19 +347,19 @@ var Sushi;
 	proto.updatePosition = function () {
 		var windowWidth = window.innerWidth;
 		var windowHeight = window.innerHeight;
-		var modalStyles = window.getComputedStyle(this.contentContainer);
+		var modalStyles = window.getComputedStyle(this.content);
 		var modalWidth = modalStyles.width;
 		var modalHeight = modalStyles.height;
 
 		if (this.options.horizontalCentering) {
-			this.contentContainer.style.marginLeft = (
+			this.content.style.marginLeft = (
 				(windowWidth > modalWidth)
 					? (-1 * Math.ceil(modalWidth / 2)) : (-1 * Math.ceil(windowWidth / 2))
 			);
 		}
 
 		if (this.options.verticalCentering) {
-			this.contentContainer.style.marginTop = (
+			this.content.style.marginTop = (
 				(windowHeight > modalHeight)
 					? (-1 * Math.ceil(modalHeight / 2)) : (-1 * Math.ceil(windowHeight / 2))
 			);
