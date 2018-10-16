@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+
+## [0.6.1] - 2018-10-16
+
+### Fixed
+- **Plugins.ScrollTrigger**: 
+  - Element position is now checked when the plugin inits, and not only when the scroll event is 
+    fired.
+  - Make sure `disable()` only disables the current instance instead of all instances.
+
+### Changed
+- **Plugins.ScrollTrigger**: Changes the event functions argument list to only one argument: the
+  current plugin instance. 
+
+### Added
+- **Plugins.ProgressiveImage**: Added `lazyload` option to load original images only when the 
+  browser scroll has hit their container.
+
+
 ## [0.6.0] - 2018-10-11
 
 ### Fixed
@@ -126,7 +144,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - **Plugins.Modal**: Check if BodyScroll library exists and warn user if it doesn't.
 
 
-[Unreleased version]: https://github.com/dogandpony/sushi-bazooka/compare/v0.6.0...HEAD
+[Unreleased version]: https://github.com/dogandpony/sushi-bazooka/compare/v0.6.1...HEAD
+[0.6.1]: https://github.com/dogandpony/sushi-bazooka/compare/v0.6.0...v0.6.1
 [0.6.0]: https://github.com/dogandpony/sushi-bazooka/compare/v0.5.3...v0.6.0
 [0.5.3]: https://github.com/dogandpony/sushi-bazooka/compare/v0.5.2...v0.5.3
 [0.5.2]: https://github.com/dogandpony/sushi-bazooka/compare/v0.5.1...v0.5.2
