@@ -93,7 +93,7 @@ var Sushi;
 		}
 
 		if (typeof fn === "function") {
-			fn(this.triggerElement, this.options);
+			fn(this);
 		}
 	};
 
