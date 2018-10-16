@@ -28,13 +28,30 @@ var Sushi;
 		}
 
 		this.createContainers();
-		this.loadImage();
+		this.loadThumbnail();
+
+		if (this.options.lazyLoad) {
+			if (Plugins.ScrollTrigger !== void 0) {
+				this.registerLazyLoad();
+			}
+			else {
+				// eslint-disable-next-line no-console
+				console.warn(
+					"ProgressiveImage is set to lazy load images but ScrollTrigger plugin doesn't"
+					+ " exist."
+				);
+			}
+		}
+		else {
+			this.loadOriginalImage();
+		}
 	};
 
 	ProgressiveImage.DEFAULTS = {
 		blurRadius: 2,
 		containerAttributes: "",
 		imageAttributes: "",
+		lazyLoad: true,
 	};
 
 	ProgressiveImage.displayName = "ProgressiveImage";
@@ -61,15 +78,6 @@ var Sushi;
 			}
 		}
 
-		for (var imageAttribute in this.imageAttributes) {
-			if (this.imageAttributes.hasOwnProperty(imageAttribute)) {
-				this.originalImage.setAttribute(
-					imageAttribute,
-					this.imageAttributes[imageAttribute]
-				);
-			}
-		}
-
 		this.thumbnail.removeAttribute("width");
 		this.thumbnail.removeAttribute("height");
 		this.thumbnail.removeAttribute("data-progressive-image-container-attributes");
@@ -83,15 +91,25 @@ var Sushi;
 
 		this.thumbnail.insertAdjacentElement("afterend", this.container);
 
+		this.imageFrame.appendChild(this.originalImage);
 		this.imageFrame.appendChild(this.thumbnail);
 		this.imageFrame.appendChild(this.canvas);
-		this.imageFrame.appendChild(this.originalImage);
 
 		this.container.appendChild(this.fill);
 		this.container.appendChild(this.imageFrame);
 	};
 
-	proto.loadImage = function () {
+	proto.registerLazyLoad = function () {
+		new Plugins.ScrollTrigger(this.container, {
+			triggerPosition: "bottom",
+			eventAfter: function (scrollTrigger) {
+				scrollTrigger.disable();
+				this.loadOriginalImage();
+			}.bind(this),
+		});
+	};
+
+	proto.loadThumbnail = function () {
 		var fillRatio = (this.options.height / this.options.width) * 100;
 
 		this.fill.style.paddingBottom = fillRatio + "%";
@@ -108,12 +126,23 @@ var Sushi;
 
 			this.container.classList.add("is-thumbnailLoaded");
 		}.bind(this);
+	};
 
-		this.originalImage.src = this.options.src;
-
+	proto.loadOriginalImage = function () {
 		this.originalImage.onload = function () {
 			this.container.classList.add("is-imageLoaded");
 		}.bind(this);
+
+		for (var imageAttribute in this.imageAttributes) {
+			if (this.imageAttributes.hasOwnProperty(imageAttribute)) {
+				this.originalImage.setAttribute(
+					imageAttribute,
+					this.imageAttributes[imageAttribute]
+				);
+			}
+		}
+
+		this.originalImage.src = this.options.src;
 	};
 
 	proto.drawThumbnailOnCanvas = function () {
