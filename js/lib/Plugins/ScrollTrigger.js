@@ -15,6 +15,7 @@ var Sushi;
 		BasePlugin.call(this, triggerElement, options);
 
 		this.enable();
+		this.checkPosition();
 	};
 
 	ScrollTrigger.displayName = "ScrollTrigger";
