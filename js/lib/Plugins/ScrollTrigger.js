@@ -37,13 +37,13 @@ var Sushi;
 
 	proto.enable = function () {
 		Events(window).on(
-			"ScrollTrigger.resize ScrollTrigger.scroll",
+			this.id + ".ScrollTrigger.resize " + this.id + ".ScrollTrigger.scroll",
 			Sushi.Util.throttle(this.checkPosition.bind(this), this.options.updateThreshold)
 		);
 	};
 
 	proto.disable = function () {
-		Events(window).off("ScrollTrigger.resize ScrollTrigger.scroll");
+		Events(window).off(this.id + ".ScrollTrigger.resize " + this.id + ".ScrollTrigger.scroll");
 	};
 
 	proto.checkPosition = function () {
