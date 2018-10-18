@@ -2,7 +2,19 @@
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
-and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
+and this project will adhere to [Semantic Versioning](http://semver.org/spec/v2.0.0.html) once it's
+out of beta. Currently we treat `0.x.y` where `x` is **major** and `y` can be either **minor** or
+**patch** versions. This way we keep code from spilling to real major versions.
+
+
+## [0.6.2] - 2018-10-18
+
+### Changed
+- **Plugins.ProgressiveImage**: Change container display style to `inline-block`.
+
+### Added
+- **Plugins.ProgressiveImage**: Add option to set container width based on the image's width,
+  defaulting to true.
 
 
 ## [0.6.1] - 2018-10-16
@@ -144,7 +156,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - **Plugins.Modal**: Check if BodyScroll library exists and warn user if it doesn't.
 
 
-[Unreleased version]: https://github.com/dogandpony/sushi-bazooka/compare/v0.6.1...HEAD
+[Unreleased version]: https://github.com/dogandpony/sushi-bazooka/compare/v0.6.2...HEAD
+[0.6.2]: https://github.com/dogandpony/sushi-bazooka/compare/v0.6.1...v0.6.2
 [0.6.1]: https://github.com/dogandpony/sushi-bazooka/compare/v0.6.0...v0.6.1
 [0.6.0]: https://github.com/dogandpony/sushi-bazooka/compare/v0.5.3...v0.6.0
 [0.5.3]: https://github.com/dogandpony/sushi-bazooka/compare/v0.5.2...v0.5.3
