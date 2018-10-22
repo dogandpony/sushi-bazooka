@@ -7,6 +7,25 @@ out of beta. Currently we treat `0.x.y` where `x` is **major** and `y` can be ei
 **patch** versions. This way we keep code from spilling to real major versions.
 
 
+## [Unreleased Version]
+
+### Fixed
+- **Events**: `Events.off()` had a long-running issue that made it remove all events under a given 
+  namespace if there were other events that whose names ended with the same string. For instance, if
+  a `foobar.scroll` event was registered and `removeListeners()` was called to remove `bar.scroll` 
+  events, `foobar.scroll` would also be removed even it not being supposed to.
+  
+### Changed
+
+### Removed
+
+### Added
+- Added missing documentation to all functions in `Sushi.Util`.
+- **Plugins.ProgressiveImage**: Add a `responsive` option. If true, what it defaults to, and if
+  `setWidth` is also true, it adds a `responsive` modifier which then sets `max-width: 100%` to the
+   container.
+
+
 ## [0.6.2] - 2018-10-18
 
 ### Changed
