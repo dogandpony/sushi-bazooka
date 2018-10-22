@@ -315,5 +315,16 @@ var Sushi;
 		window.getComputedStyle(element).height;
 	};
 
+
+	/**
+	 * Escapes a string to use it in Regular Expressions
+	 *
+	 * @param {string} string String to escape
+	 * @returns {string} Escaped string
+	 */
+	Util.escapeRegExp = function (string) {
+		return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // $& means the whole matched string
+	};
+
 	Sushi.Util = Util;
 })(Sushi || (Sushi = {}));
