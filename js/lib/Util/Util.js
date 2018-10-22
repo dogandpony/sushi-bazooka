@@ -252,6 +252,13 @@ var Sushi;
 		}
 	};
 
+
+	/**
+	 * Returns true if the target object is mergeable
+	 *
+	 * @param {object} target Object to test
+	 * @returns {boolean} True if the object is mergeable
+	 */
 	Util.isMergeableObject = function (target) {
 		var nonNullObject = target && typeof target === "object";
 
