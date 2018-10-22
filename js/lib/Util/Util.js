@@ -83,10 +83,12 @@ var Sushi;
 
 	/**
 	 * Returns a pseudo-unique id
-	 * @param beginsWith
+	 *
+	 * @param {string} prefix Optional prefix to add to the ID string
+	 * @returns {string} Unique ID
 	 */
-	Util.uniqueId = function (beginsWith) {
-		return (beginsWith || "") + uniqueIdIndex++;
+	Util.uniqueId = function (prefix) {
+		return (prefix || "") + uniqueIdIndex++;
 	};
 
 
