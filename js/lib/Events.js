@@ -118,7 +118,9 @@ var Sushi;
 			for (var i = 0; i < typeList.length; i++) {
 				var typeString = typeList[i];
 				var type = typeString.split(".").pop();
-				var namespaceRegex = new RegExp(typeString + "$");
+				var namespaceRegex = new RegExp(
+					"(^|\\.)" + Sushi.Util.escapeRegExp(typeString) + "$"
+				);
 
 				for (var namespace in storedTarget.events) {
 					if (storedTarget.events.hasOwnProperty(namespace)
