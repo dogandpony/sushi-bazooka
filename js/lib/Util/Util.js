@@ -19,10 +19,12 @@ var Sushi;
 
 	/**
 	 * Runs a function only once every {wait} number of times
-	 * @param func
-	 * @param wait
-	 * @param options
-	 * @returns {throttled}
+	 *
+	 * @param {function} func Function to run
+	 * @param {number} wait Amount of milliseconds to wait between triggers
+	 * @param {object} options Object that receives `leading` and `trailing` boolean properties to
+	 * run the function before the first trigger and after the last trigger, respectively.
+	 * @returns {function} Function that has just ran
 	 */
 	Util.throttle = function (func, wait, options) {
 		var timeout, context, args, result;
@@ -32,15 +34,26 @@ var Sushi;
 			options = {};
 		}
 
+		/**
+		 * Runs after the throttling ends
+		 *
+		 * @returns {void}
+		 */
 		var later = function () {
 			previous = options.leading === false ? 0 : new Date().getTime();
 			timeout = null;
 			result = func.apply(context, args);
+
 			if (!timeout) {
 				context = args = null;
 			}
 		};
 
+		/**
+		 * Throttling function container
+		 *
+		 * @returns {void}
+		 */
 		var throttled = function () {
 			var now = new Date().getTime();
 
@@ -142,6 +155,12 @@ var Sushi;
 	};
 
 
+	/**
+	 * Returns the vertical scrollbar width
+	 * Please note this function is costly because it generates a repaint every time it runs.
+	 *
+	 * @return {number} Width of the scrollbar in pixels
+	 */
 	Util.getScrollbarWidth = function () {
 		var scrollDiv = document.createElement("div");
 
@@ -162,6 +181,16 @@ var Sushi;
 		return scrollbarWidth;
 	};
 
+
+	/**
+	 * Returns the first available Request Animation Frame function in the current browser or a
+	 * timeout based on the `fps` property
+	 *
+	 * @param {function} fn Function to run on the animation frame
+	 * @param {number} fps Desired FPS to run the timeout function. It may not be the actual FPS if
+	 * the browser can't handle it. Defaults to `60`.
+	 * @return {void}
+	 */
 	Util.requestAnimationFrame = function (fn, fps) {
 		fps = fps || 60;
 
@@ -176,6 +205,13 @@ var Sushi;
 		return animationFrameFunction(fn);
 	};
 
+
+	/**
+	 * Cancels the requested animation frame
+	 *
+	 * @param {number} requestId Option timeout ID to cancel
+	 * @return {void}
+	 */
 	Util.cancelAnimationFrame = function (requestId) {
 		var animationFrameFunction = window.cancelAnimationFrame
 			|| window.mozCancelAnimationFrame
@@ -193,8 +229,8 @@ var Sushi;
 	 * Please note: if you need advanced features such as merging of accessors this is not the right
 	 * tool for the job.
 	 *
-	 * @param target
-	 * @returns {*|{}}
+	 * @param {object} target Object to merge other arguments into
+	 * @returns {object} Merged object
 	 */
 	Util.deepMerge = function (target) {
 		for (var i = 1; i < arguments.length; i++) {
@@ -223,8 +259,8 @@ var Sushi;
 	/**
 	 * Alias/Polyfill for Object.assign()
 	 *
-	 * @param target
-	 * @returns {*|{}}
+	 * @param {object} target Object to merge other arguments into
+	 * @returns {object} Merged object
 	 */
 	Util.merge = function (target) {
 		if (Object.assign) {
@@ -281,8 +317,8 @@ var Sushi;
 	/**
 	 * Converts first character of a string to upper case and returns the new string
 	 *
-	 * @param string
-	 * @returns {string}
+	 * @param {string} string String to be changed
+	 * @returns {string} Changed string
 	 */
 	Util.firstCharacterToUpperCase = function (string) {
 		return string.charAt(0).toUpperCase() + string.slice(1);
@@ -292,8 +328,8 @@ var Sushi;
 	/**
 	 * Converts first character of a string to lower case and returns the new string
 	 *
-	 * @param string
-	 * @returns {string}
+	 * @param {string} string String to be changed
+	 * @returns {string} Changed string
 	 */
 	Util.firstCharacterToLowerCase = function (string) {
 		return string.charAt(0).toLowerCase() + string.slice(1);
@@ -303,8 +339,9 @@ var Sushi;
 	/**
 	 * Retrieves data from a form element
 	 *
-	 * @param formElement
-	 * @param ignoreEmpty
+	 * @param {HTMLElement} formElement Form tag to grab field data from
+	 * @param {boolean} ignoreEmpty Whether to ignore empty fields or not. Defaults to true.
+	 * @returns {object} Object with the form's field data
 	 */
 	Util.getFormData = function (formElement, ignoreEmpty) {
 		ignoreEmpty = (ignoreEmpty !== void 0) ? ignoreEmpty : true;
@@ -326,7 +363,8 @@ var Sushi;
 	/**
 	 * Forces the repaint of an element by querying its computed style
 	 *
-	 * @param element
+	 * @param {HTMLElement} element Element to force repaint
+	 * @returns {void}
 	 */
 	Util.forceRepaint = function (element) {
 		window.getComputedStyle(element).height;
