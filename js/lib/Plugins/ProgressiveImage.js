@@ -53,6 +53,7 @@ var Sushi;
 		imageAttributes: "",
 		lazyLoad: true,
 		setWidth: true,
+		responsive: true,
 	};
 
 	ProgressiveImage.displayName = "ProgressiveImage";
@@ -87,7 +88,10 @@ var Sushi;
 
 		if (this.options.setWidth) {
 			this.container.style.width = this.options.width + "px";
-			this.container.classList.add("c-progressiveImage--fixedWidth");
+
+			if (this.options.responsive) {
+				this.container.classList.add("c-progressiveImage--responsive");
+			}
 		}
 
 		this.originalImage.classList.add("c-progressiveImage__originalImage");
