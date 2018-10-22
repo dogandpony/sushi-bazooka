@@ -92,6 +92,13 @@ var Sushi;
 	};
 
 
+	/**
+	 * Returns an array of properties that begin with a given namespace
+	 *
+	 * @param {string} namespace Property namespace (or prefix) to look for
+	 * @param {object} properties Object of properties to look into
+	 * @returns {object} Object of filtered properties that match the namespace
+	 */
 	Util.getNamespaceProperties = function (namespace, properties) {
 		var namespaceProperties = {};
 		var namespaceCheckRegExp = new RegExp("^" + namespace + "(([A-Z]+).*?)$");
