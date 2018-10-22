@@ -81,14 +81,13 @@ var Sushi;
 
 		this.thumbnail.removeAttribute("width");
 		this.thumbnail.removeAttribute("height");
-		this.thumbnail.removeAttribute("data-progressive-image-container-attributes");
-		this.thumbnail.removeAttribute("data-progressive-image-image-attributes");
 
 		this.container.classList.add("c-progressiveImage");
 		this.container.classList.add("is-loadingThumbnail");
 
 		if (this.options.setWidth) {
 			this.container.style.width = this.options.width + "px";
+			this.container.classList.add("c-progressiveImage--fixedWidth");
 		}
 
 		this.originalImage.classList.add("c-progressiveImage__originalImage");
@@ -124,13 +123,13 @@ var Sushi;
 
 		var virtualThumbnail = new Image();
 
-		virtualThumbnail.src = this.thumbnail.src;
-
 		virtualThumbnail.onload = function () {
 			this.drawThumbnailOnCanvas();
 
 			this.container.classList.add("is-thumbnailLoaded");
 		}.bind(this);
+
+		virtualThumbnail.src = this.thumbnail.src;
 	};
 
 	proto.loadOriginalImage = function () {
