@@ -121,7 +121,8 @@ var Sushi;
 
 	/**
 	 * Returns a single transition end event supported by the current browser
-	 * @returns {*}
+	 *
+	 * @returns {string} First supported transition end event name
 	 */
 	Util.getTransitionEndEvent = function () {
 		var element = document.createElement("i");
