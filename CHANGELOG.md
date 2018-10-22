@@ -20,6 +20,8 @@ out of beta. Currently we treat `0.x.y` where `x` is **major** and `y` can be ei
 ### Removed
 
 ### Added
+- New plugin: **Excerpt**. This plugin will truncate a text node to the maximum number of words that
+  fit in a given number of lines.
 - Added missing documentation to all functions in `Sushi.Util`.
 - **Plugins.ProgressiveImage**: Add a `responsive` option. If true, what it defaults to, and if
   `setWidth` is also true, it adds a `responsive` modifier which then sets `max-width: 100%` to the
