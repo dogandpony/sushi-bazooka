@@ -72,7 +72,7 @@ var Sushi;
 
 		this.dropdownElement = Dom.parse("<ul class='c-select__dropdown c-dropdown'>");
 
-		this.updateOptions();
+		this.updateItems();
 
 		// Append new elements
 		this.containerElement.appendChild(this.buttonElement);
@@ -244,71 +244,111 @@ var Sushi;
 		}
 	};
 
-	proto.updateOptions = function () {
-		var options = this.triggerElement.getElementsByTagName("option");
+	proto.updateItems = function () {
+		var childElements = this.triggerElement.children;
+		var dropdownChildrenFragment = document.createDocumentFragment();
 
-		Events(this.dropdownElement.getElementsByClassName("c-select__item"))
-			.off("Select.click");
+		Events(this.dropdownElement.getElementsByClassName("c-select__item")).off("Select.click");
 
-		this.dropdownOptions = [];
+		this.dropdownItems = [];
 
-		for (var i = 0; i < options.length; i++) {
-			var option = options[i];
-			var title;
-			var itemElement = document.createElement("li");
-			var titleElement;
+		for (var i = 0; i < childElements.length; i++) {
+			var itemElement;
+			var childElement = childElements[i];
+			var elementTag = childElement.tagName.toLowerCase();
 
-			if (option.dataset.title !== void 0) {
-				title = option.dataset.title;
+			if (elementTag === "optgroup") {
+				itemElement = this.createGroup(childElement);
 			}
-			else {
-				title = option.innerHTML;
-			}
-
-			itemElement.classList.add("c-select__item");
-			itemElement.setAttribute("tabindex", "0");
-			itemElement.dataset.value = option.value;
-
-			if (this.isMultiple) {
-				var checkboxId = Util.uniqueId("__sushiSelectCheckbox");
-				var checkboxHtml = "<input type='checkbox' id='" + checkboxId + "' tabindex='-99'>";
-				var checkboxElement = Dom.parse(checkboxHtml);
-
-				Dom.addClass(checkboxElement, [
-					"c-select__checkbox",
-					"o-choiceInput__input",
-					"o-choiceInput__input--checkbox",
-				]);
-
-				titleElement = Dom.parse("<label for='" + checkboxId + "'>");
-
-				titleElement.classList.add("o-choiceInput__label");
-
-				itemElement.classList.add("o-choiceInput");
-				itemElement.appendChild(checkboxElement);
-			}
-			else {
-				titleElement = document.createElement("div");
+			else if (elementTag === "option") {
+				itemElement = this.createItem(childElement);
+				this.dropdownItems.push(itemElement);
 			}
 
-			titleElement.classList.add("c-select__itemTitle");
-			titleElement.innerHTML = title;
-
-			itemElement.appendChild(titleElement);
-
-			this.dropdownOptions.push(itemElement);
+			dropdownChildrenFragment.appendChild(itemElement);
 		}
 
 		this.dropdownElement.innerHTML = "";
-
-		for (var j = 0; j < this.dropdownOptions.length; j++) {
-			var optionElement = this.dropdownOptions[j];
-
-			this.dropdownElement.appendChild(optionElement);
-		}
+		this.dropdownElement.appendChild(dropdownChildrenFragment);
 
 		this.updateSelectedOptions();
 		this.registerItemListeners();
+	};
+
+	proto.createGroup = function (groupElement) {
+		var groupItemElement = document.createElement("li");
+		var titleElement = document.createElement("div");
+		var options = groupElement.getElementsByTagName("option");
+		var listElement = document.createElement("ul");
+
+		titleElement.classList.add("c-select__groupLabel");
+		titleElement.innerHTML = groupElement.label;
+
+		listElement.classList.add("c-select__groupList");
+
+		groupItemElement.classList.add("c-select__group");
+		groupItemElement.appendChild(titleElement);
+
+		for (var i = 0; i < options.length; i++) {
+			var optionElement = options[i];
+			var itemElement = this.createItem(optionElement);
+
+			itemElement.classList.add("c-select__item--group");
+
+			listElement.appendChild(itemElement);
+
+			this.dropdownItems.push(itemElement);
+		}
+
+		groupItemElement.appendChild(listElement);
+
+		return groupItemElement;
+	};
+
+	proto.createItem = function (optionElement) {
+		var title;
+		var itemElement = document.createElement("li");
+		var titleElement;
+
+		if (optionElement.dataset.title !== void 0) {
+			title = optionElement.dataset.title;
+		}
+		else {
+			title = optionElement.innerHTML;
+		}
+
+		itemElement.classList.add("c-select__item");
+		itemElement.setAttribute("tabindex", "0");
+		itemElement.dataset.value = optionElement.value;
+
+		if (this.isMultiple) {
+			var checkboxId = Util.uniqueId("__sushiSelectCheckbox");
+			var checkboxHtml = "<input type='checkbox' id='" + checkboxId + "' tabindex='-99'>";
+			var checkboxElement = Dom.parse(checkboxHtml);
+
+			Dom.addClass(checkboxElement, [
+				"c-select__checkbox",
+				"o-choiceInput__input",
+				"o-choiceInput__input--checkbox",
+			]);
+
+			titleElement = Dom.parse("<label for='" + checkboxId + "'>");
+
+			titleElement.classList.add("o-choiceInput__label");
+
+			itemElement.classList.add("o-choiceInput");
+			itemElement.appendChild(checkboxElement);
+		}
+		else {
+			titleElement = document.createElement("div");
+		}
+
+		titleElement.classList.add("c-select__itemTitle");
+		titleElement.innerHTML = title;
+
+		itemElement.appendChild(titleElement);
+
+		return itemElement;
 	};
 
 	proto.updateSelectedOptions = function () {
@@ -316,22 +356,22 @@ var Sushi;
 
 		this.availableOptions = this.triggerElement.getElementsByTagName("option");
 
-		for (var i = 0; i < this.dropdownOptions.length; i++) {
-			var dropdownElement = this.dropdownOptions[i];
+		for (var i = 0; i < this.dropdownItems.length; i++) {
+			var itemElement = this.dropdownItems[i];
 			var optionElement = this.availableOptions[i];
 
-			if (this.options.hideNull && (dropdownElement.dataset.value === "")) {
-				dropdownElement.classList.add("_hidden");
+			if (this.options.hideNull && (itemElement.dataset.value === "")) {
+				itemElement.classList.add("_hidden");
 			}
 			else if (Array.prototype.slice.call(selectedOptions).includes(optionElement)) {
-				dropdownElement.classList.add("is-active");
+				itemElement.classList.add("is-active");
 
 				if (this.options.hideSelected) {
-					dropdownElement.classList.add("_hidden");
+					itemElement.classList.add("_hidden");
 				}
 			}
 			else {
-				dropdownElement.classList.remove("is-active");
+				itemElement.classList.remove("is-active");
 			}
 		}
 

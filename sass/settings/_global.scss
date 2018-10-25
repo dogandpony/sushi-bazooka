@@ -286,6 +286,11 @@ $selectItemLineHeight: getLineHeight("solid") !default;
  */
 $selectItemPadding: $globalSpacingXxs !default;
 
+/**
+ * Padding of the items inside of groups
+ */
+$selectGroupItemPadding: $globalSpacingXxs $globalSpacingXxs $globalSpacingXxs $globalSpacingXs;
+
 
 
 /* Tabbed
