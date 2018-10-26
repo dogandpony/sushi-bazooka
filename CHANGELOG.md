@@ -11,21 +11,35 @@ out of beta. Currently we treat `0.x.y` where `x` is **major** and `y` can be ei
 
 ### Fixed
 - **Events**: `Events.off()` had a long-running issue that made it remove all events under a given 
-  namespace if there were other events that whose names ended with the same string. For instance, if
-  a `foobar.scroll` event was registered and `removeListeners()` was called to remove `bar.scroll` 
+  namespace if there were other events whose names ended with the same string. For instance, if a 
+  `foobar.scroll` event was registered and `removeListeners()` was called to remove `bar.scroll` 
   events, `foobar.scroll` would also be removed even it not being supposed to.
   
 ### Changed
+- **Plugins.ProgressiveImage**: Reverted change that set the container's display as `inline-block`.
+- **Plugins.Select**
+  - Renamed `updateOptions` method to `updateItems`.
+  - Renamed `createContainer` method to `create`.
+  - Renamed `dropdownOptions` property to `dropdownItems`.
+  - Now the dropdown class is not applied to the list anymore. The list has its own class,
+    `c-select__list`. Sub-lists created from optgroups use the same class and also have the `group`
+    modifier. The `c-select__dropdown` class is applied to the dropdown container, which now also
+    contains the newly implemented search field.
 
 ### Removed
 
 ### Added
 - New plugin: **Excerpt**. This plugin will truncate a text node to the maximum number of words that
-  fit in a given number of lines.
-- Added missing documentation to all functions in `Sushi.Util`.
+  fit in a specific number of lines. The number of lines are configured via `lines` option.
+- Added documentation to all functions in `Sushi.Util`.
+- Added `Util.escapeRegExp()` function to escape strings for RegExp objects.
 - **Plugins.ProgressiveImage**: Add a `responsive` option. If true, what it defaults to, and if
   `setWidth` is also true, it adds a `responsive` modifier which then sets `max-width: 100%` to the
    container.
+- **Plugins.Select**
+  - Support for `<optgroup>`s.
+  - Search feature.
+- Added polyfill for `String.prototype.includes`.
 
 
 ## [0.6.2] - 2018-10-18
