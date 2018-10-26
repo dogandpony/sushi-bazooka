@@ -284,7 +284,12 @@ $selectItemLineHeight: getLineHeight("solid") !default;
 /**
  * Padding of the items inside the dropdown
  */
-$selectItemPadding: $globalSpacingXxs 0 !default;
+$selectItemPadding: $globalSpacingXxs !default;
+
+/**
+ * Padding of the items inside of groups
+ */
+$selectGroupItemPadding: $globalSpacingXxs $globalSpacingXxs $globalSpacingXxs $globalSpacingXs;
 
 
 

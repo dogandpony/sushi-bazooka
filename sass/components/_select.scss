@@ -90,11 +90,29 @@
 	padding: $selectDropdownPadding;
 }
 
-.c-select__item {
+.c-select__list {
+	list-style-type: none;
+	margin: 0;
+}
+
+.c-select__groupLabel {
+	font-weight: 700;
+}
+
+.c-select__search,
+.c-select__item,
+.c-select__groupLabel {
 	padding: $selectItemPadding;
 	color: $selectItemColor;
 	line-height: $selectItemLineHeight;
 	white-space: nowrap;
+}
+
+.c-select__searchInput {
+	@extend .o-form__input !optional;
+}
+
+.c-select__item {
 	cursor: pointer;
 
 	&:hover,
@@ -105,6 +123,10 @@
 	&.is-active {
 		color: $selectItemActiveColor;
 	}
+}
+
+.c-select__item--group {
+	padding-left: $selectGroupItemPadding;
 }
 
 .c-select__title {
