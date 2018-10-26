@@ -7,7 +7,7 @@ out of beta. Currently we treat `0.x.y` where `x` is **major** and `y` can be ei
 **patch** versions. This way we keep code from spilling to real major versions.
 
 
-## [Unreleased Version]
+## [0.7.0] - 2018-10-26
 
 ### Fixed
 - **Events**: `Events.off()` had a long-running issue that made it remove all events under a given 
@@ -25,8 +25,6 @@ out of beta. Currently we treat `0.x.y` where `x` is **major** and `y` can be ei
     `c-select__list`. Sub-lists created from optgroups use the same class and also have the `group`
     modifier. The `c-select__dropdown` class is applied to the dropdown container, which now also
     contains the newly implemented search field.
-
-### Removed
 
 ### Added
 - New plugin: **Excerpt**. This plugin will truncate a text node to the maximum number of words that
@@ -191,7 +189,8 @@ out of beta. Currently we treat `0.x.y` where `x` is **major** and `y` can be ei
 - **Plugins.Modal**: Check if BodyScroll library exists and warn user if it doesn't.
 
 
-[Unreleased version]: https://github.com/dogandpony/sushi-bazooka/compare/v0.6.2...HEAD
+[Unreleased version]: https://github.com/dogandpony/sushi-bazooka/compare/v0.7.0...HEAD
+[0.7.0]: https://github.com/dogandpony/sushi-bazooka/compare/v0.6.2...v0.7.0
 [0.6.2]: https://github.com/dogandpony/sushi-bazooka/compare/v0.6.1...v0.6.2
 [0.6.1]: https://github.com/dogandpony/sushi-bazooka/compare/v0.6.0...v0.6.1
 [0.6.0]: https://github.com/dogandpony/sushi-bazooka/compare/v0.5.3...v0.6.0
