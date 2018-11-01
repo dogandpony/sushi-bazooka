@@ -293,6 +293,15 @@ var Sushi;
 			clonedTarget = target.cloneNode(true);
 
 			if (cloneEvents === true) {
+				var targetChildElements = Array.prototype.slice
+					.call(target.getElementsByTagName("*"));
+				var clonedChildElements = Array.prototype.slice
+					.call(clonedTarget.getElementsByTagName("*"));
+
+				targetChildElements.forEach(function (element, index) {
+					Sushi.Events.clone(element, clonedChildElements[index]);
+				});
+
 				Sushi.Events.clone(target, clonedTarget);
 			}
 		}
