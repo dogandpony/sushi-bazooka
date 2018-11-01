@@ -7,45 +7,10 @@ var Sushi;
 (function (Sushi) {
 	"use strict";
 
-	var eventStack = [];
+	var eventStack = new Map();
 
 	var Events = function (target) {
 		return new Events.EventHelper(target);
-	};
-
-
-	/**
-	 * Returns the stored target event data, also setting it up if it doesn't exist
-	 *
-	 * @param target
-	 * @returns {*}
-	 */
-	var getStoredTarget = function (target) {
-		var storedTarget;
-		var index = null;
-
-		if (target !== void 0) {
-			for (var i = 0; i < eventStack.length; i++) {
-				if (target === eventStack[i].target) {
-					index = i;
-					break;
-				}
-			}
-
-			if (index === null) {
-				eventStack.push({
-					target: target,
-					events: {},
-				});
-
-				index = (eventStack.length - 1);
-			}
-
-			storedTarget = eventStack[index];
-			storedTarget.index = index;
-		}
-
-		return storedTarget;
 	};
 
 
@@ -82,19 +47,28 @@ var Sushi;
 	 * @param fn Function
 	 */
 	var addListeners = function (types, target, fn) {
+		if (target === void 0) {
+			throw Error("Target is undefined.");
+		}
+
 		var typeList = types.split(" ");
-		var storedTarget = getStoredTarget(target);
+		var events = eventStack.get(target);
+
+		if (events === void 0) {
+			eventStack.set(target, {});
+			events = eventStack.get(target);
+		}
 
 		for (var i = 0; i < typeList.length; i++) {
 			var namespaceArray = typeList[i].split(".");
 
-			storedTarget.events[typeList[i]] = storedTarget.events[typeList[i]] || [];
-			storedTarget.events[typeList[i]].push(fn);
+			events[typeList[i]] = (events[typeList[i]] || []);
+			events[typeList[i]].push(fn);
 
 			while (namespaceArray.length > 0) {
 				var typeString = namespaceArray.join(".");
 
-				storedTarget.target.addEventListener(typeString, fn);
+				target.addEventListener(typeString, fn);
 
 				namespaceArray.shift();
 			}
@@ -111,46 +85,48 @@ var Sushi;
 	 * @param fn Function
 	 */
 	var removeListeners = function (types, target, fn) {
+		if (target === void 0) {
+			throw Error("Target is undefined.");
+		}
+
 		var typeList = types.split(" ");
-		var storedTarget = getStoredTarget(target);
+		var events = eventStack.get(target);
 
-		if (storedTarget !== void 0) {
-			for (var i = 0; i < typeList.length; i++) {
-				var typeString = typeList[i];
-				var type = typeString.split(".").pop();
-				var namespaceRegex = new RegExp(
-					"(^|\\.)" + Sushi.Util.escapeRegExp(typeString) + "$"
-				);
+		if (events === void 0) {
+			return;
+		}
 
-				for (var namespace in storedTarget.events) {
-					if (storedTarget.events.hasOwnProperty(namespace)
-						&& namespaceRegex.test(namespace)) {
-						var j = storedTarget.events[namespace].length;
+		for (var i = 0; i < typeList.length; i++) {
+			var typeString = typeList[i];
+			var type = typeString.split(".").pop();
+			var namespaceRegex = new RegExp(
+				"(^|\\.)" + Sushi.Util.escapeRegExp(typeString) + "$"
+			);
 
-						while (j--) {
-							var storedFunction = storedTarget.events[namespace][j];
+			for (var namespace in events) {
+				if (events.hasOwnProperty(namespace) && namespaceRegex.test(namespace)) {
+					var j = events[namespace].length;
 
-							if ((fn !== void 0) && (fn !== storedFunction)) {
-								continue;
-							}
+					while (j--) {
+						var storedFunction = events[namespace][j];
 
-							storedTarget.target.removeEventListener(type, storedFunction);
-							storedTarget.events[namespace].splice(j, 1);
+						if ((fn !== void 0) && (fn !== storedFunction)) {
+							continue;
 						}
 
-						if (storedTarget.events[namespace].length === 0) {
-							delete storedTarget.events[namespace];
+						target.removeEventListener(type, storedFunction);
+						events[namespace].splice(j, 1);
+					}
 
-							if (Object.keys(storedTarget.events).length === 0) {
-								eventStack.splice(storedTarget.index, 1);
-							}
+					if (events[namespace].length === 0) {
+						delete events[namespace];
+
+						if (Object.keys(events).length === 0) {
+							eventStack.delete(target);
 						}
 					}
 				}
 			}
-		}
-		else {
-			throw Error("Target is undefined.");
 		}
 	};
 
@@ -258,12 +234,11 @@ var Sushi;
 
 
 	Events.clone = function (target, clonedTarget) {
-		var storedTarget = getStoredTarget(target);
-		var registeredEvents = storedTarget.events;
+		var events = eventStack.get(target);
 
-		for (var eventType in registeredEvents) {
-			if (registeredEvents.hasOwnProperty(eventType)) {
-				var functionStack = registeredEvents[eventType];
+		for (var eventType in events) {
+			if (events.hasOwnProperty(eventType)) {
+				var functionStack = events[eventType];
 
 				for (var i = 0; i < functionStack.length; i++) {
 					var fn = functionStack[i];
