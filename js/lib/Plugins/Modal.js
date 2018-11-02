@@ -54,11 +54,6 @@ var Sushi;
 	var Events = Sushi.Events;
 	var Util = Sushi.Util;
 
-	var CENTERING_MODIFIERS = {
-		horizontal: "hCenter",
-		vertical: "vCenter",
-	};
-
 	var parseTarget = function (target) {
 		var element = Dom.get(target);
 
@@ -75,6 +70,8 @@ var Sushi;
 	var Modal = function (triggerElement, options) {
 		BasePlugin.call(this, triggerElement, options);
 
+		this.validateOptions();
+
 		this.isOpen = false;
 
 		// Cache objects
@@ -90,20 +87,16 @@ var Sushi;
 		this.contentSource = parseTarget(this.options.content);
 		this.appendTo = Dom.get(this.options.appendTo);
 
-		this.validateOptions();
+		var defaultAnchors = Modal.DEFAULTS.position.split(" ");
+
+		this.anchors = {
+			x: defaultAnchors[0],
+			y: defaultAnchors[1],
+		};
 
 		Sushi.addPluginInstanceTo(this.element, this);
 
 		this.create();
-
-		// Register click listener on triggering element
-		if (this.triggerElement.parentElement !== null) {
-			Events(this.triggerElement).on("Modal.click", function (event) {
-				event.preventDefault();
-
-				this.toggle();
-			}.bind(this));
-		}
 	};
 
 	Modal.displayName = "Modal";
@@ -117,8 +110,22 @@ var Sushi;
 		extraClasses: "",
 		populate: "onOpen", // "onCreate", false
 
-		// Centering
-		horizontalCentering: true,
+		/**
+		 * Position string
+		 *
+		 * Accepts: top, middle and bottom (vertical) and left, center and right (horizontal). Any
+		 * order is acceptable (i.e. `top right` and `right top` produce the same results).
+		 */
+		position: "center top",
+
+		/**
+		 * @deprecated since 0.7.1
+		 */
+		horizontalCentering: false,
+
+		/**
+		 * @deprecated since 0.7.1
+		 */
 		verticalCentering: false,
 
 		// Containers
@@ -157,21 +164,39 @@ var Sushi;
 
 			this.options.contentOperation = "copy";
 		}
+
+		return true;
 	};
+
 
 	/**
 	 * Create the modal and overlay HTML and append it to the body
 	 */
 	proto.create = function () {
 		var classes = [];
+		var anchors = this.options.position.split(" ");
+
+		anchors.forEach(function (anchor) {
+			// horizontal
+			if (["left", "center", "right"].includes(anchor)) {
+				this.anchors.x = anchor;
+			}
+			// vertical
+			else if (["top", "middle", "bottom"].includes(anchor)) {
+				this.anchors.y = anchor;
+			}
+		}.bind(this));
 
 		if (this.options.horizontalCentering) {
-			classes.push("c-modal--" + CENTERING_MODIFIERS.horizontal);
+			this.anchors.x = "center";
 		}
 
 		if (this.options.verticalCentering) {
-			classes.push("c-modal--" + CENTERING_MODIFIERS.vertical);
+			this.anchors.y = "middle";
 		}
+
+		classes.push("c-modal--" + this.anchors.x);
+		classes.push("c-modal--" + this.anchors.y);
 
 		classes = classes.concat(this.options.extraClasses);
 
