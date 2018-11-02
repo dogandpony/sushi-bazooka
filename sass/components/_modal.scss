@@ -76,27 +76,37 @@
 
 
 
-/* Centering
+/* Positioning
    ============================================================================================== */
 
-/* CSS-only centering
-   --------------------------- */
-
-.c-modal--hCenter .c-modal__overlay,
-.c-modal--vCenter .c-modal__overlay {
-	display: flex;
-	align-items: flex-start;
-	align-content: flex-start;
+.c-modal--top .c-modal__contentWrapper {
+	margin-top: 0;
+	margin-bottom: auto;
 }
 
-.c-modal--hCenter .c-modal__contentWrapper {
-	margin-right: auto;
-	margin-left: auto;
-}
-
-.c-modal--vCenter .c-modal__contentWrapper {
+.c-modal--middle .c-modal__contentWrapper {
 	margin-top: auto;
 	margin-bottom: auto;
+}
+
+.c-modal--bottom .c-modal__contentWrapper {
+	margin-top: auto;
+	margin-bottom: 0;
+}
+
+.c-modal--left .c-modal__contentWrapper {
+	margin-left: 0;
+	margin-right: auto;
+}
+
+.c-modal--center .c-modal__contentWrapper {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.c-modal--right .c-modal__contentWrapper {
+	margin-left: auto;
+	margin-right: 0;
 }
 
 
