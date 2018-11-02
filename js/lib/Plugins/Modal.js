@@ -149,10 +149,10 @@ var Sushi;
 		) {
 			// eslint-disable-next-line no-console
 			console.warn(
-				"Modal doesn't support the `move` content operation when the content is not an"
-				+ " HTMLElement.\nPlease wrap your content within a tag or add"
-				+ " data-modal-content=\"outer\" attribute to the tag you are using.\nThe content"
-				+ " operation will be set to `copy`."
+				this.constructor.displayName + " doesn't support the \"move\" content operation"
+				+ " when the content is not an HTMLElement.\nPlease wrap your content within a tag"
+				+ " or add data-modal-content=\"outer\" attribute to the tag you are using.\nThe"
+				+ " content operation will be set to \"copy\"."
 			);
 
 			this.options.contentOperation = "copy";
