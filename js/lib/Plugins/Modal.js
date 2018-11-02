@@ -10,11 +10,11 @@
  *   copied depending on the `contentOperation` option.
  * - contentOperation: How to handle the content passed by the `content` option. Defaults to `copy`.
  *   Available options:
- *     - `copy` (default): copies the content to the modal. This operation does not copy events that
- *       might be registered throughout the content elements.
- *     - `move`: Moves the entire content element to the modal. This will also move all events that
- *       might be registered throughout the content elements. Only works if the parsed value of the
- *       `content` option is an HTMLElement (i.e. not an HTMLCollection or NodeList).
+ *   - `copy` (default): copies the content to the modal. This operation does not copy events that
+ *     might be registered throughout the content elements.
+ *   - `move`: Moves the entire content element to the modal. This will also move all events that
+ *     might be registered throughout the content elements. Only works if the parsed value of the
+ *     `content` option is an HTMLElement (i.e. not an HTMLCollection or NodeList).
  * - lockScroll: Makes the modal lock the page scroll while open. Defaults to `false`.
  * - closeOnOverlayClick: Makes the modal close itself when the overlay is clicked. Defaults to
  *   `true`.
