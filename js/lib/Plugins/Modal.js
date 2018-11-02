@@ -181,25 +181,59 @@ var Sushi;
 			this.appendTo.appendChild(this.element);
 		}
 
-		// Register overlay close listener
-		if (this.options.closeOnOverlayClick) {
-			Events(this.overlay).on("Modal.close.click", function (event) {
-				if (event.target === this.overlay) {
-					event.preventDefault();
-
-					this.close();
-				}
-			}.bind(this));
-		}
-
 		// Pre-populate content, if enabled
 		if (this.options.populate === "onCreate") {
 			this.updateContent();
 		}
 
+		this.registerListeners();
+
 		if (this.element.classList.contains("is-open")) {
 			this.open();
 		}
+	};
+
+
+	proto.registerListeners = function () {
+		var onTriggerElementClick = function (event) {
+			event.preventDefault();
+			this.toggle();
+		};
+
+		var onOverlayClick = function (event) {
+			if (event.target === this.overlay) {
+				event.preventDefault();
+				this.close();
+			}
+		};
+
+		var onCloseButtonClick = function (event) {
+			event.preventDefault();
+			this.close();
+		};
+
+		var onModalOpen = function () {
+			var closeButtons = this.element.querySelectorAll("[data-modal-close]");
+
+			Events(closeButtons).on("Modal.close.click", onCloseButtonClick.bind(this));
+		};
+
+		var onModalClose = function () {
+			var closeButtons = this.element.querySelectorAll("[data-modal-close]");
+
+			Events(closeButtons).off("Modal.close.click");
+		};
+
+		// Register click listener on triggering element
+		Events(this.triggerElement).on("Modal.click", onTriggerElementClick.bind(this));
+
+		// Register overlay close listener
+		if (this.options.closeOnOverlayClick) {
+			Events(this.overlay).on("Modal.close.click", onOverlayClick.bind(this));
+		}
+
+		Events(this.element).on("Modal.open", onModalOpen.bind(this));
+		Events(this.element).on("Modal.close", onModalClose.bind(this));
 	};
 
 
@@ -231,15 +265,6 @@ var Sushi;
 
 		// Force redraw so animations can take place
 		window.getComputedStyle(this.element).height;
-
-		// Register close button listener
-		Events(this.element.querySelectorAll("[data-modal-close]"))
-			.off("Modal.close.click")
-			.on("Modal.close.click", function (event) {
-				event.preventDefault();
-
-				this.close();
-			}.bind(this));
 
 		// Show modal and overlay
 		Dom.addClass(this.element, "is-open");
@@ -387,7 +412,6 @@ var Sushi;
 			}
 		}
 	};
-
 
 
 	/**
