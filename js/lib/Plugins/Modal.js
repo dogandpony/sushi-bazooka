@@ -406,32 +406,6 @@ var Sushi;
 
 
 	/**
-	 * Update the modal position
-	 */
-	proto.updatePosition = function () {
-		var windowWidth = window.innerWidth;
-		var windowHeight = window.innerHeight;
-		var modalStyles = window.getComputedStyle(this.content);
-		var modalWidth = modalStyles.width;
-		var modalHeight = modalStyles.height;
-
-		if (this.options.horizontalCentering) {
-			this.content.style.marginLeft = (
-				(windowWidth > modalWidth)
-					? (-1 * Math.ceil(modalWidth / 2)) : (-1 * Math.ceil(windowWidth / 2))
-			);
-		}
-
-		if (this.options.verticalCentering) {
-			this.content.style.marginTop = (
-				(windowHeight > modalHeight)
-					? (-1 * Math.ceil(modalHeight / 2)) : (-1 * Math.ceil(windowHeight / 2))
-			);
-		}
-	};
-
-
-	/**
 	 * Add current modal to open modals list
 	 */
 	proto.addToOpenModalsList = function () {
