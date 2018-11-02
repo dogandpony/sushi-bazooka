@@ -107,7 +107,7 @@ var Sushi;
 		lockScroll: false,
 		closeOnOverlayClick: true,
 		closeOnEscape: true,
-		extraClasses: "",
+		modifiers: "",
 		populate: "onOpen", // "onCreate", false
 
 		/**
@@ -173,7 +173,7 @@ var Sushi;
 	 * Create the modal and overlay HTML and append it to the body
 	 */
 	proto.create = function () {
-		var classes = [];
+		var modifierClasses = Util.getModifierClasses("c-modal", this.options.modifiers);
 		var anchors = this.options.position.split(" ");
 
 		anchors.forEach(function (anchor) {
@@ -195,12 +195,10 @@ var Sushi;
 			this.anchors.y = "middle";
 		}
 
-		classes.push("c-modal--" + this.anchors.x);
-		classes.push("c-modal--" + this.anchors.y);
+		modifierClasses.push("c-modal--" + this.anchors.x);
+		modifierClasses.push("c-modal--" + this.anchors.y);
 
-		classes = classes.concat(this.options.extraClasses);
-
-		Dom.addClass(this.element, classes);
+		Dom.addClass(this.element, modifierClasses);
 
 		if (this.element.parentElement === null) {
 			this.appendTo.appendChild(this.element);
@@ -238,8 +236,10 @@ var Sushi;
 		};
 
 		var onDocumentKeyDown = function (event) {
-			if (event.keyCode === 27) {
-				Modal.getCurrent().close();
+			var currentModal = Modal.getCurrent();
+
+			if (currentModal.options.closeOnEscape && (event.keyCode === 27)) {
+				currentModal.close();
 			}
 		};
 
