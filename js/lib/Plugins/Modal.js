@@ -212,16 +212,30 @@ var Sushi;
 			this.close();
 		};
 
+		var onDocumentKeyDown = function (event) {
+			if (event.keyCode === 27) {
+				Modal.getCurrent().close();
+			}
+		};
+
 		var onModalOpen = function () {
 			var closeButtons = this.element.querySelectorAll("[data-modal-close]");
 
 			Events(closeButtons).on("Modal.close.click", onCloseButtonClick.bind(this));
+
+			if (Modal.openModals.length === 1) {
+				Events(document).on("Modal.keydown", onDocumentKeyDown.bind(this));
+			}
 		};
 
 		var onModalClose = function () {
 			var closeButtons = this.element.querySelectorAll("[data-modal-close]");
 
 			Events(closeButtons).off("Modal.close.click");
+
+			if (Modal.openModals.length === 0) {
+				Events(document).off("Modal.keydown");
+			}
 		};
 
 		// Register click listener on triggering element
@@ -423,40 +437,6 @@ var Sushi;
 		return Modal.openModals[(Modal.openModals.length - 1)];
 	};
 
-
-	/**
-	 * Close the topmost modal
-	 */
-	Modal.closeCurrent = function () {
-		Modal.getCurrent().close();
-	};
-
-
-
-	/* Global listeners
-	   --------------------------- */
-
-	Events(document).on("Modal.open", function (event) {
-		if (
-			(event.detail != null)
-			&& (event.detail.modal !== void 0)
-			&& event.detail.modal.options.closeOnEscape
-		) {
-			Events(document)
-				.off("Modal.keydown")
-				.on("Modal.keydown", function (event) {
-					if (event.keyCode === 27) {
-						Modal.closeCurrent();
-					}
-				});
-		}
-	});
-
-	Events(document).on("Modal.close", function () {
-		if (Modal.openModals.length === 0) {
-			Events(document).off("Modal.keydown");
-		}
-	});
 
 	Plugins.Modal = Modal;
 })(Sushi || (Sushi = {}), Sushi.Plugins || (Sushi.Plugins = {}));
