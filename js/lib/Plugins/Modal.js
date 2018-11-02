@@ -217,8 +217,8 @@ var Sushi;
 			else {
 				// eslint-disable-next-line no-console
 				console.warn(
-					"Modal is set to lock scroll while open but Sushi's BodyScroll class does"
-					+ " not exist."
+					this.constructor.displayName + " is set to lock scroll while open but Sushi's"
+					+ " BodyScroll class does not exist.\nPage scroll will not be locked."
 				);
 			}
 		}
