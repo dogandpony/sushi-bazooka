@@ -7,6 +7,35 @@ out of beta. Currently we treat `0.x.y` where `x` is **major** and `y` can be ei
 **patch** versions. This way we keep code from spilling to real major versions.
 
 
+## [0.8.0] - 2018-11-05
+
+### Deprecated
+- **Plugins.Modal**: `horizontalCentering` and `verticalCentering` options were replaced by the more
+  flexible `position` string.
+
+### Fixed
+- **Dom**: `Dom.clone()` now clones child elements' events.
+- **Plugins.Modal**: `closeOnEsc` wasn't working after the first modal closed by pressing Esc.
+- **Plugins.Reveal**: Absolute positioned elements inside the Reveal content now follow the overflow
+  hidden directive.
+
+### Changed
+- **Events**: The event stack is now handled with a Map instead of an object. That means event
+  adding and removal are a little bit faster and the library is using somewhat less memory.
+- Some comments and console log strings.
+
+### Removed
+- **Plugins.Modal**
+  - `extraClasses` option.
+  - Unused `updatePosition()` method.
+
+### Added
+- **Plugins.Modal**: `position` option has been added. Options available are `right`, `left`, 
+  `bottom` and `top`, in addition to `center` (horizontal) and `middle` (vertical). The `position` 
+  option should be set in pairs and can be set in any order (i.e. `right bottom` and `bottom right` 
+  produce the same results). Defaults to `center top`.
+
+
 ## [0.7.0] - 2018-10-26
 
 ### Fixed
@@ -189,7 +218,8 @@ out of beta. Currently we treat `0.x.y` where `x` is **major** and `y` can be ei
 - **Plugins.Modal**: Check if BodyScroll library exists and warn user if it doesn't.
 
 
-[Unreleased version]: https://github.com/dogandpony/sushi-bazooka/compare/v0.7.0...HEAD
+[Unreleased version]: https://github.com/dogandpony/sushi-bazooka/compare/v0.8.0...HEAD
+[0.8.0]: https://github.com/dogandpony/sushi-bazooka/compare/v0.7.0...v0.8.0
 [0.7.0]: https://github.com/dogandpony/sushi-bazooka/compare/v0.6.2...v0.7.0
 [0.6.2]: https://github.com/dogandpony/sushi-bazooka/compare/v0.6.1...v0.6.2
 [0.6.1]: https://github.com/dogandpony/sushi-bazooka/compare/v0.6.0...v0.6.1
