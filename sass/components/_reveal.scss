@@ -3,6 +3,10 @@
  * Sometimes people may call this an "accordion".
  * ================================================================================================== */
 
+.c-reveal {
+	position: relative;
+}
+
 .c-reveal.is-animating,
 .c-reveal:not(.is-active) {
 	overflow: hidden;

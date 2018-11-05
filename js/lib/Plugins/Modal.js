@@ -10,11 +10,11 @@
  *   copied depending on the `contentOperation` option.
  * - contentOperation: How to handle the content passed by the `content` option. Defaults to `copy`.
  *   Available options:
- *     - `copy` (default): copies the content to the modal. This operation does not copy events that
- *       might be registered throughout the content elements.
- *     - `move`: Moves the entire content element to the modal. This will also move all events that
- *       might be registered throughout the content elements. Only works if the parsed value of the
- *       `content` option is an HTMLElement (i.e. not an HTMLCollection or NodeList).
+ *   - `copy` (default): copies the content to the modal. This operation does not copy events that
+ *     might be registered throughout the content elements.
+ *   - `move`: Moves the entire content element to the modal. This will also move all events that
+ *     might be registered throughout the content elements. Only works if the parsed value of the
+ *     `content` option is an HTMLElement (i.e. not an HTMLCollection or NodeList).
  * - lockScroll: Makes the modal lock the page scroll while open. Defaults to `false`.
  * - closeOnOverlayClick: Makes the modal close itself when the overlay is clicked. Defaults to
  *   `true`.
@@ -54,11 +54,6 @@ var Sushi;
 	var Events = Sushi.Events;
 	var Util = Sushi.Util;
 
-	var CENTERING_MODIFIERS = {
-		horizontal: "hCenter",
-		vertical: "vCenter",
-	};
-
 	var parseTarget = function (target) {
 		var element = Dom.get(target);
 
@@ -75,6 +70,8 @@ var Sushi;
 	var Modal = function (triggerElement, options) {
 		BasePlugin.call(this, triggerElement, options);
 
+		this.validateOptions();
+
 		this.isOpen = false;
 
 		// Cache objects
@@ -90,20 +87,16 @@ var Sushi;
 		this.contentSource = parseTarget(this.options.content);
 		this.appendTo = Dom.get(this.options.appendTo);
 
-		this.validateOptions();
+		var defaultAnchors = Modal.DEFAULTS.position.split(" ");
+
+		this.anchors = {
+			x: defaultAnchors[0],
+			y: defaultAnchors[1],
+		};
 
 		Sushi.addPluginInstanceTo(this.element, this);
 
 		this.create();
-
-		// Register click listener on triggering element
-		if (this.triggerElement.parentElement !== null) {
-			Events(this.triggerElement).on("Modal.click", function (event) {
-				event.preventDefault();
-
-				this.toggle();
-			}.bind(this));
-		}
 	};
 
 	Modal.displayName = "Modal";
@@ -114,11 +107,25 @@ var Sushi;
 		lockScroll: false,
 		closeOnOverlayClick: true,
 		closeOnEscape: true,
-		extraClasses: "",
+		modifiers: "",
 		populate: "onOpen", // "onCreate", false
 
-		// Centering
-		horizontalCentering: true,
+		/**
+		 * Position string
+		 *
+		 * Accepts: top, middle and bottom (vertical) and left, center and right (horizontal). Any
+		 * order is acceptable (i.e. `top right` and `right top` produce the same results).
+		 */
+		position: "center top",
+
+		/**
+		 * @deprecated since 0.7.1
+		 */
+		horizontalCentering: false,
+
+		/**
+		 * @deprecated since 0.7.1
+		 */
 		verticalCentering: false,
 
 		// Containers
@@ -149,47 +156,52 @@ var Sushi;
 		) {
 			// eslint-disable-next-line no-console
 			console.warn(
-				"Modal doesn't support the `move` content operation when the content is not an"
-				+ " HTMLElement.\nPlease wrap your content within a tag or add"
-				+ " data-modal-content=\"outer\" attribute to the tag you are using.\nThe content"
-				+ " operation will be set to `copy`."
+				this.constructor.displayName + " doesn't support the \"move\" content operation"
+				+ " when the content is not an HTMLElement.\nPlease wrap your content within a tag"
+				+ " or add data-modal-content=\"outer\" attribute to the tag you are using.\nThe"
+				+ " content operation will be set to \"copy\"."
 			);
 
 			this.options.contentOperation = "copy";
 		}
+
+		return true;
 	};
+
 
 	/**
 	 * Create the modal and overlay HTML and append it to the body
 	 */
 	proto.create = function () {
-		var classes = [];
+		var modifierClasses = Util.getModifierClasses("c-modal", this.options.modifiers);
+		var anchors = this.options.position.split(" ");
+
+		anchors.forEach(function (anchor) {
+			// horizontal
+			if (["left", "center", "right"].includes(anchor)) {
+				this.anchors.x = anchor;
+			}
+			// vertical
+			else if (["top", "middle", "bottom"].includes(anchor)) {
+				this.anchors.y = anchor;
+			}
+		}.bind(this));
 
 		if (this.options.horizontalCentering) {
-			classes.push("c-modal--" + CENTERING_MODIFIERS.horizontal);
+			this.anchors.x = "center";
 		}
 
 		if (this.options.verticalCentering) {
-			classes.push("c-modal--" + CENTERING_MODIFIERS.vertical);
+			this.anchors.y = "middle";
 		}
 
-		classes = classes.concat(this.options.extraClasses);
+		modifierClasses.push("c-modal--" + this.anchors.x);
+		modifierClasses.push("c-modal--" + this.anchors.y);
 
-		Dom.addClass(this.element, classes);
+		Dom.addClass(this.element, modifierClasses);
 
 		if (this.element.parentElement === null) {
 			this.appendTo.appendChild(this.element);
-		}
-
-		// Register overlay close listener
-		if (this.options.closeOnOverlayClick) {
-			Events(this.overlay).on("Modal.close.click", function (event) {
-				if (event.target === this.overlay) {
-					event.preventDefault();
-
-					this.close();
-				}
-			}.bind(this));
 		}
 
 		// Pre-populate content, if enabled
@@ -197,9 +209,70 @@ var Sushi;
 			this.updateContent();
 		}
 
+		this.registerListeners();
+
 		if (this.element.classList.contains("is-open")) {
 			this.open();
 		}
+	};
+
+
+	proto.registerListeners = function () {
+		var onTriggerElementClick = function (event) {
+			event.preventDefault();
+			this.toggle();
+		};
+
+		var onOverlayClick = function (event) {
+			if (event.target === this.overlay) {
+				event.preventDefault();
+				this.close();
+			}
+		};
+
+		var onCloseButtonClick = function (event) {
+			event.preventDefault();
+			this.close();
+		};
+
+		var onDocumentKeyDown = function (event) {
+			var currentModal = Modal.getCurrent();
+
+			if (currentModal.options.closeOnEscape && (event.keyCode === 27)) {
+				currentModal.close();
+			}
+		};
+
+		var onModalOpen = function () {
+			var closeButtons = this.element.querySelectorAll("[data-modal-close]");
+
+			Events(closeButtons).on("Modal.close.click", onCloseButtonClick.bind(this));
+
+			if (Modal.openModals.length === 1) {
+				Events(document).on("Modal.keydown", onDocumentKeyDown.bind(this));
+			}
+		};
+
+		var onModalClose = function () {
+			var closeButtons = this.element.querySelectorAll("[data-modal-close]");
+
+			Events(closeButtons).off("Modal.close.click");
+
+			if (Modal.openModals.length === 0) {
+				Events(document).off("Modal.keydown");
+			}
+		};
+
+		// Register click listener on triggering element
+		Events(this.triggerElement).on("Modal.click", onTriggerElementClick.bind(this));
+
+		// Register overlay close listener
+		if (this.options.closeOnOverlayClick) {
+			Events(this.overlay).on("Modal.close.click", onOverlayClick.bind(this));
+		}
+
+		Events(this.element).on("Modal.open", onModalOpen.bind(this));
+		Events(this.element).on("Modal.close", onModalClose.bind(this));
 	};
 
 
@@ -217,8 +290,8 @@ var Sushi;
 			else {
 				// eslint-disable-next-line no-console
 				console.warn(
-					"Modal is set to lock scroll while open but Sushi's BodyScroll class does"
-					+ " not exist."
+					this.constructor.displayName + " is set to lock scroll while open but Sushi's"
+					+ " BodyScroll class does not exist.\nPage scroll will not be locked."
 				);
 			}
 		}
@@ -231,15 +304,6 @@ var Sushi;
 
 		// Force redraw so animations can take place
 		window.getComputedStyle(this.element).height;
-
-		// Register close button listener
-		Events(this.element.querySelectorAll("[data-modal-close]"))
-			.off("Modal.close.click")
-			.on("Modal.close.click", function (event) {
-				event.preventDefault();
-
-				this.close();
-			}.bind(this));
 
 		// Show modal and overlay
 		Dom.addClass(this.element, "is-open");
@@ -342,32 +406,6 @@ var Sushi;
 
 
 	/**
-	 * Update the modal position
-	 */
-	proto.updatePosition = function () {
-		var windowWidth = window.innerWidth;
-		var windowHeight = window.innerHeight;
-		var modalStyles = window.getComputedStyle(this.content);
-		var modalWidth = modalStyles.width;
-		var modalHeight = modalStyles.height;
-
-		if (this.options.horizontalCentering) {
-			this.content.style.marginLeft = (
-				(windowWidth > modalWidth)
-					? (-1 * Math.ceil(modalWidth / 2)) : (-1 * Math.ceil(windowWidth / 2))
-			);
-		}
-
-		if (this.options.verticalCentering) {
-			this.content.style.marginTop = (
-				(windowHeight > modalHeight)
-					? (-1 * Math.ceil(modalHeight / 2)) : (-1 * Math.ceil(windowHeight / 2))
-			);
-		}
-	};
-
-
-	/**
 	 * Add current modal to open modals list
 	 */
 	proto.addToOpenModalsList = function () {
@@ -389,7 +427,6 @@ var Sushi;
 	};
 
 
-
 	/**
 	 * Returns the topmost modal
 	 *
@@ -399,40 +436,6 @@ var Sushi;
 		return Modal.openModals[(Modal.openModals.length - 1)];
 	};
 
-
-	/**
-	 * Close the topmost modal
-	 */
-	Modal.closeCurrent = function () {
-		Modal.getCurrent().close();
-	};
-
-
-
-	/* Global listeners
-	   --------------------------- */
-
-	Events(document).on("Modal.open", function (event) {
-		if (
-			(event.detail != null)
-			&& (event.detail.modal !== void 0)
-			&& event.detail.modal.options.closeOnEscape
-		) {
-			Events(document)
-				.off("Modal.keydown")
-				.on("Modal.keydown", function (event) {
-					if (event.keyCode === 27) {
-						Modal.closeCurrent();
-					}
-				});
-		}
-	});
-
-	Events(document).on("Modal.close", function () {
-		if (Modal.openModals.length === 0) {
-			Events(document).off("Modal.keydown");
-		}
-	});
 
 	Plugins.Modal = Modal;
 })(Sushi || (Sushi = {}), Sushi.Plugins || (Sushi.Plugins = {}));

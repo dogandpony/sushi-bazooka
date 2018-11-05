@@ -381,5 +381,30 @@ var Sushi;
 		return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // $& means the whole matched string
 	};
 
+
+	/**
+	 * Turns a string or array of modifiers into an array of classes using the `mainClass` parameter
+	 *
+	 * @param {string} mainClass Main component class
+	 * @param {string|array} modifiers Array of modifiers
+	 * @param {string} separator Modifier separator (defaults to `--`)
+	 *
+	 * @return {array} Array of modifier classes
+	 */
+	Util.getModifierClasses = function (mainClass, modifiers, separator) {
+		separator = (separator || "--");
+
+		if (typeof modifiers === "string") {
+			modifiers = modifiers.replace(/[\s,;]+?/g, " ");
+			modifiers = modifiers.split(" ");
+		}
+
+		for (var i = 0; i < modifiers.length; i++) {
+			modifiers[i] = mainClass + separator + modifiers[i];
+		}
+
+		return modifiers;
+	};
+
 	Sushi.Util = Util;
 })(Sushi || (Sushi = {}));

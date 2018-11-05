@@ -131,11 +131,11 @@ var Sushi;
 	Css.getMaxTransitionDuration = function (element, ignoreDelay) {
 		ignoreDelay = ignoreDelay || false;
 
-		var transitionDuration = element.ownerDocument.defaultView
-			.getComputedStyle(element, null).transitionDuration.split(", ");
+		var transitionDuration = window.getComputedStyle(element, null)
+			.transitionDuration.split(", ");
 
-		var transitionDelay = element.ownerDocument.defaultView
-			.getComputedStyle(element, null).transitionDelay.split(", ");
+		var transitionDelay = window.getComputedStyle(element, null)
+			.transitionDelay.split(", ");
 
 		var maxDuration = 0;
 
