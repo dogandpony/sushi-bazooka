@@ -29,7 +29,7 @@ var Sushi;
 
 	// Start observing the target node for configured mutations
 	observer.observe(document.body, {
-		attributes: true,
+		attributes: false,
 		childList: true,
 		subtree: true,
 	});
