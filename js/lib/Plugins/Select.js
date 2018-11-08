@@ -395,6 +395,8 @@ var Sushi;
 
 		itemElement.appendChild(titleElement);
 
+		Dom.addClass(itemElement, optionElement.getAttribute("class"));
+
 		return itemElement;
 	};
 
