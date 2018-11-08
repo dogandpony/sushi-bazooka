@@ -27,6 +27,10 @@ var Sushi;
 	var Dom = function () {};
 
 	var traverseClassNames = function (target, method, classNames) {
+		if (!classNames) {
+			return;
+		}
+
 		if (Dom.isIterable(target)) {
 			for (var i = 0; i < target.length; i++) {
 				Dom[method + "Class"](target[i], classNames);
