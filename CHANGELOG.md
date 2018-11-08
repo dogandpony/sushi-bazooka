@@ -7,6 +7,12 @@ out of beta. Currently we treat `0.x.y` where `x` is **major** and `y` can be ei
 **patch** versions. This way we keep code from spilling to real major versions.
 
 
+## [0.8.1] - 2018-11-08
+
+### Fixed
+- Mutation observer was running an infinite loop if Sushi.init() was called for an element.
+
+
 ## [0.8.0] - 2018-11-05
 
 ### Deprecated
@@ -218,7 +224,8 @@ out of beta. Currently we treat `0.x.y` where `x` is **major** and `y` can be ei
 - **Plugins.Modal**: Check if BodyScroll library exists and warn user if it doesn't.
 
 
-[Unreleased version]: https://github.com/dogandpony/sushi-bazooka/compare/v0.8.0...HEAD
+[Unreleased version]: https://github.com/dogandpony/sushi-bazooka/compare/v0.8.1...HEAD
+[0.8.1]: https://github.com/dogandpony/sushi-bazooka/compare/v0.8.0...v0.8.1
 [0.8.0]: https://github.com/dogandpony/sushi-bazooka/compare/v0.7.0...v0.8.0
 [0.7.0]: https://github.com/dogandpony/sushi-bazooka/compare/v0.6.2...v0.7.0
 [0.6.2]: https://github.com/dogandpony/sushi-bazooka/compare/v0.6.1...v0.6.2
