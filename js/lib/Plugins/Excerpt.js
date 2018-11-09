@@ -147,7 +147,7 @@ var Sushi;
 		var tempString = "&nbsp;";
 
 		for (var i = 0; i < (this.options.lines - 1); i++) {
-			tempString += "<br />&nbsp;";
+			tempString += "<br style='display:block!important' />&nbsp;";
 		}
 
 		this.triggerElement.innerHTML = tempString;
