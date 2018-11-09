@@ -351,7 +351,18 @@ var Sushi;
 		for (var i = 0; i < formElement.elements.length; i++) {
 			var inputElement = formElement.elements[i];
 
-			if (!ignoreEmpty || (inputElement.value !== "")) {
+			if ((inputElement.type === "radio")) {
+				if (!ignoreEmpty || inputElement.checked) {
+					formData[inputElement.name] = inputElement.value;
+				}
+			}
+			else if ((inputElement.type === "checkbox") && inputElement.checked) {
+				if (!ignoreEmpty || inputElement.checked) {
+					(formData[inputElement.name] || (formData[inputElement.name] = []));
+					formData[inputElement.name].push(inputElement.value);
+				}
+			}
+			else if (!ignoreEmpty || (inputElement.value !== "")) {
 				formData[inputElement.name] = inputElement.value;
 			}
 		}
@@ -404,6 +415,19 @@ var Sushi;
 		}
 
 		return modifiers;
+	};
+
+
+	/**
+	 * Returns the current breakpoint based on the value of the content property in the :before
+	 * pseudo-element of the body tag.
+	 *
+	 * @return {string} Current breakpoint name
+	 */
+	Util.getCurrentBreakpoint = function () {
+		return window.getComputedStyle(document.body, ":before")
+			.getPropertyValue("content")
+			.replace(/["']/g, "");
 	};
 
 	Sushi.Util = Util;
