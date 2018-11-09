@@ -24,17 +24,9 @@ var Sushi;
 			if (pluggableElements.hasOwnProperty(i)) {
 				var element = pluggableElements[i];
 				var pluginName = element.dataset[Sushi.pluginNamespace];
-				var plugin = Sushi.Plugins[pluginName];
-				var pluginExists = (plugin !== void 0);
 
-				if (pluginExists) {
-					var noInstanceIsRegisteredToElement = !(
-						(Sushi.getPluginInstance(plugin, element) instanceof plugin)
-					);
-
-					if (noInstanceIsRegisteredToElement) {
-						new plugin(element);
-					}
+				if (Sushi.Plugins[pluginName] !== void 0) {
+					new Sushi.Plugins[pluginName](element);
 				}
 				else {
 					// eslint-disable-next-line no-console
