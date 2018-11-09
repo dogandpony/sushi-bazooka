@@ -61,7 +61,7 @@ var Sushi;
 		alwaysAppendEnd: false,
 		lines: 1,
 		autoUpdate: true,
-		updateThreshold: 30,
+		updateThreshold: 100,
 	};
 
 	Excerpt.prototype = Object.create(BasePlugin.prototype);
