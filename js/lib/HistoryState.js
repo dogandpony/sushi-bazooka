@@ -58,7 +58,8 @@ var Sushi;
 			this.setBasePathname(window.location.pathname);
 		}
 		else {
-			throw "basePathname must be null, not passed or a string, " + (typeof basePathname) + " given";
+			throw "basePathname must be null, not passed or a string, "
+				+ (typeof basePathname) + " given";
 		}
 
 		this.registerEventListeners();
@@ -262,23 +263,28 @@ var Sushi;
 	HistoryState.prototype.registerEventListeners = function () {
 		var currentInstance = this;
 
-		var onSushiHistoryStatePopEvent = $.Event("onSushiHistoryStatePop");
+		var onSushiHistoryStatePopEvent = {
+			stateData: null,
+		};
 
 		if (this.getNativePushStateSupport()) {
-			$(window).on("popstate", function (jQueryEvent) {
+			Sushi.Events(window).on("popstate", function (event) {
 
 				currentInstance.setIsReplaceState(false);
 
-				onSushiHistoryStatePopEvent.stateData = jQueryEvent.originalEvent.state;
+				onSushiHistoryStatePopEvent.stateData = event.state;
 
-				currentInstance.setCurrentState(jQueryEvent.originalEvent.state);
+				currentInstance.setCurrentState(event.state);
 
-				// Here we trigger the jQuery event
-				$(window).trigger(onSushiHistoryStatePopEvent);
+				// Here we trigger the Sushi event
+				Sushi.Events(window).trigger(
+					"onSushiHistoryStatePopEvent",
+					onSushiHistoryStatePopEvent
+				);
 			});
 		}
 		else {
-			$(window).on("hashchange", function () {
+			Sushi.Events(window).on("hashchange", function (event) {
 
 				if (!currentInstance.getUpdateStacks()) {
 					// Do nothing, only update the status
@@ -286,12 +292,12 @@ var Sushi;
 				}
 				else {
 					/*
-							   * It was caused by an user action
-							   * We need to get the state in one of the stacks
-							   * (History or Forward)
-							   * If we can't find the state, we would use a replaceState because the user
-							   * changed the URL manually by themselves
-							   */
+				    * It was caused by an user action
+				    * We need to get the state in one of the stacks
+				    * (History or Forward)
+				    * If we can't find the state, we would use a replaceState because the user
+				    * changed the URL manually by themselves
+				    */
 					var stateDataToDispatch = null;
 
 					var currentPath = window.location.hash.replace("#!", "");
@@ -306,10 +312,10 @@ var Sushi;
 
 						if (oldState === null) {
 							/*
-										   * Ok, a new hash came from nothing.
-										   * We need to push it into the history
-										   * The state value will be null
-										   */
+						    * Ok, a new hash came from nothing.
+						    * We need to push it into the history
+						    * The state value will be null
+						    */
 							currentInstance.getHistoryAndCurrentStack().push({
 								state: stateDataToDispatch,
 								title: null,
@@ -328,10 +334,10 @@ var Sushi;
 							else {
 								// New
 								/*
-												 * Ok, a new hash came from nothing.
-												 * We need to push it into the history
-												 * The state value will be null
-												 */
+								 * Ok, a new hash came from nothing.
+								 * We need to push it into the history
+								 * The state value will be null
+								 */
 								currentInstance.getHistoryAndCurrentStack().push({
 									state: stateDataToDispatch,
 									title: null,
@@ -360,11 +366,11 @@ var Sushi;
 								if (secondOldState === null) {
 									// New
 									/*
-													   * Ok, a new hash came from nothing.
-													   * We need to push it into the history
-													   * The state value will be null
-													   * We also need to push the oldState
-													   */
+									* Ok, a new hash came from nothing.
+									* We need to push it into the history
+									* The state value will be null
+									* We also need to push the oldState
+									*/
 									currentInstance.getHistoryAndCurrentStack().push(oldState);
 									currentInstance.getHistoryAndCurrentStack().push({
 										state: stateDataToDispatch,
@@ -379,15 +385,16 @@ var Sushi;
 										matchState = secondOldState;
 
 										currentInstance.getHistoryAndCurrentStack().push(oldState);
-										currentInstance.getHistoryAndCurrentStack().push(matchState);
+										currentInstance.getHistoryAndCurrentStack()
+											.push(matchState);
 									}
 									else {
 										// New
 										/*
-															 * Ok, a new hash came from nothing.
-															 * We need to push it into the history
-															 * The state value will be null
-															 */
+										 * Ok, a new hash came from nothing.
+										 * We need to push it into the history
+										 * The state value will be null
+										 */
 										currentInstance.getHistoryAndCurrentStack().push({
 											state: stateDataToDispatch,
 											title: null,
@@ -412,7 +419,8 @@ var Sushi;
 								}
 								else {
 									// Re-populate the history
-									currentInstance.getHistoryAndCurrentStack().push(secondOldState);
+									currentInstance.getHistoryAndCurrentStack()
+										.push(secondOldState);
 									currentInstance.getHistoryAndCurrentStack().push(oldState);
 
 									oldState = currentInstance.getForwardStack().pop();
@@ -420,11 +428,11 @@ var Sushi;
 									if (oldState === null) {
 										// New
 										/*
-															 * Ok, a new hash came from nothing.
-															 * We need to push it into the history
-															 * The state value will be null
-															 * We also need to push the oldState
-															 */
+										 * Ok, a new hash came from nothing.
+										 * We need to push it into the history
+										 * The state value will be null
+										 * We also need to push the oldState
+										 */
 										currentInstance.getHistoryAndCurrentStack().push({
 											state: stateDataToDispatch,
 											title: null,
@@ -440,16 +448,17 @@ var Sushi;
 											// Forward
 											matchState = oldState;
 
-											currentInstance.getHistoryAndCurrentStack().push(oldState);
+											currentInstance.getHistoryAndCurrentStack()
+												.push(oldState);
 										}
 										else {
 											// New
 											/*
-																   * Ok, a new hash came from nothing.
-																   * We need to push it into the history
-																   * The state value will be null
-																   * We also need to push the oldState
-																   */
+										    * Ok, a new hash came from nothing.
+										    * We need to push it into the history
+										    * The state value will be null
+										    * We also need to push the oldState
+										    */
 											currentInstance.getHistoryAndCurrentStack().push({
 												state: stateDataToDispatch,
 												title: null,
@@ -471,8 +480,11 @@ var Sushi;
 					// Now triggers the event
 					onSushiHistoryStatePopEvent.stateData = stateDataToDispatch;
 
-					// Here we trigger the jQuery event
-					$(window).trigger(onSushiHistoryStatePopEvent);
+					// Here we trigger the Sushi event
+					Sushi.Events(window).trigger(
+						"onSushiHistoryStatePopEvent",
+						onSushiHistoryStatePopEvent
+					);
 				}
 
 			});
@@ -481,12 +493,12 @@ var Sushi;
 
 	/**
 	 * Push a new state
+	 *
 	 * @param {Object} state
 	 * @param {String} title
 	 * @param {String} path
 	 */
 	HistoryState.prototype.push = function (state, title, path) {
-
 		if (typeof path === "undefined") {
 			throw "HistoryState.push: path is mandatory";
 		}
@@ -550,17 +562,16 @@ var Sushi;
 			// Change the hash
 			window.location.hash = "#!" + uniquePathValue;
 		}
-
 	};
 
 	/**
 	 * Replace the current state
+	 *
 	 * @param {Object} state
 	 * @param {String} title
 	 * @param {String} path
 	 */
 	HistoryState.prototype.replace = function (state, title, path) {
-
 		if (typeof path === "undefined") {
 			throw "HistoryState.replace: path is mandatory";
 		}
@@ -646,7 +657,6 @@ var Sushi;
 			// Change the hash
 			window.location.hash = "#!" + path;
 		}
-
 	};
 
 	/**
@@ -655,7 +665,6 @@ var Sushi;
 	 * @returns {Object}
 	 */
 	HistoryState.prototype.getState = function () {
-
 		if (this.getNativePushStateSupport()) {
 			return this.getCurrentState();
 		}
@@ -670,9 +679,7 @@ var Sushi;
 
 			return null;
 		}
-
 	};
 
 	Sushi.HistoryState = HistoryState;
-
 })(Sushi || (Sushi = {}));
