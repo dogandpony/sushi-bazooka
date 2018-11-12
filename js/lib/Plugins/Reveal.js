@@ -127,6 +127,8 @@ var Sushi;
 
 		this.isOpen = false;
 
+		Events(this.targetElement).off("Reveal." + transitionEndEvent);
+
 		if (this.triggerElement !== null) {
 			this.triggerElement.classList.remove("is-active");
 		}
