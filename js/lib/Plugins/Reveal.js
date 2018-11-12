@@ -19,7 +19,7 @@ var Sushi;
 	var Reveal = function (triggerElement, options) {
 		BasePlugin.call(this, triggerElement, options);
 
-		this.isOpen = false;
+		this.isOpen = this.triggerElement.classList.contains("is-active");
 
 		// Cache elements
 		this.targetElement = Dom.get(this.options.target);
@@ -32,6 +32,16 @@ var Sushi;
 		this.autoWidth = (maxWidth !== "none") && (parseInt(maxWidth) === 0);
 
 		this.registerListeners();
+
+		if (this.isOpen) {
+			if (this.autoHeight) {
+				this.targetElement.style.maxHeight = "none";
+			}
+
+			if (this.autoWidth) {
+				this.targetElement.style.maxWidth = "none";
+			}
+		}
 	};
 
 	Reveal.displayName = "Reveal";
