@@ -163,8 +163,8 @@ var Sushi;
 		var elementRect = element.getBoundingClientRect();
 		var offset = {
 			top: (elementRect.top - contextRect.top),
-			right: (elementRect.right - contextRect.right),
-			bottom: (elementRect.bottom - contextRect.bottom),
+			right: (contextRect.right - elementRect.right),
+			bottom: (contextRect.bottom - elementRect.bottom),
 			left: (elementRect.left - contextRect.left),
 		};
 
