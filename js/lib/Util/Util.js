@@ -430,5 +430,55 @@ var Sushi;
 			.replace(/["']/g, "");
 	};
 
+	Util.setScrollTop = function (scrollTop) {
+		document.documentElement.scrollTop = scrollTop;
+		document.body.parentNode.scrollTop = scrollTop;
+		document.body.scrollTop = scrollTop;
+	};
+
+	Util.scrollToElement = function (element, duration, callback, easingFunction) {
+		duration = duration || 500;
+		easingFunction = easingFunction || Util.Easing.easeInOutCubic;
+
+		var elementOffset = Sushi.Util.Css.getOffset(element);
+		var startScroll = (
+			document.documentElement.scrollTop
+			|| document.body.parentNode.scrollTop
+			|| document.body.scrollTop
+		);
+		var remainingHeightBelowElement = window.innerHeight - (
+			document.body.offsetHeight - elementOffset.top
+		);
+		var missingHeightBelowElement = Math.max(0, remainingHeightBelowElement);
+		var endScroll = Math.round(elementOffset.top - missingHeightBelowElement);
+		var movementDelta = (endScroll - startScroll);
+
+		var startTime = window.performance.now();
+		var endTime = startTime + duration;
+
+		var animateScroll = function () {
+			var remainingTime = Math.max(endTime - window.performance.now(), 0);
+			var currentMovementPercentage = 1 - (remainingTime / duration);
+			var easingFactor = easingFunction(currentMovementPercentage);
+
+			// move the document.body
+			Util.setScrollTop(startScroll + (movementDelta * easingFactor));
+
+			// do the animation unless it's over
+			if (remainingTime > 0) {
+				window.requestAnimationFrame(animateScroll);
+			}
+			else {
+				Util.setScrollTop(endScroll);
+
+				if (typeof(callback) === "function") {
+					callback();
+				}
+			}
+		};
+
+		animateScroll();
+	};
+
 	Sushi.Util = Util;
 })(Sushi || (Sushi = {}));
