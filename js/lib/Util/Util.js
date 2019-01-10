@@ -430,12 +430,33 @@ var Sushi;
 			.replace(/["']/g, "");
 	};
 
+
+	/**
+	 * Sets the current vertical scrolling point of the page
+	 *
+	 * @param {number} scrollTop Amount in pixels to scroll from the top of the page
+	 *
+	 * @return {void}
+	 */
 	Util.setScrollTop = function (scrollTop) {
 		document.documentElement.scrollTop = scrollTop;
 		document.body.parentNode.scrollTop = scrollTop;
 		document.body.scrollTop = scrollTop;
 	};
 
+
+	/**
+	 * Scrolls the page until an element is at the top (or is at least visible, if the page doesn't
+	 * have enough height)
+	 *
+	 * @param {HTMLElement} element HTML element to scroll the page to
+	 * @param {number} [duration=500] Duration of the scrolling animation
+	 * @param {function} [callback] Callback to be executed after the animation ends
+	 * @param {function} [easingFunction=Util.Easing.easeInOutCubic] Easing function to be used in
+	 * the animation
+	 *
+	 * @return {void}
+	 */
 	Util.scrollToElement = function (element, duration, callback, easingFunction) {
 		duration = duration || 500;
 		easingFunction = easingFunction || Util.Easing.easeInOutCubic;
@@ -456,6 +477,12 @@ var Sushi;
 		var startTime = window.performance.now();
 		var endTime = startTime + duration;
 
+
+		/**
+		 * Runs a single step of the animation
+		 *
+		 * @return {void}
+		 */
 		var animateScroll = function () {
 			var remainingTime = Math.max(endTime - window.performance.now(), 0);
 			var currentMovementPercentage = 1 - (remainingTime / duration);
