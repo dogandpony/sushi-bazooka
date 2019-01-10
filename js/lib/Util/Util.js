@@ -12,6 +12,7 @@ var Sushi;
 
 	/**
 	 * Stores the unique ID index used by Util.uniqueId()
+	 *
 	 * @type {number}
 	 */
 	var uniqueIdIndex = 0;
@@ -24,6 +25,7 @@ var Sushi;
 	 * @param {number} wait Amount of milliseconds to wait between triggers
 	 * @param {object} options Object that receives `leading` and `trailing` boolean properties to
 	 * run the function before the first trigger and after the last trigger, respectively.
+	 *
 	 * @returns {function} Function that has just ran
 	 */
 	Util.throttle = function (func, wait, options) {
@@ -98,6 +100,7 @@ var Sushi;
 	 * Returns a pseudo-unique id
 	 *
 	 * @param {string} prefix Optional prefix to add to the ID string
+	 *
 	 * @returns {string} Unique ID
 	 */
 	Util.uniqueId = function (prefix) {
@@ -110,6 +113,7 @@ var Sushi;
 	 *
 	 * @param {string} namespace Property namespace (or prefix) to look for
 	 * @param {object} properties Object of properties to look into
+	 *
 	 * @returns {object} Object of filtered properties that match the namespace
 	 */
 	Util.getNamespaceProperties = function (namespace, properties) {
@@ -159,7 +163,7 @@ var Sushi;
 	 * Returns the vertical scrollbar width
 	 * Please note this function is costly because it generates a repaint every time it runs.
 	 *
-	 * @return {number} Width of the scrollbar in pixels
+	 * @returns {number} Width of the scrollbar in pixels
 	 */
 	Util.getScrollbarWidth = function () {
 		var scrollDiv = document.createElement("div");
@@ -189,7 +193,8 @@ var Sushi;
 	 * @param {function} fn Function to run on the animation frame
 	 * @param {number} fps Desired FPS to run the timeout function. It may not be the actual FPS if
 	 * the browser can't handle it. Defaults to `60`.
-	 * @return {void}
+	 *
+	 * @returns {void}
 	 */
 	Util.requestAnimationFrame = function (fn, fps) {
 		fps = fps || 60;
@@ -210,7 +215,8 @@ var Sushi;
 	 * Cancels the requested animation frame
 	 *
 	 * @param {number} requestId Option timeout ID to cancel
-	 * @return {void}
+	 *
+	 * @returns {void}
 	 */
 	Util.cancelAnimationFrame = function (requestId) {
 		var animationFrameFunction = window.cancelAnimationFrame
@@ -230,6 +236,7 @@ var Sushi;
 	 * tool for the job.
 	 *
 	 * @param {object} target Object to merge other arguments into
+	 *
 	 * @returns {object} Merged object
 	 */
 	Util.deepMerge = function (target) {
@@ -260,6 +267,7 @@ var Sushi;
 	 * Alias/Polyfill for Object.assign()
 	 *
 	 * @param {object} target Object to merge other arguments into
+	 *
 	 * @returns {object} Merged object
 	 */
 	Util.merge = function (target) {
@@ -303,6 +311,7 @@ var Sushi;
 	 * Returns true if the target object is mergeable
 	 *
 	 * @param {object} target Object to test
+	 *
 	 * @returns {boolean} True if the object is mergeable
 	 */
 	Util.isMergeableObject = function (target) {
@@ -318,6 +327,7 @@ var Sushi;
 	 * Converts first character of a string to upper case and returns the new string
 	 *
 	 * @param {string} string String to be changed
+	 *
 	 * @returns {string} Changed string
 	 */
 	Util.firstCharacterToUpperCase = function (string) {
@@ -329,6 +339,7 @@ var Sushi;
 	 * Converts first character of a string to lower case and returns the new string
 	 *
 	 * @param {string} string String to be changed
+	 *
 	 * @returns {string} Changed string
 	 */
 	Util.firstCharacterToLowerCase = function (string) {
@@ -341,6 +352,7 @@ var Sushi;
 	 *
 	 * @param {HTMLElement} formElement Form tag to grab field data from
 	 * @param {boolean} ignoreEmpty Whether to ignore empty fields or not. Defaults to true.
+	 *
 	 * @returns {object} Object with the form's field data
 	 */
 	Util.getFormData = function (formElement, ignoreEmpty) {
@@ -375,6 +387,7 @@ var Sushi;
 	 * Forces the repaint of an element by querying its computed style
 	 *
 	 * @param {HTMLElement} element Element to force repaint
+	 *
 	 * @returns {void}
 	 */
 	Util.forceRepaint = function (element) {
@@ -386,6 +399,7 @@ var Sushi;
 	 * Escapes a string to use it in Regular Expressions
 	 *
 	 * @param {string} string String to escape
+	 *
 	 * @returns {string} Escaped string
 	 */
 	Util.escapeRegExp = function (string) {
@@ -400,7 +414,7 @@ var Sushi;
 	 * @param {string|array} modifiers Array of modifiers
 	 * @param {string} separator Modifier separator (defaults to `--`)
 	 *
-	 * @return {array} Array of modifier classes
+	 * @returns {array} Array of modifier classes
 	 */
 	Util.getModifierClasses = function (mainClass, modifiers, separator) {
 		separator = (separator || "--");
@@ -422,7 +436,7 @@ var Sushi;
 	 * Returns the current breakpoint based on the value of the content property in the :before
 	 * pseudo-element of the body tag.
 	 *
-	 * @return {string} Current breakpoint name
+	 * @returns {string} Current breakpoint name
 	 */
 	Util.getCurrentBreakpoint = function () {
 		return window.getComputedStyle(document.body, ":before")
@@ -436,7 +450,7 @@ var Sushi;
 	 *
 	 * @param {number} scrollTop Amount in pixels to scroll from the top of the page
 	 *
-	 * @return {void}
+	 * @returns {void}
 	 */
 	Util.setScrollTop = function (scrollTop) {
 		document.documentElement.scrollTop = scrollTop;
@@ -455,7 +469,7 @@ var Sushi;
 	 * @param {function} [easingFunction=Util.Easing.easeInOutCubic] Easing function to be used in
 	 * the animation
 	 *
-	 * @return {void}
+	 * @returns {void}
 	 */
 	Util.scrollToElement = function (element, duration, callback, easingFunction) {
 		duration = duration || 500;
@@ -481,7 +495,7 @@ var Sushi;
 		/**
 		 * Runs a single step of the animation
 		 *
-		 * @return {void}
+		 * @returns {void}
 		 */
 		var animateScroll = function () {
 			var remainingTime = Math.max(endTime - window.performance.now(), 0);
