@@ -164,7 +164,7 @@ var Sushi;
 	};
 
 
-	proto.substring = function (string, length, excludeEndString) {
+	proto.substring = function (string, length) {
 		if (length === string.length) {
 			return string;
 		}
