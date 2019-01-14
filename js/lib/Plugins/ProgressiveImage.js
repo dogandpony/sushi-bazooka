@@ -138,10 +138,6 @@ var Sushi;
 	proto.loadOriginalImage = function () {
 		this.originalImage.onload = function () {
 			this.container.classList.add("is-imageLoaded");
-
-			Sushi.Events(this.originalImage).on("transitionend", function () {
-				this.canvas.parentElement.removeChild(this.canvas);
-			}.bind(this));
 		}.bind(this);
 
 		for (var imageAttribute in this.imageAttributes) {
