@@ -169,14 +169,7 @@ var Sushi;
 			return string;
 		}
 
-		var subString = string.substr(0, length);
-
-		if (excludeEndString) {
-			return subString;
-		}
-		else {
-			return subString + this.endString + (this.endString || "");
-		}
+		return string.substr(0, length).replace(/[.,]+$/, "");
 	};
 
 

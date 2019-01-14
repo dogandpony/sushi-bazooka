@@ -9,6 +9,10 @@ out of beta. Currently we treat `0.x.y` where `x` is **major** and `y` can be ei
 
 ## [Unreleased version]
 
+### Changed
+- **Plugins.Excerpt**: Do no break on dots or commas (to prevent oddities like "last word...." or
+  "last word,...").
+
 ### Added
 - **Plugins.Excerpt**: Add support for HTML end tags. 
 
