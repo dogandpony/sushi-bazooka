@@ -7,6 +7,12 @@ out of beta. Currently we treat `0.x.y` where `x` is **major** and `y` can be ei
 **patch** versions. This way we keep code from spilling to real major versions.
 
 
+## [Unreleased version]
+
+### Added
+- **Plugins.Excerpt**: Add support for HTML end tags. 
+
+
 ## [0.9.0] - 2019-01-14
 
 ### Fixed

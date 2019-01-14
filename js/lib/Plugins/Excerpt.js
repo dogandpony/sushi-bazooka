@@ -45,7 +45,8 @@ var Sushi;
 		this.originalText = this.triggerElement.innerText;
 
 		this.endString = this.options.end;
-		this.endElement = document.createTextNode(this.endString);
+		this.endElement = document.createElement("span");
+		this.endElement.innerHTML = this.endString;
 
 		this.update();
 
@@ -85,7 +86,7 @@ var Sushi;
 
 		var string = this.originalText.replace(/\s+/, " ");
 
-		var spaces = []; // Array of indices to space characters
+		var spaces = [];
 
 		spaces.push(0);
 
@@ -122,7 +123,7 @@ var Sushi;
 			cutoff -= 1;
 		}
 
-		this.triggerElement.firstChild.nodeValue = this.substring(string, spaces[leftBound], true);
+		this.triggerElement.innerHTML = this.substring(string, spaces[leftBound], true);
 
 		if ((string.length !== spaces[leftBound]) || this.alwaysAppendEnd) {
 			this.triggerElement.appendChild(this.endElement);
@@ -180,7 +181,7 @@ var Sushi;
 
 
 	proto.isStringSmallEnough = function (string, width, height) {
-		this.triggerElement.firstChild.nodeValue = string;
+		this.triggerElement.innerHTML = string + this.endString;
 
 		return (
 			(this.triggerElement.offsetHeight <= height)
