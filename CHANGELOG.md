@@ -7,6 +7,48 @@ out of beta. Currently we treat `0.x.y` where `x` is **major** and `y` can be ei
 **patch** versions. This way we keep code from spilling to real major versions.
 
 
+## [0.9.0] - 2019-01-14
+
+### Fixed
+- An infinite loop that was triggered by the Mutation Observer when Progressive Images were added to
+  the page.
+- The Mutation Observer now only tries to init HTML Elements (vs all node types).
+- `Dom.addClass()` and `Dom.removeClass()` will now fail silently if the class is null-equivalent.
+- **Plugins.Excerpt**: Number of lines would not calculate properly if the `<br>` inside the trigger
+  element were set to anything other than `display: block`.
+- **Plugins.Reveal**
+  - Multiple clicks in the same element won't break the state of the Reveal anymore.
+  - Default inline styles are added if the element was already open before the plugin was 
+    instantiated.
+- **Plugins.ProgressiveImages**: Make sure the "original image" class is added to the image element.
+- **Util.Css**: `Css.getOffset()` now properly calculates the right and bottom offsets.
+- Some other small bugfixes.
+
+### Changed
+- Plugins won't be instantiated twice on the same element anymore.
+- **Plugins.Select**: All classes set to the `<option>`s are now copied to their respective items in
+  the Select.
+- **Plugins.Excerpt**: The recalculation threshold is now 100ms by default.
+- **HistoryState** is not jQuery-dependant anymore.
+
+### Removed
+- `sass/components/_offCanvas.scss` file was removed since it was not being used. To clarify, the
+  current implementation of the OffCanvas plugin uses `Modal`'s JS classes and CSS selectors.
+
+### Added
+- New plugin: **OffCanvas** - This plugin will create an element that is hidden off-canvas to be
+  displayed on user interaction (i.e. mobile menus that slide into view when the user clicks the 
+  mobile menu button).
+- New plugin: **VideoPlayer** - This plugin will create a video player in the page, displaying a
+  placeholder (text, image, icon, whatever suits you best) until the video is playing.
+- **Util**
+  - `Util.getFormData()` now supports radio buttons and checkboxes.
+  - `Util.setScrollTop()` is a new method that sets the Y scrolling position of the page.
+  - `Util.scrollToElement()` is a new method that animates the scroll to a given element in the 
+  page.
+- Some other minor improvements and documentation comments in the code.
+
+
 ## [0.8.1] - 2018-11-08
 
 ### Fixed
@@ -224,7 +266,8 @@ out of beta. Currently we treat `0.x.y` where `x` is **major** and `y` can be ei
 - **Plugins.Modal**: Check if BodyScroll library exists and warn user if it doesn't.
 
 
-[Unreleased version]: https://github.com/dogandpony/sushi-bazooka/compare/v0.8.1...HEAD
+[Unreleased version]: https://github.com/dogandpony/sushi-bazooka/compare/v0.9.0...HEAD
+[0.9.0]: https://github.com/dogandpony/sushi-bazooka/compare/v0.8.1...v0.9.0
 [0.8.1]: https://github.com/dogandpony/sushi-bazooka/compare/v0.8.0...v0.8.1
 [0.8.0]: https://github.com/dogandpony/sushi-bazooka/compare/v0.7.0...v0.8.0
 [0.7.0]: https://github.com/dogandpony/sushi-bazooka/compare/v0.6.2...v0.7.0
