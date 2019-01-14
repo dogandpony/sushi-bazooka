@@ -10,6 +10,10 @@ var Sushi;
 	var Util = Sushi.Util;
 
 	var BasePlugin = function (triggerElement, options) {
+		if (Sushi.getPluginInstance(this.constructor, triggerElement)) {
+			return;
+		}
+
 		var constructorName = Util.firstCharacterToLowerCase(this.constructor.displayName);
 
 		Sushi.addPluginInstanceTo(triggerElement, this);

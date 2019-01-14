@@ -130,3 +130,35 @@
 		content: "close";
 	}
 }
+
+
+
+
+/* Off-Canvas
+ * ============================================================================================== */
+
+.c-modal--offCanvas .c-modal__contentWrapper {
+	opacity: 1;
+	visibility: visible;
+	transition: transform $modalTransitionDuration $modalTransitionTimingFunction;
+}
+
+.c-modal--offCanvas.is-panning .c-modal__contentWrapper {
+	transition: none;
+}
+
+.c-modal--fromLeft .c-modal__contentWrapper {
+	transform: translateX(-100%);
+}
+
+.c-modal--fromLeft.is-open .c-modal__contentWrapper {
+	transform: translateX(0);
+}
+
+.c-modal--fromRight .c-modal__contentWrapper {
+	transform: translateX(100%);
+}
+
+.c-modal--fromRight.is-open .c-modal__contentWrapper {
+	transform: translateX(0);
+}

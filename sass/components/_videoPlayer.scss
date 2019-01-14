@@ -1,24 +1,36 @@
-/* ==============================================================================================
- * VIDEO PLAYER
- * ============================================================================================== */
+/* =========================================================================
+ * VIDEO PLAYER COMPONENT
+ * ========================================================================= */
 
 .c-videoPlayer {
+	background: #ccc;
+	color: #fff;
+}
+
+.c-videoPlayer__placeholder {
 	position: absolute;
 	top: 0;
 	right: 0;
 	bottom: 0;
 	left: 0;
+	z-index: 2;
+	transition: 0.3s $easeOutQuad;
+	cursor: pointer;
+}
+
+.c-videoPlayer.is-playing .c-videoPlayer__placeholder {
 	opacity: 0;
 	visibility: hidden;
-	transition: $videoPlayerTransitionDuration $videoPlayerTransitionTimingFunction;
-
 }
 
-.is-playing > .c-videoPlayer {
-	opacity: 1;
-	visibility: visible;
-}
-
-.ios .c-videoPlayer {
-	visibility: visible;
+.c-videoPlayer__placeholderImage {
+	position: absolute;
+	z-index: 3;
+	top: 50%;
+	left: 50%;
+	width: auto;
+	height: auto;
+	min-width: 100%;
+	min-height: 100%;
+	transform: translate3d(-50%, -50%, 0);
 }

@@ -19,7 +19,7 @@ var Sushi;
 	var Reveal = function (triggerElement, options) {
 		BasePlugin.call(this, triggerElement, options);
 
-		this.isOpen = false;
+		this.isOpen = this.triggerElement.classList.contains("is-active");
 
 		// Cache elements
 		this.targetElement = Dom.get(this.options.target);
@@ -32,6 +32,16 @@ var Sushi;
 		this.autoWidth = (maxWidth !== "none") && (parseInt(maxWidth) === 0);
 
 		this.registerListeners();
+
+		if (this.isOpen) {
+			if (this.autoHeight) {
+				this.targetElement.style.maxHeight = "none";
+			}
+
+			if (this.autoWidth) {
+				this.targetElement.style.maxWidth = "none";
+			}
+		}
 	};
 
 	Reveal.displayName = "Reveal";
@@ -76,22 +86,16 @@ var Sushi;
 
 
 	proto.removeAnimationClass = function () {
-		var transitionDuration = window.Math.max(
-			Util.Css.getMaxTransitionDuration(this.targetElement),
-			Util.Css.getMaxTransitionDuration(this.contentElement)
-		);
+		Events(this.targetElement)
+			.off("Reveal.removeAnimationClass." + transitionEndEvent)
+			.one("Reveal.removeAnimationClass." + transitionEndEvent, function () {
+				this.targetElement.classList.remove("is-animating");
 
-		clearTimeout(this.removeAnimationClassTimeout);
-		this.removeAnimationClassTimeout = null;
-
-		this.removeAnimationClassTimeout = setTimeout(function () {
-			this.targetElement.classList.remove("is-animating");
-
-			if (this.isOpen) {
-				this.targetElement.style.maxHeight = "none";
-				this.targetElement.style.maxWidth = "none";
-			}
-		}.bind(this), transitionDuration);
+				if (this.isOpen) {
+					this.targetElement.style.maxHeight = "none";
+					this.targetElement.style.maxWidth = "none";
+				}
+			}.bind(this));
 	};
 
 
@@ -132,6 +136,8 @@ var Sushi;
 		}
 
 		this.isOpen = false;
+
+		Events(this.targetElement).off("Reveal." + transitionEndEvent);
 
 		if (this.triggerElement !== null) {
 			this.triggerElement.classList.remove("is-active");

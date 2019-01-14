@@ -21,7 +21,9 @@ var Sushi;
 				for (var j = 0; j < mutation.addedNodes.length; j++) {
 					var node = mutation.addedNodes[j];
 
-					Sushi.init(node);
+					if (node instanceof HTMLElement) {
+						Sushi.init(node);
+					}
 				}
 			}
 		}

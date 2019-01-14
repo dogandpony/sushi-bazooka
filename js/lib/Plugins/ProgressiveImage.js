@@ -94,7 +94,6 @@ var Sushi;
 			}
 		}
 
-		this.originalImage.classList.add("c-progressiveImage__originalImage");
 		this.thumbnail.classList.add("c-progressiveImage__thumbnail");
 
 		this.thumbnail.insertAdjacentElement("afterend", this.container);
@@ -149,6 +148,8 @@ var Sushi;
 				);
 			}
 		}
+
+		this.originalImage.classList.add("c-progressiveImage__originalImage");
 
 		this.originalImage.src = this.options.src;
 	};

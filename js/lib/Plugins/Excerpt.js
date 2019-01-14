@@ -61,7 +61,7 @@ var Sushi;
 		alwaysAppendEnd: false,
 		lines: 1,
 		autoUpdate: true,
-		updateThreshold: 30,
+		updateThreshold: 100,
 	};
 
 	Excerpt.prototype = Object.create(BasePlugin.prototype);
@@ -147,7 +147,7 @@ var Sushi;
 		var tempString = "&nbsp;";
 
 		for (var i = 0; i < (this.options.lines - 1); i++) {
-			tempString += "<br />&nbsp;";
+			tempString += "<br style='display:block!important' />&nbsp;";
 		}
 
 		this.triggerElement.innerHTML = tempString;
