@@ -78,6 +78,8 @@ var Sushi;
 		if (parentElement.querySelectorAll !== void 0) {
 			parsePluggableElements(parentElement);
 			parseActionableElements(parentElement);
+
+			Sushi.Events(parentElement).trigger("init");
 		}
 	};
 
