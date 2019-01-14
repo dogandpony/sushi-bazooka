@@ -1,5 +1,15 @@
 /* ==============================================================================================
  * VIDEO PLAYER
+ *
+ * How To Use
+ * Create the following markup:
+ * <div data-plugin="VideoPlayer"
+ *   data-video-player-url="<!-- youtube video URL -->"
+ * 	 class="c-videoPlayer o-ratio o-ratio--16:9">
+ * 	 <div class="c-videoPlayer__placeholder">
+ *     <img src="placeholderImage.jpg">
+ * 	 </div>
+ * </div>
  * ============================================================================================== */
 
 var Sushi;
