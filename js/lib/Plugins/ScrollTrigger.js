@@ -67,14 +67,7 @@ var Sushi;
 		var limitPoint = (elementOffset + Util.Css.getHeight(this.triggerElement));
 		var fn = null;
 
-		var offset;
-
-		if (typeof this.options.offset === "function") {
-			offset = this.options.offset();
-		}
-		else {
-			offset = parseInt(this.options.offset);
-		}
+		var offset = this.getOffset();
 
 		switch (this.options.triggerPosition) {
 			case "top":
@@ -109,6 +102,14 @@ var Sushi;
 		if (typeof fn === "function") {
 			fn(this);
 		}
+	};
+
+	proto.getOffset = function () {
+		if (typeof this.options.offset === "function") {
+			return this.options.offset();
+		}
+
+		return parseInt(this.options.offset);
 	};
 
 	Plugins.ScrollTrigger = ScrollTrigger;
