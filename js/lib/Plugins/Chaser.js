@@ -27,7 +27,7 @@ var Sushi;
 
 	Chaser.displayName = "Chaser";
 
-	Chaser.DEFAULTS = Object.assign({}, ScrollTrigger.DEFAULTS, {
+	Chaser.DEFAULTS = Object.assign({}, Plugins.ScrollTrigger.DEFAULTS, {
 		placeholder: "<i class=\"o-chaserPlaceholder\">",
 		updatePlaceholderHeight: true,
 	});
