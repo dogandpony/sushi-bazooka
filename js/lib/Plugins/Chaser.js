@@ -8,35 +8,30 @@ var Sushi;
 	"use strict";
 
 	var BasePlugin = Plugins.BasePlugin;
+	var ScrollTrigger = Plugins.ScrollTrigger;
+
 	var Css = Sushi.Util.Css;
 	var Dom = Sushi.Dom;
-	var Events = Sushi.Events;
 
 	var Chaser = function (triggerElement, options) {
 		BasePlugin.call(this, triggerElement, options);
 
-		this.limitElement = null;
-		this.topMargin = 0;
-
 		this.placeholder = Dom.get(this.options.placeholder); // cache placeholder object
-
-		this.isChasing = false;
-		this.hasReachedLimit = false;
 
 		this.triggerElement.insertAdjacentElement("afterend", this.placeholder);
 		this.triggerElement.classList.add("o-chaser");
 
-		this.enable();
-		this.update();
+		this.proxyEvents();
+
+		this.scrollTrigger = this.getScrollTriggerInstance();
 	};
 
 	Chaser.displayName = "Chaser";
 
-	Chaser.DEFAULTS = {
+	Chaser.DEFAULTS = Object.assign({}, ScrollTrigger.DEFAULTS, {
 		placeholder: "<i class=\"o-chaserPlaceholder\">",
-		updateThreshold: 30,
 		updatePlaceholderHeight: true,
-	};
+	});
 
 	Chaser.prototype = Object.create(BasePlugin.prototype);
 
@@ -45,82 +40,62 @@ var Sushi;
 	proto.constructor = Chaser;
 
 	proto.enable = function () {
-		Events(window).on(
-			"Chaser.resize Chaser.scroll",
-			Sushi.Util.throttle(this.update.bind(this), this.options.updateThreshold)
-		);
+		this.scrollTrigger.enable();
 	};
 
 	proto.disable = function () {
-		Events(window).off("Chaser.resize Chaser.scroll", this.update.bind(this));
+		this.scrollTrigger.disable();
 	};
 
-	proto.update = function () {
-		Events(this.triggerElement).trigger("Chaser.beforeUpdate");
+	proto.proxyEvents = function () {
+		var eventBefore = this.options.eventBefore;
+		var eventAfter = this.options.eventAfter;
 
-		this.checkPosition();
+		this.options.eventBefore = function () {
+			this.triggerElement.classList.remove("is-chasing");
 
+			this.runEvent(eventBefore);
+		}.bind(this);
+
+		this.options.eventAfter = function () {
+			this.triggerElement.classList.add("is-chasing");
+
+			this.runEvent(eventAfter);
+		}.bind(this);
+	};
+
+	proto.runEvent = function (fn) {
+		if (typeof fn === "string") {
+			fn = Sushi.Actions.parseController(fn);
+		}
+
+		if (typeof fn === "function") {
+			fn(this);
+		}
+	};
+
+	proto.checkPosition = function () {
 		if (this.options.updatePlaceholderHeight) {
 			this.updatePlaceholderHeight();
 		}
 
-		Events(this.triggerElement).trigger("Chaser.afterUpdate");
+		ScrollTrigger.prototype.checkPosition.call(this);
 	};
 
 	proto.updatePlaceholderHeight = function () {
 		this.placeholder.style.height = Css.getHeight(this.triggerElement, true) + "px";
 	};
 
-	proto.isChasingAt = function (scrollY) {
-		return (scrollY >= (Css.getOffset(this.placeholder).top - this.topMargin));
-	};
+	proto.getScrollTriggerInstance = function () {
+		var options = {};
 
-	proto.checkPosition = function () {
-		if (this.isChasingAt(window.pageYOffset)) {
-			this.triggerElement.classList.add("is-chasing");
-			this.isChasing = true;
-
-			if (this.limitElement) {
-				var windowHeight = window.innerHeight;
-				var elementHeight = Css.getHeight(this.triggerElement);
-
-				var elementHeightOverflow = Math.max(0, (elementHeight - windowHeight));
-
-				var overflow = (
-					scrollY
-					+ Math.min(elementHeight, windowHeight)
-					+ this.topMargin
-					+ elementHeightOverflow
-					- (
-						Css.getOffset(this.limitElement, this.limitElement.parentElement).top
-						+ Css.getHeight(this.limitElement)
-					)
-				);
-
-				if (overflow > 0) {
-					this.triggerElement.classList.add("is-limited");
-					this.hasReachedLimit = true;
-
-					this.triggerElement.style.top = (this.topMargin + (overflow * -1)) + "px";
-				}
-				else {
-					this.triggerElement.classList.remove("is-limited");
-					this.hasReachedLimit = false;
-
-					this.triggerElement.style.top = this.topMargin + "px";
-				}
+		for (var optionKey in ScrollTrigger.DEFAULTS) {
+			if (ScrollTrigger.DEFAULTS.hasOwnProperty(optionKey)) {
+				options[optionKey] = this.options[optionKey];
 			}
 		}
-		else {
-			this.triggerElement.classList.remove("is-chasing");
-			this.isChasing = false;
 
-			this.triggerElement.style.top = "";
-		}
-	};
-
-	proto.forceFix = function () {
-		this.triggerElement.classList.remove("is-chasing");
+		return new ScrollTrigger(this.placeholder, options);
 	};
 
 	Plugins.Chaser = Chaser;
