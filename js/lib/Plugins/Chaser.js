@@ -8,7 +8,6 @@ var Sushi;
 	"use strict";
 
 	var BasePlugin = Plugins.BasePlugin;
-	var ScrollTrigger = Plugins.ScrollTrigger;
 
 	var Css = Sushi.Util.Css;
 	var Dom = Sushi.Dom;
@@ -79,7 +78,7 @@ var Sushi;
 			this.updatePlaceholderHeight();
 		}
 
-		ScrollTrigger.prototype.checkPosition.call(this);
+		Plugins.ScrollTrigger.prototype.checkPosition.call(this);
 	};
 
 	proto.updatePlaceholderHeight = function () {
@@ -89,13 +88,13 @@ var Sushi;
 	proto.getScrollTriggerInstance = function () {
 		var options = {};
 
-		for (var optionKey in ScrollTrigger.DEFAULTS) {
-			if (ScrollTrigger.DEFAULTS.hasOwnProperty(optionKey)) {
+		for (var optionKey in Plugins.ScrollTrigger.DEFAULTS) {
+			if (Plugins.ScrollTrigger.DEFAULTS.hasOwnProperty(optionKey)) {
 				options[optionKey] = this.options[optionKey];
 			}
 		}
 
-		return new ScrollTrigger(this.placeholder, options);
+		return new Plugins.ScrollTrigger(this.placeholder, options);
 	};
 
 	Plugins.Chaser = Chaser;
