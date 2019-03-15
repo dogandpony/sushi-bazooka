@@ -79,7 +79,7 @@ var Sushi;
 		switch (this.options.triggerPosition) {
 			case "top":
 				triggerOffset = window.pageYOffset;
-				activationPoint = (elementOffset - offset);
+				activationPoint = (elementOffset + offset);
 				limitPoint -= offset;
 
 				break;
