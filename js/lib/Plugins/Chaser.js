@@ -12,6 +12,7 @@ var Sushi;
 	var Css = Sushi.Util.Css;
 	var Dom = Sushi.Dom;
 	var Events = Sushi.Events;
+	var Util = Sushi.Util;
 
 	var Chaser = function (triggerElement, options) {
 		BasePlugin.call(this, triggerElement, options);
@@ -38,6 +39,7 @@ var Sushi;
 		updatePlaceholderHeight: true,
 		updateThreshold: 30,
 		offset: 0,
+		until: null,
 	});
 
 	Chaser.prototype = Object.create(BasePlugin.prototype);
@@ -55,16 +57,9 @@ var Sushi;
 
 		this.scrollTrigger.enable();
 
-		if (!this.options.updatePlaceholderHeight) {
-			return;
-		}
-
 		Events(window).on(
 			this.id + ".Chaser.resize " + this.id + ".Chaser.scroll",
-			Sushi.Util.throttle(
-				this.updatePlaceholderHeight.bind(this),
-				this.options.updateThreshold
-			)
+			Sushi.Util.throttle(this.checkPosition.bind(this), this.options.updateThreshold)
 		);
 	};
 
@@ -76,10 +71,6 @@ var Sushi;
 		this.isEnabled = false;
 
 		this.scrollTrigger.disable();
-
-		if (!this.options.updatePlaceholderHeight) {
-			return;
-		}
 
 		Events(window).off(this.id + ".Chaser.resize " + this.id + ".Chaser.scroll");
 	};
@@ -108,6 +99,43 @@ var Sushi;
 
 		if (typeof fn === "function") {
 			fn(this);
+		}
+	};
+
+	proto.checkPosition = function () {
+		if (this.options.updatePlaceholderHeight) {
+			this.updatePlaceholderHeight();
+		}
+
+		if (this.options.until != null) {
+			this.updateLimit();
+		}
+	};
+
+	proto.updateLimit = function () {
+		var untilPosition;
+
+		if (isNaN(this.options.until)) {
+			var untilElement = Dom.get(this.options.until);
+
+			untilPosition = Util.Css.getOffset(untilElement).top;
+		}
+		else {
+			untilPosition = this.options.until;
+		}
+
+		untilPosition -= this.placeholder.clientHeight;
+
+		if (untilPosition + this.scrollTrigger.getOffset() - window.scrollY < 0) {
+			this.triggerElement.classList.add("is-limited");
+			this.triggerElement.style.transform = "translateY(" + (
+				untilPosition
+				- Util.Css.getOffset(this.placeholder).top
+			) + "px)";
+		}
+		else {
+			this.triggerElement.classList.remove("is-limited");
+			this.triggerElement.style.transform = "";
 		}
 	};
 
