@@ -11,9 +11,12 @@ var Sushi;
 
 	var Css = Sushi.Util.Css;
 	var Dom = Sushi.Dom;
+	var Events = Sushi.Events;
 
 	var Chaser = function (triggerElement, options) {
 		BasePlugin.call(this, triggerElement, options);
+
+		this.isEnabled = false;
 
 		this.placeholder = Dom.get(this.options.placeholder); // cache placeholder object
 
@@ -23,6 +26,9 @@ var Sushi;
 		this.proxyEvents();
 
 		this.scrollTrigger = this.getScrollTriggerInstance();
+
+		this.enable();
+		this.updatePlaceholderHeight();
 	};
 
 	Chaser.displayName = "Chaser";
@@ -30,6 +36,8 @@ var Sushi;
 	Chaser.DEFAULTS = Object.assign({}, Plugins.ScrollTrigger.DEFAULTS, {
 		placeholder: "<i class=\"o-chaserPlaceholder\">",
 		updatePlaceholderHeight: true,
+		updateThreshold: 30,
+		offset: 0,
 	});
 
 	Chaser.prototype = Object.create(BasePlugin.prototype);
@@ -39,11 +47,41 @@ var Sushi;
 	proto.constructor = Chaser;
 
 	proto.enable = function () {
+		if (this.isEnabled) {
+			return;
+		}
+
+		this.isEnabled = true;
+
 		this.scrollTrigger.enable();
+
+		if (!this.options.updatePlaceholderHeight) {
+			return;
+		}
+
+		Events(window).on(
+			this.id + ".Chaser.resize " + this.id + ".Chaser.scroll",
+			Sushi.Util.throttle(
+				this.updatePlaceholderHeight.bind(this),
+				this.options.updateThreshold
+			)
+		);
 	};
 
 	proto.disable = function () {
+		if (!this.isEnabled) {
+			return;
+		}
+
+		this.isEnabled = false;
+
 		this.scrollTrigger.disable();
+
+		if (!this.options.updatePlaceholderHeight) {
+			return;
+		}
+
+		Events(window).off(this.id + ".Chaser.resize " + this.id + ".Chaser.scroll");
 	};
 
 	proto.proxyEvents = function () {
@@ -71,14 +109,6 @@ var Sushi;
 		if (typeof fn === "function") {
 			fn(this);
 		}
-	};
-
-	proto.checkPosition = function () {
-		if (this.options.updatePlaceholderHeight) {
-			this.updatePlaceholderHeight();
-		}
-
-		Plugins.ScrollTrigger.prototype.checkPosition.call(this);
 	};
 
 	proto.updatePlaceholderHeight = function () {
