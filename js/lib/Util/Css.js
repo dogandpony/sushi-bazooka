@@ -157,10 +157,18 @@ var Sushi;
 	};
 
 	Css.getOffset = function (element, context) {
-		context = context || document.body;
-
-		var contextRect = context.getBoundingClientRect();
+		var contextRect = {
+			top: -window.scrollY,
+			right: -window.scrollX + document.documentElement.clientWidth,
+			bottom: -window.scrollY + document.documentElement.clientHeight,
+			left: -window.scrollX,
+		};
 		var elementRect = element.getBoundingClientRect();
+
+		if (context != null) {
+			contextRect = context.getBoundingClientRect();
+		}
+
 		var offset = {
 			top: (elementRect.top - contextRect.top),
 			right: (contextRect.right - elementRect.right),
