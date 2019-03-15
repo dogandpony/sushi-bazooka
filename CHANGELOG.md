@@ -7,6 +7,12 @@ out of beta. Currently we treat `0.x.y` where `x` is **major** and `y` can be ei
 **patch** versions. This way we keep code from spilling to real major versions.
 
 
+## [0.10.1] - 2019-03-15
+
+### Fixed
+- **Plugins.Chaser**: Fix undefined ScrollTrigger variable.
+
+
 ## [0.10.0] - 2019-03-15
 
 ### Fixed
@@ -289,7 +295,8 @@ out of beta. Currently we treat `0.x.y` where `x` is **major** and `y` can be ei
 - **Plugins.Modal**: Check if BodyScroll library exists and warn user if it doesn't.
 
 
-[Unreleased version]: https://github.com/dogandpony/sushi-bazooka/compare/v0.9.0...HEAD
+[0.10.1]: https://github.com/dogandpony/sushi-bazooka/compare/v0.10.0...v0.10.1
+[0.10.0]: https://github.com/dogandpony/sushi-bazooka/compare/v0.9.0...0.10.0
 [0.9.0]: https://github.com/dogandpony/sushi-bazooka/compare/v0.8.1...v0.9.0
 [0.8.1]: https://github.com/dogandpony/sushi-bazooka/compare/v0.8.0...v0.8.1
 [0.8.0]: https://github.com/dogandpony/sushi-bazooka/compare/v0.7.0...v0.8.0
