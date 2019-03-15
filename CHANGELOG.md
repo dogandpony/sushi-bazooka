@@ -7,14 +7,27 @@ out of beta. Currently we treat `0.x.y` where `x` is **major** and `y` can be ei
 **patch** versions. This way we keep code from spilling to real major versions.
 
 
-## [Unreleased version]
+## [0.10.0] - 2019-03-15
+
+### Fixed
+- **Dom**: Now all valid selectors passed to query methods will be treated outside
+  `document.querySelector()`. Before this fix selectors like `#element/id` (which are valid) would
+  be sent to `querySelector()` and therefore generate an error since that method can't handle
+  selectors outside CSS's own query selector.
+- **Util.Css**: `Util.Css.getOffset()` now properly handles offsets when the `<html>` tag has
+  margins set to it.
 
 ### Changed
-- **Plugins.Excerpt**: Do no break on dots or commas (to prevent oddities like "last word...." or
-  "last word,...").
+- **Plugins.Chaser**: The Chaser plugin has been rewritten to reuse code from the ScrollTrigger
+  plugin.
+
+### Removed
+- **HistoryState**: Both HistoryState and StackState have been removed since all modern browsers
+  have support for push states.
+- **Plugins.Excerpt**: Removed unused `excludeString` parameter.
 
 ### Added
-- **Plugins.Excerpt**: Add support for HTML end tags. 
+- **Plugins.Excerpt**: Added support for HTML end tags.
 
 
 ## [0.9.0] - 2019-01-14
