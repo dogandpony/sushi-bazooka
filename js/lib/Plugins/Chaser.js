@@ -11,9 +11,13 @@ var Sushi;
 
 	var Css = Sushi.Util.Css;
 	var Dom = Sushi.Dom;
+	var Events = Sushi.Events;
+	var Util = Sushi.Util;
 
 	var Chaser = function (triggerElement, options) {
 		BasePlugin.call(this, triggerElement, options);
+
+		this.isEnabled = false;
 
 		this.placeholder = Dom.get(this.options.placeholder); // cache placeholder object
 
@@ -23,6 +27,10 @@ var Sushi;
 		this.proxyEvents();
 
 		this.scrollTrigger = this.getScrollTriggerInstance();
+
+		this.parseLimit();
+		this.enable();
+		this.update();
 	};
 
 	Chaser.displayName = "Chaser";
@@ -30,6 +38,9 @@ var Sushi;
 	Chaser.DEFAULTS = Object.assign({}, Plugins.ScrollTrigger.DEFAULTS, {
 		placeholder: "<i class=\"o-chaserPlaceholder\">",
 		updatePlaceholderHeight: true,
+		updateThreshold: 30,
+		offset: 0,
+		limit: null,
 	});
 
 	Chaser.prototype = Object.create(BasePlugin.prototype);
@@ -39,11 +50,30 @@ var Sushi;
 	proto.constructor = Chaser;
 
 	proto.enable = function () {
+		if (this.isEnabled) {
+			return;
+		}
+
+		this.isEnabled = true;
+
 		this.scrollTrigger.enable();
+
+		Events(window).on(
+			this.id + ".Chaser.resize " + this.id + ".Chaser.scroll",
+			Sushi.Util.throttle(this.update.bind(this), this.options.updateThreshold)
+		);
 	};
 
 	proto.disable = function () {
+		if (!this.isEnabled) {
+			return;
+		}
+
+		this.isEnabled = false;
+
 		this.scrollTrigger.disable();
+
+		Events(window).off(this.id + ".Chaser.resize " + this.id + ".Chaser.scroll");
 	};
 
 	proto.proxyEvents = function () {
@@ -73,12 +103,62 @@ var Sushi;
 		}
 	};
 
-	proto.checkPosition = function () {
+	proto.parseLimit = function () {
+		// Early return if it's null or undefined
+		if (this.options.limit == null) {
+			return;
+		}
+
+		var number = Number(this.options.limit);
+
+		// Return if it's a number (incl. strings of numbers)
+		if (!isNaN(number)) {
+			this.options.limit = number;
+
+			return;
+		}
+
+		var limitElement = Dom.get(this.options.limit);
+
+		if (limitElement === null) {
+			return;
+		}
+
+		this.options.limit = function () {
+			return Util.Css.getOffset(limitElement).top - this.placeholder.clientHeight;
+		};
+	};
+
+	proto.update = function () {
 		if (this.options.updatePlaceholderHeight) {
 			this.updatePlaceholderHeight();
 		}
 
-		Plugins.ScrollTrigger.prototype.checkPosition.call(this);
+		this.updateLimit();
+	};
+
+	proto.updateLimit = function () {
+		if (this.options.limit == null) {
+			return;
+		}
+
+		var limitPosition = this.options.limit;
+
+		if (typeof this.options.limit === "function") {
+			limitPosition = this.options.limit();
+		}
+
+		if (limitPosition + this.scrollTrigger.getOffset() - window.scrollY < 0) {
+			this.triggerElement.classList.add("is-limited");
+			this.triggerElement.style.transform = "translateY(" + (
+				limitPosition
+				- Util.Css.getOffset(this.placeholder).top
+			) + "px)";
+		}
+		else {
+			this.triggerElement.classList.remove("is-limited");
+			this.triggerElement.style.transform = "";
+		}
 	};
 
 	proto.updatePlaceholderHeight = function () {

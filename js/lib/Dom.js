@@ -135,6 +135,8 @@ var Sushi;
 
 			return Dom.queryAll(selector, context, onlyOne);
 		}
+
+		return null;
 	};
 
 	Dom.get = function (selector, context) {

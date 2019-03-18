@@ -14,6 +14,8 @@ var Sushi;
 	var ScrollTrigger = function (triggerElement, options) {
 		BasePlugin.call(this, triggerElement, options);
 
+		this.isEnabled = false;
+
 		this.enable();
 		this.checkPosition();
 	};
@@ -36,6 +38,12 @@ var Sushi;
 	proto.constructor = ScrollTrigger;
 
 	proto.enable = function () {
+		if (this.isEnabled) {
+			return;
+		}
+
+		this.isEnabled = true;
+
 		Events(window).on(
 			this.id + ".ScrollTrigger.resize " + this.id + ".ScrollTrigger.scroll",
 			Sushi.Util.throttle(this.checkPosition.bind(this), this.options.updateThreshold)
@@ -43,6 +51,12 @@ var Sushi;
 	};
 
 	proto.disable = function () {
+		if (!this.isEnabled) {
+			return;
+		}
+
+		this.isEnabled = false;
+
 		Events(window).off(this.id + ".ScrollTrigger.resize " + this.id + ".ScrollTrigger.scroll");
 	};
 
@@ -53,19 +67,12 @@ var Sushi;
 		var limitPoint = (elementOffset + Util.Css.getHeight(this.triggerElement));
 		var fn = null;
 
-		var offset;
-
-		if (typeof this.options.offset === "function") {
-			offset = this.options.offset();
-		}
-		else {
-			offset = parseInt(this.options.offset);
-		}
+		var offset = this.getOffset();
 
 		switch (this.options.triggerPosition) {
 			case "top":
 				triggerOffset = window.pageYOffset;
-				activationPoint = (elementOffset - offset);
+				activationPoint = (elementOffset + offset);
 				limitPoint -= offset;
 
 				break;
@@ -95,6 +102,14 @@ var Sushi;
 		if (typeof fn === "function") {
 			fn(this);
 		}
+	};
+
+	proto.getOffset = function () {
+		if (typeof this.options.offset === "function") {
+			return this.options.offset();
+		}
+
+		return parseInt(this.options.offset);
 	};
 
 	Plugins.ScrollTrigger = ScrollTrigger;
