@@ -39,7 +39,7 @@ var Sushi;
 		updatePlaceholderHeight: true,
 		updateThreshold: 30,
 		offset: 0,
-		until: null,
+		limit: null,
 	});
 
 	Chaser.prototype = Object.create(BasePlugin.prototype);
@@ -107,7 +107,7 @@ var Sushi;
 			this.updatePlaceholderHeight();
 		}
 
-		if (this.options.until != null) {
+		if (this.options.limit != null) {
 			this.updateLimit();
 		}
 	};
@@ -115,17 +115,17 @@ var Sushi;
 	proto.updateLimit = function () {
 		var untilPosition;
 
-		if (this.options.until == null) {
+		if (this.options.limit == null) {
 			return;
 		}
 
-		if (isNaN(this.options.until)) {
-			var untilElement = Dom.get(this.options.until);
+		if (isNaN(this.options.limit)) {
+			var untilElement = Dom.get(this.options.limit);
 
 			untilPosition = Util.Css.getOffset(untilElement).top;
 		}
 		else {
-			untilPosition = this.options.until;
+			untilPosition = this.options.limit;
 		}
 
 		untilPosition -= this.placeholder.clientHeight;
