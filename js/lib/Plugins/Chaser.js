@@ -28,8 +28,9 @@ var Sushi;
 
 		this.scrollTrigger = this.getScrollTriggerInstance();
 
+		this.parseLimit();
 		this.enable();
-		this.updatePlaceholderHeight();
+		this.update();
 	};
 
 	Chaser.displayName = "Chaser";
@@ -102,6 +103,32 @@ var Sushi;
 		}
 	};
 
+	proto.parseLimit = function () {
+		// Early return if it's null or undefined
+		if (this.options.limit == null) {
+			return;
+		}
+
+		var number = Number(this.options.limit);
+
+		// Return if it's a number (incl. strings of numbers)
+		if (!isNaN(number)) {
+			this.options.limit = number;
+
+			return;
+		}
+
+		var limitElement = Dom.get(this.options.limit);
+
+		if (limitElement === null) {
+			return;
+		}
+
+		this.options.limit = function () {
+			return Util.Css.getOffset(limitElement).top - this.placeholder.clientHeight;
+		};
+	};
+
 	proto.update = function () {
 		if (this.options.updatePlaceholderHeight) {
 			this.updatePlaceholderHeight();
@@ -111,27 +138,20 @@ var Sushi;
 	};
 
 	proto.updateLimit = function () {
-		var untilPosition;
-
 		if (this.options.limit == null) {
 			return;
 		}
 
-		if (isNaN(this.options.limit)) {
-			var untilElement = Dom.get(this.options.limit);
+		var limitPosition = this.options.limit;
 
-			untilPosition = Util.Css.getOffset(untilElement).top;
-		}
-		else {
-			untilPosition = this.options.limit;
+		if (typeof this.options.limit === "function") {
+			limitPosition = this.options.limit();
 		}
 
-		untilPosition -= this.placeholder.clientHeight;
-
-		if (untilPosition + this.scrollTrigger.getOffset() - window.scrollY < 0) {
+		if (limitPosition + this.scrollTrigger.getOffset() - window.scrollY < 0) {
 			this.triggerElement.classList.add("is-limited");
 			this.triggerElement.style.transform = "translateY(" + (
-				untilPosition
+				limitPosition
 				- Util.Css.getOffset(this.placeholder).top
 			) + "px)";
 		}
