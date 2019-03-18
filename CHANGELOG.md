@@ -7,6 +7,24 @@ out of beta. Currently we treat `0.x.y` where `x` is **major** and `y` can be ei
 **patch** versions. This way we keep code from spilling to real major versions.
 
 
+## [0.11.0] - 2019-03-18
+
+### Fixed
+- **Plugins.Chaser**: Fix placeholder height not being updated.
+- **Plugins.ScrollTrigger**
+  - Fix offset being calculated in the wrong direction when `triggerPosition` is set to `top`.
+  - Prevent event listeners from being registered multiple times.
+
+### Changed
+- **Dom**: `Dom.getAll()` will return `null` if the `selector` parameter is neither a string or an
+  HTMLElement. 
+
+### Added
+- **Plugins.Chaser**: Added support to limiting the element to a certain point in the page. The
+  property `limit` will be used for that purpose and it can be a number (checked with `!isNaN()`),
+  a selector string or a function.
+
+
 ## [0.10.1] - 2019-03-15
 
 ### Fixed
@@ -295,6 +313,7 @@ out of beta. Currently we treat `0.x.y` where `x` is **major** and `y` can be ei
 - **Plugins.Modal**: Check if BodyScroll library exists and warn user if it doesn't.
 
 
+[0.11.0]: https://github.com/dogandpony/sushi-bazooka/compare/v0.10.1...v0.11.0
 [0.10.1]: https://github.com/dogandpony/sushi-bazooka/compare/v0.10.0...v0.10.1
 [0.10.0]: https://github.com/dogandpony/sushi-bazooka/compare/v0.9.0...0.10.0
 [0.9.0]: https://github.com/dogandpony/sushi-bazooka/compare/v0.8.1...v0.9.0
