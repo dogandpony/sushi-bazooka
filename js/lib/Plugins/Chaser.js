@@ -59,7 +59,7 @@ var Sushi;
 
 		Events(window).on(
 			this.id + ".Chaser.resize " + this.id + ".Chaser.scroll",
-			Sushi.Util.throttle(this.checkPosition.bind(this), this.options.updateThreshold)
+			Sushi.Util.throttle(this.update.bind(this), this.options.updateThreshold)
 		);
 	};
 
@@ -102,7 +102,7 @@ var Sushi;
 		}
 	};
 
-	proto.checkPosition = function () {
+	proto.update = function () {
 		if (this.options.updatePlaceholderHeight) {
 			this.updatePlaceholderHeight();
 		}
