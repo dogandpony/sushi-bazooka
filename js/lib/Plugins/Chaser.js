@@ -115,6 +115,10 @@ var Sushi;
 	proto.updateLimit = function () {
 		var untilPosition;
 
+		if (this.options.until == null) {
+			return;
+		}
+
 		if (isNaN(this.options.until)) {
 			var untilElement = Dom.get(this.options.until);
 
