@@ -107,9 +107,7 @@ var Sushi;
 			this.updatePlaceholderHeight();
 		}
 
-		if (this.options.limit != null) {
-			this.updateLimit();
-		}
+		this.updateLimit();
 	};
 
 	proto.updateLimit = function () {
