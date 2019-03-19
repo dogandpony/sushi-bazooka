@@ -122,13 +122,20 @@ var Sushi;
 
 		for (var i in properties) {
 			if (properties.hasOwnProperty(i) && namespaceCheckRegExp.test(i)) {
-				var val = properties[i];
+				var value = properties[i];
 				var shortName = i.match(namespaceCheckRegExp)[1]
 					.replace(/^[A-Z]/, function (string) {
 						return (string || "").toLowerCase();
 					});
 
-				namespaceProperties[shortName] = val;
+				if (value === "true") {
+					value = true;
+				}
+				else if (value === "false") {
+					value = false;
+				}
+
+				namespaceProperties[shortName] = value;
 			}
 		}
 
