@@ -126,7 +126,7 @@ var Sushi;
 
 		this.options.limit = function () {
 			return Util.Css.getOffset(limitElement).top - this.placeholder.clientHeight;
-		};
+		}.bind(this);
 	};
 
 	proto.update = function () {
