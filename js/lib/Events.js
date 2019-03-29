@@ -51,7 +51,12 @@ var Sushi;
 			throw Error("Target is undefined.");
 		}
 
-		var typeList = types.split(" ");
+		var typeList = (typeof types === "string") ? types.split(" ") : types;
+
+		if (!Array.isArray(typeList)) {
+			throw Error("Types must be a string or an array.");
+		}
+
 		var events = eventStack.get(target);
 
 		if (events === void 0) {
@@ -89,7 +94,12 @@ var Sushi;
 			throw Error("Target is undefined.");
 		}
 
-		var typeList = types.split(" ");
+		var typeList = (typeof types === "string") ? types.split(" ") : types;
+
+		if (!Array.isArray(typeList)) {
+			throw Error("Types must be a string or an array.");
+		}
+
 		var events = eventStack.get(target);
 
 		if (events === void 0) {
