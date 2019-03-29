@@ -19,7 +19,6 @@ var Sushi;
 		this.dropdownElement = Dom.query("> .c-dropdown", this.triggerElement);
 
 		this.isOpen = false;
-		this.hasCloseIntention = false;
 
 		this.registerListeners();
 		this.updatePositionClass();
