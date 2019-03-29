@@ -41,6 +41,7 @@ var Sushi;
 		updateThreshold: 30,
 		offset: 0,
 		limit: null,
+		usePlaceholderWidth: false,
 	});
 
 	Chaser.prototype = Object.create(BasePlugin.prototype);
@@ -139,6 +140,10 @@ var Sushi;
 		}
 
 		this.updateLimit();
+
+		if (this.options.usePlaceholderWidth) {
+			this.updateMaxWidth();
+		}
 	};
 
 	proto.updateLimit = function () {
@@ -168,6 +173,10 @@ var Sushi;
 
 	proto.updatePlaceholderHeight = function () {
 		this.placeholder.style.height = Css.getHeight(this.triggerElement, true) + "px";
+	};
+
+	proto.updateMaxWidth = function () {
+		this.triggerElement.style.maxWidth = window.getComputedStyle(this.placeholder).width;
 	};
 
 	proto.getScrollTriggerInstance = function () {
