@@ -91,8 +91,21 @@ var Sushi;
 			}.bind(this));
 		}
 
-		Events(this.triggerElement).on(this.options.triggerEvent, function () {
-			this.toggle();
+		this.createListener(this.triggerElement, this.options.triggerEvent, function (event) {
+			// If there's only one event type, toggle the dropdown
+			if (triggerEvents.length === 1) {
+				return this.toggle();
+			}
+
+			// If there's more than one event type...
+
+			// ... and the triggered event was the first one, open the dropdown
+			if (event.type === triggerEvents[0]) {
+				return this.open();
+			}
+
+			// ... and the triggered event was not the first one, close the dropdown
+			this.close();
 		}.bind(this));
 	};
 
