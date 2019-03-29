@@ -81,12 +81,16 @@ var Sushi;
 		var eventAfter = this.options.eventAfter;
 
 		this.options.eventBefore = function () {
+			this.triggerElement.style.top = "auto";
+
 			this.triggerElement.classList.remove("is-chasing");
 
 			this.runEvent(eventBefore);
 		}.bind(this);
 
-		this.options.eventAfter = function () {
+		this.options.eventAfter = function (scrollTrigger) {
+			this.triggerElement.style.top = (- scrollTrigger.getOffset()) + "px";
+
 			this.triggerElement.classList.add("is-chasing");
 
 			this.runEvent(eventAfter);
@@ -152,6 +156,7 @@ var Sushi;
 			this.triggerElement.classList.add("is-limited");
 			this.triggerElement.style.transform = "translateY(" + (
 				limitPosition
+				+ this.scrollTrigger.getOffset()
 				- Util.Css.getOffset(this.placeholder).top
 			) + "px)";
 		}
