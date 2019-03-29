@@ -7,6 +7,41 @@ out of beta. Currently we treat `0.x.y` where `x` is **major** and `y` can be ei
 **patch** versions. This way we keep code from spilling to real major versions.
 
 
+## [0.12.0] - 2019-03-28
+
+### Fixed
+- **Util**: Automatically convert `"true"` and `"false"` strings to booleans.
+- **Plugins.Chaser**: Fixed the limit function not grabbing the right placeholder height variable.
+- **Plugins.Dropdown**: Fixed the dropdown toggling to the wrong state when the `triggerEvent`
+  option is set to `"mouseover mouseleave"` and the mouse is already over the trigger element when
+  the page is loaded.
+
+### Changed
+- **Plugins.Chaser**: Automatically set the `top` property to the offset between the page top and
+  the placeholder object, so calculations may be properly done without the need of manually setting 
+  CSS properties.
+
+### Removed
+- **Events.EventHelper**: This class was moved to the Event function as it being a separate class
+  file just made it more complex to import (since it needed to be imported after the `Events` class)
+  and it did not made any less costly in terms of system resources than it is now.
+
+### Added
+- **Plugins.BasePlugin**: Added methods to create and destroy listeners. This will make the 
+  adding and removal of event listeners more streamlined and will prevent plugins from registering 
+  events in the global event namespace, which might lead to errors when multiple events are 
+  registered to the same element.
+- **Plugins.Chaser**: Added an option to set the chasing element's width to be the same as the
+  placeholder element's.
+- **Events**: Added support to register arrays of event types.
+- **History**: This revamped version of the old `HistoryState` only includes the strictly needed
+  code to run in the supported browsers and can be used to listen to hash changes even when the
+  browser already has native push states support.
+- **Plugins.Tabbed**: The Tabbed plugin now supports hash changes. This feature is enabled by
+  default and may be set to use native push states or turned off entirely. Also, by default the tab
+  menu links won't trigger the default event anymore as that would result in undesired loops. 
+
+
 ## [0.11.0] - 2019-03-18
 
 ### Fixed
@@ -313,6 +348,7 @@ out of beta. Currently we treat `0.x.y` where `x` is **major** and `y` can be ei
 - **Plugins.Modal**: Check if BodyScroll library exists and warn user if it doesn't.
 
 
+[0.12.0]: https://github.com/dogandpony/sushi-bazooka/compare/v0.11.0...v0.12.0
 [0.11.0]: https://github.com/dogandpony/sushi-bazooka/compare/v0.10.1...v0.11.0
 [0.10.1]: https://github.com/dogandpony/sushi-bazooka/compare/v0.10.0...v0.10.1
 [0.10.0]: https://github.com/dogandpony/sushi-bazooka/compare/v0.9.0...0.10.0

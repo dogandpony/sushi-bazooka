@@ -10,7 +10,37 @@ var Sushi;
 	var eventStack = new Map();
 
 	var Events = function (target) {
-		return new Events.EventHelper(target);
+		var EventHelper = function (target) {
+			this.target = target;
+		};
+
+		var proto = EventHelper.prototype;
+
+		proto.on = function (types, fn) {
+			Events.on(types, this.target, fn);
+
+			return this;
+		};
+
+		proto.one = function (types, fn) {
+			Events.one(types, this.target, fn);
+
+			return this;
+		};
+
+		proto.off = function (types, fn) {
+			Events.off(types, this.target, fn);
+
+			return this;
+		};
+
+		proto.trigger = function (types, data) {
+			Events.trigger(types, this.target, data);
+
+			return this;
+		};
+
+		return new EventHelper(target);
 	};
 
 
@@ -51,7 +81,12 @@ var Sushi;
 			throw Error("Target is undefined.");
 		}
 
-		var typeList = types.split(" ");
+		var typeList = (typeof types === "string") ? types.split(" ") : types;
+
+		if (!Array.isArray(typeList)) {
+			throw Error("Types must be a string or an array.");
+		}
+
 		var events = eventStack.get(target);
 
 		if (events === void 0) {
@@ -89,7 +124,12 @@ var Sushi;
 			throw Error("Target is undefined.");
 		}
 
-		var typeList = types.split(" ");
+		var typeList = (typeof types === "string") ? types.split(" ") : types;
+
+		if (!Array.isArray(typeList)) {
+			throw Error("Types must be a string or an array.");
+		}
+
 		var events = eventStack.get(target);
 
 		if (events === void 0) {

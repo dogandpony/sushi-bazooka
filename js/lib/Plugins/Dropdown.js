@@ -19,7 +19,6 @@ var Sushi;
 		this.dropdownElement = Dom.query("> .c-dropdown", this.triggerElement);
 
 		this.isOpen = false;
-		this.hasCloseIntention = false;
 
 		this.registerListeners();
 		this.updatePositionClass();
@@ -61,32 +60,29 @@ var Sushi;
 			});
 		}
 
+		var triggerEvents = this.options.triggerEvent.split(" ");
+
 		/*
 		When the close event is a click you'd expect three things:
 		[1] A click on the trigger element will close the dropdown
 		[2] A click inside the dropdown won't close the dropdown
 		[3] A click anywhere outside the trigger element and the dropdown will close the dropdown
 		*/
-		if (this.options.triggerEvent === "click") {
+		if (triggerEvents[0] === "click") {
 			// [1] & [2]
-			Events(this.triggerElement)
-				.on("Dropdown.click", function (event) {
-					var targetIsTrigger = (event.target === this.triggerElement);
-					var targetIsChild = this.dropdownElement.contains(event.target);
+			this.createListener(this.triggerElement, "click", function () {
+				var targetIsTrigger = (event.target === this.triggerElement);
+				var targetIsChild = this.dropdownElement.contains(event.target);
 
-					if (
-						!this.options.closeOnSelect
-						&& !targetIsTrigger
-						&& targetIsChild
-					) {
-						event.stopImmediatePropagation();
-					}
-				}.bind(this));
+				if (!this.options.closeOnSelect && !targetIsTrigger && targetIsChild) {
+					event.stopImmediatePropagation();
+				}
+			}.bind(this));
 
 			// [3]
-			Events(this.triggerElement).on("Dropdown.open", function () {
+			this.createListener(this.triggerElement, "open", function () {
 				setTimeout(function () {
-					Events(document).one("Dropdown.click", function (event) {
+					this.createListener(document, "click", function (event) {
 						if (this.isOpen && (!this.triggerElement.contains(event.target))) {
 							this.close();
 						}
@@ -95,8 +91,21 @@ var Sushi;
 			}.bind(this));
 		}
 
-		Events(this.triggerElement).on(this.options.triggerEvent, function () {
-			this.toggle();
+		this.createListener(this.triggerElement, this.options.triggerEvent, function (event) {
+			// If there's only one event type, toggle the dropdown
+			if (triggerEvents.length === 1) {
+				return this.toggle();
+			}
+
+			// If there's more than one event type...
+
+			// ... and the triggered event was the first one, open the dropdown
+			if (event.type === triggerEvents[0]) {
+				return this.open();
+			}
+
+			// ... and the triggered event was not the first one, close the dropdown
+			this.close();
 		}.bind(this));
 	};
 

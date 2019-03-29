@@ -32,5 +32,35 @@ var Sushi;
 
 	BasePlugin.DEFAULTS = {};
 
+	BasePlugin.displayName = "BasePlugin";
+
+	var proto = BasePlugin.prototype;
+
+	proto.createListener = function (targets, types, fn, one) {
+		if (fn == null) {
+			return null;
+		}
+
+		one = one || false;
+
+		return Sushi.Events(targets)[one ? "one" : "on"](this.getNamespaceEventTypes(types), fn);
+	};
+
+	proto.destroyListener = function (targets, types, fn) {
+		return Sushi.Events(targets).off(this.getNamespaceEventTypes(types), fn);
+	};
+
+	proto.getNamespaceEventTypes = function (types) {
+		types = (typeof types === "string") ? types.split(" ") : types;
+
+		var namespaceTypes = [];
+
+		types.forEach(function (type) {
+			namespaceTypes.push([ this.id, this.constructor.displayName, type ].join("."));
+		}.bind(this));
+
+		return namespaceTypes;
+	};
+
 	Plugins.BasePlugin = BasePlugin;
 })(Sushi || (Sushi = {}), Sushi.Plugins || (Sushi.Plugins = {}));
