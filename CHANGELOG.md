@@ -7,6 +7,12 @@ out of beta. Currently we treat `0.x.y` where `x` is **major** and `y` can be ei
 **patch** versions. This way we keep code from spilling to real major versions.
 
 
+## [0.12.1] - 2019-04-02
+
+### Fixed
+- **Plugins.Modal**: Fix modal not aligning vertically.
+
+
 ## [0.12.0] - 2019-03-28
 
 ### Fixed
@@ -348,6 +354,7 @@ out of beta. Currently we treat `0.x.y` where `x` is **major** and `y` can be ei
 - **Plugins.Modal**: Check if BodyScroll library exists and warn user if it doesn't.
 
 
+[0.12.1]: https://github.com/dogandpony/sushi-bazooka/compare/v0.12.0...v0.12.1
 [0.12.0]: https://github.com/dogandpony/sushi-bazooka/compare/v0.11.0...v0.12.0
 [0.11.0]: https://github.com/dogandpony/sushi-bazooka/compare/v0.10.1...v0.11.0
 [0.10.1]: https://github.com/dogandpony/sushi-bazooka/compare/v0.10.0...v0.10.1
