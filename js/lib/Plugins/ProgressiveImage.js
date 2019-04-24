@@ -54,6 +54,7 @@ var Sushi;
 		lazyLoad: true,
 		setWidth: true,
 		responsive: true,
+		fit: "none", // "cover", "contain", "fill", "scale-down"
 	};
 
 	ProgressiveImage.displayName = "ProgressiveImage";
@@ -84,7 +85,18 @@ var Sushi;
 		this.thumbnail.removeAttribute("height");
 
 		this.container.classList.add("c-progressiveImage");
-		this.container.classList.add("is-loadingThumbnail");
+
+		if (this.options.fit !== "none") {
+			// Convert hyphen case to pascal case
+			var fitOption = this.options.fit
+				.replace(/\b\w/g, function(l) {
+					return l.toUpperCase();
+				})
+				.replace("-", "");
+
+			this.container.classList.add("c-progressiveImage--fit");
+			this.container.classList.add("c-progressiveImage--fit" + fitOption);
+		}
 
 		if (this.options.setWidth) {
 			this.container.style.width = this.options.width + "px";
@@ -93,6 +105,8 @@ var Sushi;
 				this.container.classList.add("c-progressiveImage--responsive");
 			}
 		}
+
+		this.container.classList.add("is-loadingThumbnail");
 
 		this.thumbnail.classList.add("c-progressiveImage__thumbnail");
 
@@ -129,6 +143,7 @@ var Sushi;
 		virtualThumbnail.onload = function () {
 			this.drawThumbnailOnCanvas();
 
+			this.container.classList.remove("is-loadingThumbnail");
 			this.container.classList.add("is-thumbnailLoaded");
 		}.bind(this);
 

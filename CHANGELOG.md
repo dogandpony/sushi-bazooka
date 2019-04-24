@@ -7,6 +7,13 @@ out of beta. Currently we treat `0.x.y` where `x` is **major** and `y` can be ei
 **patch** versions. This way we keep code from spilling to real major versions.
 
 
+## [Unreleased]
+
+### Added
+- **Plugins.ProgressiveImage**: Added `fit` option to enable `object-fit` variations of the images.
+  Progressive Images can now be used as background images, yay!
+
+
 ## [0.12.1] - 2019-04-02
 
 ### Fixed
