@@ -9,6 +9,10 @@ out of beta. Currently we treat `0.x.y` where `x` is **major** and `y` can be ei
 
 ## [Unreleased]
 
+### Fixed
+- **Util.Css**: Fixed `getMaxTransitionDuration()` returning `NaN` if the `transition-delay` 
+  property was not set.
+
 ### Added
 - **Plugins.ProgressiveImage**: Added `fit` option to enable `object-fit` variations of the images.
   Progressive Images can now be used as background images, yay!
