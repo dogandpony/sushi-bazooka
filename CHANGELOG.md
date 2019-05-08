@@ -1,17 +1,17 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
-and this project will adhere to [Semantic Versioning](http://semver.org/spec/v2.0.0.html) once it's
-out of beta. Currently we treat `0.x.y` where `x` is **major** and `y` can be either **minor** or
-**patch** versions. This way we keep code from spilling to real major versions.
+The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project will adhere to [Semantic Versioning](http://semver.org/spec/v2.0.0.html) once it's out of beta. Currently we work with `0.x.y` where `x` is **major** and `y` can be either **minor** or **patch** versions. This way we keep code from spilling to real major versions.
 
 
-## [Unreleased]
+## [0.13.0] - 2019-05-08
 
 ### Fixed
 - **Util.Css**: Fixed `getMaxTransitionDuration()` returning `NaN` if the `transition-delay` 
   property was not set.
+- **Plugins.Dropdown**
+  - Fixed click event not opening the dropdown.
+  - Hide the element with `display: block` while the dropdown is closed.
 
 ### Added
 - **Plugins.ProgressiveImage**: Added `fit` option to enable `object-fit` variations of the images.
@@ -365,6 +365,7 @@ out of beta. Currently we treat `0.x.y` where `x` is **major** and `y` can be ei
 - **Plugins.Modal**: Check if BodyScroll library exists and warn user if it doesn't.
 
 
+[0.13.0]: https://github.com/dogandpony/sushi-bazooka/compare/v0.12.1...v0.13.0
 [0.12.1]: https://github.com/dogandpony/sushi-bazooka/compare/v0.12.0...v0.12.1
 [0.12.0]: https://github.com/dogandpony/sushi-bazooka/compare/v0.11.0...v0.12.0
 [0.11.0]: https://github.com/dogandpony/sushi-bazooka/compare/v0.10.1...v0.11.0
