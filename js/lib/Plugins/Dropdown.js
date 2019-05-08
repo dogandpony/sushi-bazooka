@@ -70,7 +70,7 @@ var Sushi;
 		*/
 		if (triggerEvents[0] === "click") {
 			// [1] & [2]
-			this.createListener(this.triggerElement, "click", function () {
+			this.createListener(this.triggerElement, "click", function (event) {
 				var targetIsTrigger = (event.target === this.triggerElement);
 				var targetIsChild = this.dropdownElement.contains(event.target);
 
