@@ -125,9 +125,9 @@ var Sushi;
 
 		this.isOpen = true;
 
-		this.updatePositionClass();
-
 		this.dropdownElement.classList.add("is-visible");
+
+		this.updatePositionClass();
 
 		setTimeout(function () {
 			if (!this.isOpen) {
@@ -165,12 +165,12 @@ var Sushi;
 	};
 
 	proto.updatePositionClass = function () {
+		this.dropdownElement.classList.remove("c-dropdown--reverse");
+
 		var leftOffset = Css.getOffset(this.dropdownElement).left;
 		var outerWidth = Css.getWidth(this.dropdownElement, true);
 
-		this.dropdownElement.classList.remove("c-dropdown--reverse");
-
-		if ((leftOffset + outerWidth) > window.offsetWidth) {
+		if ((leftOffset + outerWidth) > window.innerWidth) {
 			this.dropdownElement.classList.add("c-dropdown--reverse");
 		}
 	};
