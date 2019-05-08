@@ -99,12 +99,12 @@ var Sushi;
 
 			// If there's more than one event type...
 
-			// ... and the triggered event was the first one, open the dropdown
+			// ... and the triggered event was the first one, open the dropdown.
 			if (event.type === triggerEvents[0]) {
 				return this.open();
 			}
 
-			// ... and the triggered event was not the first one, close the dropdown
+			// ... and the triggered event was not the first one, close the dropdown.
 			this.close();
 		}.bind(this));
 	};
