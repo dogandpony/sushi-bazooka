@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project will adhere to [Semantic Versioning](http://semver.org/spec/v2.0.0.html) once it's out of beta. Currently we work with `0.x.y` where `x` is **major** and `y` can be either **minor** or **patch** versions. This way we keep code from spilling to real major versions.
 
 
+## [0.13.1] - 2019-05-08
+
+### Fixed
+- **Plugins.Dropdown**: Fixed reverse class not being applied correctly.
+
+
 ## [0.13.0] - 2019-05-08
 
 ### Fixed
