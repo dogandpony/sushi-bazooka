@@ -84,3 +84,33 @@
 	opacity: 1;
 	transition: visibility 0s linear 0s, opacity $progressiveImageImageLoadedTransitionDuration 0s;
 }
+
+
+
+
+/* Fit
+ * ============================================================================================== */
+
+.c-progressiveImage--fit {
+	height: 100%;
+}
+
+.c-progressiveImage--fitCover .c-progressiveImage__canvas,
+.c-progressiveImage--fitCover .c-progressiveImage__originalImage {
+	object-fit: cover;
+}
+
+.c-progressiveImage--fitContain .c-progressiveImage__canvas,
+.c-progressiveImage--fitContain .c-progressiveImage__originalImage {
+	object-fit: contain;
+}
+
+.c-progressiveImage--fitFill .c-progressiveImage__canvas,
+.c-progressiveImage--fitFill .c-progressiveImage__originalImage {
+	object-fit: fill;
+}
+
+.c-progressiveImage--fitScaleDown .c-progressiveImage__canvas,
+.c-progressiveImage--fitScaleDown .c-progressiveImage__originalImage {
+	object-fit: scale-down;
+}

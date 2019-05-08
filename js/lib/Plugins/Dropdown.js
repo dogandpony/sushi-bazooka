@@ -70,7 +70,7 @@ var Sushi;
 		*/
 		if (triggerEvents[0] === "click") {
 			// [1] & [2]
-			this.createListener(this.triggerElement, "click", function () {
+			this.createListener(this.triggerElement, "click", function (event) {
 				var targetIsTrigger = (event.target === this.triggerElement);
 				var targetIsChild = this.dropdownElement.contains(event.target);
 
@@ -99,12 +99,12 @@ var Sushi;
 
 			// If there's more than one event type...
 
-			// ... and the triggered event was the first one, open the dropdown
+			// ... and the triggered event was the first one, open the dropdown.
 			if (event.type === triggerEvents[0]) {
 				return this.open();
 			}
 
-			// ... and the triggered event was not the first one, close the dropdown
+			// ... and the triggered event was not the first one, close the dropdown.
 			this.close();
 		}.bind(this));
 	};
@@ -119,27 +119,49 @@ var Sushi;
 	};
 
 	proto.open = function () {
-		if (!this.isOpen) {
-			this.isOpen = true;
+		if (this.isOpen) {
+			return;
+		}
 
-			this.updatePositionClass();
+		this.isOpen = true;
 
-			this.triggerElement.classList.add("is-open");
+		this.updatePositionClass();
+
+		this.dropdownElement.classList.add("is-visible");
+
+		setTimeout(function () {
+			if (!this.isOpen) {
+				return;
+			}
+
+			this.dropdownElement.classList.add("is-open");
 
 			Events(this.triggerElement).trigger("open");
 
 			this.updateMaxHeight();
-		}
+		}.bind(this), 0);
 	};
 
 	proto.close = function () {
-		if (this.isOpen) {
-			this.isOpen = false;
+		if (!this.isOpen) {
+			return;
+		}
 
-			this.triggerElement.classList.remove("is-open");
+		this.isOpen = false;
+
+		this.dropdownElement.classList.remove("is-open");
+
+		clearTimeout(this.closeTimeout);
+
+		this.closeTimeout = setTimeout(function () {
+			if (this.isOpen) {
+				return;
+			}
+
+			this.dropdownElement.classList.remove("is-visible");
 
 			Events(this.triggerElement).trigger("close");
-		}
+		}.bind(this), Css.getMaxTransitionDuration(this.dropdownElement))
 	};
 
 	proto.updatePositionClass = function () {

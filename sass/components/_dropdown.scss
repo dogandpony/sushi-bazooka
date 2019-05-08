@@ -1,11 +1,7 @@
-/* ==============================================================================================
- * DROPDOWN
- * ============================================================================================== */
-
 .c-dropdown {
 	@include elevation(4);
+	display: none;
 	position: absolute;
-	visibility: hidden;
 	opacity: 0;
 	top: 100%;
 	left: 0;
@@ -22,19 +18,19 @@
 	white-space: nowrap;
 	transform: translateY($globalSpacing) scale(0.95);
 	transition: transform $dropdownTransitionDuration $dropdownTransitionTimingFunction,
-		opacity $dropdownTransitionDuration $dropdownTransitionTimingFunction,
-		visibility $dropdownTransitionDuration;
+		opacity $dropdownTransitionDuration $dropdownTransitionTimingFunction;
 	transition-delay: $dropdownCloseIntention; // CSS-only "close intention"
 }
 
-.is-open > .c-dropdown {
-	visibility: visible;
-	opacity: 1;
+.c-dropdown.is-visible {
+	display: block;
+}
 
+.c-dropdown.is-open {
+	opacity: 1;
 	transform: none;
 	transition: transform $dropdownTransitionDuration $dropdownTransitionTimingFunction,
-		opacity $dropdownTransitionDuration $dropdownTransitionTimingFunction,
-		visibility $dropdownTransitionDuration;
+		opacity $dropdownTransitionDuration $dropdownTransitionTimingFunction;
 }
 
 .c-dropdown--reverse {

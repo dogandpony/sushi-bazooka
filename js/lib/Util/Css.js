@@ -142,11 +142,14 @@ var Sushi;
 		for (var i = 0; i < transitionDuration.length; i++) {
 			var duration = 0;
 
-			if (transitionDuration[i] !== "") {
+			if ((transitionDuration[i] !== "") && (transitionDuration[i] !== void 0)) {
 				duration += parseFloat(transitionDuration[i]);
 			}
 
-			if ((transitionDelay[i] !== "") && !ignoreDelay) {
+			if ((transitionDelay[i] !== "")
+				&& (transitionDelay[i] !== void 0)
+				&& !ignoreDelay
+			) {
 				duration += parseFloat(transitionDelay[i]);
 			}
 
