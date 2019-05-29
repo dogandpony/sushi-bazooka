@@ -138,7 +138,6 @@ var Sushi;
 
 		for (var i = 0; i < typeList.length; i++) {
 			var typeString = typeList[i];
-			var type = typeString.split(".").pop();
 			var namespaceRegex = new RegExp(
 				"(^|\\.)" + Sushi.Util.escapeRegExp(typeString) + "$"
 			);
@@ -154,7 +153,7 @@ var Sushi;
 							continue;
 						}
 
-						target.removeEventListener(type, storedFunction);
+						target.removeEventListener(namespace, storedFunction);
 						events[namespace].splice(j, 1);
 					}
 
