@@ -9,6 +9,8 @@ var Sushi;
 
 	var eventStack = new Map();
 
+	var passiveEventTypes = ["scroll", "wheel", "touchstart", "touchmove", "touchend"];
+
 	var Events = function (target) {
 		var EventHelper = function (target) {
 			this.target = target;
@@ -97,6 +99,10 @@ var Sushi;
 
 		typeList.forEach(function (type) {
 			var namespaceArray = type.split(".");
+
+			if (passiveEventTypes.includes(namespaceArray.slice(-1).pop())) {
+				options = Object.assign({}, { passive: true }, options);
+			}
 
 			events[type] = (events[type] || []);
 			events[type].push({
