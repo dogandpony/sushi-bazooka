@@ -16,14 +16,14 @@ var Sushi;
 
 		var proto = EventHelper.prototype;
 
-		proto.on = function (types, fn) {
-			Events.on(types, this.target, fn);
+		proto.on = function (types, fn, options) {
+			Events.on(types, this.target, fn, options);
 
 			return this;
 		};
 
-		proto.one = function (types, fn) {
-			Events.one(types, this.target, fn);
+		proto.one = function (types, fn, options) {
+			Events.one(types, this.target, fn, options);
 
 			return this;
 		};
@@ -75,8 +75,9 @@ var Sushi;
 	 * @param types String
 	 * @param target Element
 	 * @param fn Function
+	 * @param options
 	 */
-	var addListeners = function (types, target, fn) {
+	var addListeners = function (types, target, fn, options) {
 		if (target === void 0) {
 			throw Error("Target is undefined.");
 		}
@@ -98,12 +99,15 @@ var Sushi;
 			var namespaceArray = type.split(".");
 
 			events[type] = (events[type] || []);
-			events[type].push(fn);
+			events[type].push({
+				fn: fn,
+				options: options,
+			});
 
 			while (namespaceArray.length > 0) {
 				var typeString = namespaceArray.join(".");
 
-				target.addEventListener(typeString, fn);
+				target.addEventListener(typeString, fn, options);
 
 				namespaceArray.shift();
 			}
@@ -149,7 +153,7 @@ var Sushi;
 				var j = events[namespace].length;
 
 				while (j--) {
-					var storedFunction = events[namespace][j];
+					var storedFunction = events[namespace][j].fn;
 
 					if ((fn !== void 0) && (fn !== storedFunction)) {
 						continue;
@@ -218,16 +222,17 @@ var Sushi;
 	 * @param types String
 	 * @param targets Element
 	 * @param fn Function
+	 * @param options
 	 */
-	var traverse = function (handler, types, targets, fn) {
+	var traverse = function (handler, types, targets, fn, options) {
 		var elementList = parseTargets(targets);
 
 		Array.prototype.slice.call(elementList).forEach(function (element) {
 			if (Sushi.Dom.isIterable(element)) {
-				traverse(handler, types, element, fn);
+				traverse(handler, types, element, fn, options);
 			}
 			else {
-				handler(types, element, fn);
+				handler(types, element, fn, options);
 			}
 		});
 	};
@@ -239,9 +244,10 @@ var Sushi;
 	 * @param types String
 	 * @param targets Element
 	 * @param fn Function
+	 * @param options
 	 */
-	Events.on = function (types, targets, fn) {
-		traverse(addListeners, types, targets, fn);
+	Events.on = function (types, targets, fn, options) {
+		traverse(addListeners, types, targets, fn, options);
 	};
 
 
@@ -251,14 +257,15 @@ var Sushi;
 	 * @param types String
 	 * @param targets Element
 	 * @param fn Function
+	 * @param options
 	 */
-	Events.one = function (types, targets, fn) {
+	Events.one = function (types, targets, fn, options) {
 		var oneFunction = function (event) {
 			fn.call(this, event);
 			traverse(removeListeners, types, this, oneFunction);
 		};
 
-		traverse(addListeners, types, targets, oneFunction);
+		traverse(addListeners, types, targets, oneFunction, options);
 	};
 
 
@@ -283,10 +290,10 @@ var Sushi;
 		var events = eventStack.get(target);
 
 		Object.keys(events).forEach(function (eventType) {
-			var functionStack = events[eventType];
+			var eventStack = events[eventType];
 
-			functionStack.forEach(function (fn) {
-				Events.on(eventType, clonedTarget, fn);
+			eventStack.forEach(function (event) {
+				Events.on(eventType, clonedTarget, event.fn, event.options);
 			});
 		});
 	};
