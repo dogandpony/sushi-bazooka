@@ -155,7 +155,16 @@ var Sushi;
 						continue;
 					}
 
-					target.removeEventListener(namespace, storedFunction);
+					var namespaceArray = namespace.split(".");
+
+					while (namespaceArray.length > 0) {
+						var typeString = namespaceArray.join(".");
+
+						target.removeEventListener(typeString, storedFunction);
+
+						namespaceArray.shift();
+					}
+
 					events[namespace].splice(j, 1);
 				}
 
