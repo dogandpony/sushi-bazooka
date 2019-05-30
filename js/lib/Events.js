@@ -94,11 +94,11 @@ var Sushi;
 			events = eventStack.get(target);
 		}
 
-		for (var i = 0; i < typeList.length; i++) {
-			var namespaceArray = typeList[i].split(".");
+		typeList.forEach(function (type) {
+			var namespaceArray = type.split(".");
 
-			events[typeList[i]] = (events[typeList[i]] || []);
-			events[typeList[i]].push(fn);
+			events[type] = (events[type] || []);
+			events[type].push(fn);
 
 			while (namespaceArray.length > 0) {
 				var typeString = namespaceArray.join(".");
@@ -107,7 +107,7 @@ var Sushi;
 
 				namespaceArray.shift();
 			}
-		}
+		});
 	};
 
 
@@ -136,37 +136,38 @@ var Sushi;
 			return;
 		}
 
-		for (var i = 0; i < typeList.length; i++) {
-			var typeString = typeList[i];
+		typeList.forEach(function (type) {
 			var namespaceRegex = new RegExp(
-				"(^|\\.)" + Sushi.Util.escapeRegExp(typeString) + "$"
+				"(^|\\.)" + Sushi.Util.escapeRegExp(type) + "$"
 			);
 
-			for (var namespace in events) {
-				if (events.hasOwnProperty(namespace) && namespaceRegex.test(namespace)) {
-					var j = events[namespace].length;
+			Object.keys(events).forEach(function (namespace) {
+				if (!namespaceRegex.test(namespace)) {
+					return;
+				}
 
-					while (j--) {
-						var storedFunction = events[namespace][j];
+				var j = events[namespace].length;
 
-						if ((fn !== void 0) && (fn !== storedFunction)) {
-							continue;
-						}
+				while (j--) {
+					var storedFunction = events[namespace][j];
 
-						target.removeEventListener(namespace, storedFunction);
-						events[namespace].splice(j, 1);
+					if ((fn !== void 0) && (fn !== storedFunction)) {
+						continue;
 					}
 
-					if (events[namespace].length === 0) {
-						delete events[namespace];
+					target.removeEventListener(namespace, storedFunction);
+					events[namespace].splice(j, 1);
+				}
 
-						if (Object.keys(events).length === 0) {
-							eventStack.delete(target);
-						}
+				if (events[namespace].length === 0) {
+					delete events[namespace];
+
+					if (Object.keys(events).length === 0) {
+						eventStack.delete(target);
 					}
 				}
-			}
-		}
+			});
+		});
 	};
 
 
@@ -180,25 +181,24 @@ var Sushi;
 	var triggerEvents = function (types, target, data) {
 		var typeList = types.split(" ");
 
-		for (var i = 0; i < typeList.length; i++) {
+		typeList.forEach(function (type) {
 			var event;
-			var eventName = typeList[i];
 
 			if (typeof window.CustomEvent === "function") {
-				event = new window.CustomEvent(eventName, {
+				event = new window.CustomEvent(type, {
 					detail: data,
 					bubbles: true,
 				});
 			}
 			else if (document.createEvent) {
 				event = document.createEvent("CustomEvent");
-				event.initCustomEvent(eventName, true, true, data);
+				event.initCustomEvent(type, true, true, data);
 			}
 
-			event.eventName = eventName;
+			event.eventName = type;
 
 			target.dispatchEvent(event, data);
-		}
+		});
 	};
 
 
@@ -213,16 +213,14 @@ var Sushi;
 	var traverse = function (handler, types, targets, fn) {
 		var elementList = parseTargets(targets);
 
-		for (var i = 0; i < elementList.length; i++) {
-			var element = elementList[i];
-
+		Array.prototype.slice.call(elementList).forEach(function (element) {
 			if (Sushi.Dom.isIterable(element)) {
 				traverse(handler, types, element, fn);
 			}
 			else {
 				handler(types, element, fn);
 			}
-		}
+		});
 	};
 
 
@@ -275,19 +273,14 @@ var Sushi;
 	Events.clone = function (target, clonedTarget) {
 		var events = eventStack.get(target);
 
-		for (var eventType in events) {
-			if (events.hasOwnProperty(eventType)) {
-				var functionStack = events[eventType];
+		Object.keys(events).forEach(function (eventType) {
+			var functionStack = events[eventType];
 
-				for (var i = 0; i < functionStack.length; i++) {
-					var fn = functionStack[i];
-
-					Events.on(eventType, clonedTarget, fn);
-				}
-			}
-		}
+			functionStack.forEach(function (fn) {
+				Events.on(eventType, clonedTarget, fn);
+			});
+		});
 	};
-
 
 	Events.getEventStack = function () {
 		return eventStack;
