@@ -72,6 +72,8 @@ var Sushi;
 		this.canvas = Dom.parse("<canvas class='c-progressiveImage__canvas'>");
 		this.originalImage = document.createElement("img");
 
+		this.originalImage.setAttribute("alt", "");
+
 		for (var containerAttribute in this.containerAttributes) {
 			if (this.containerAttributes.hasOwnProperty(containerAttribute)) {
 				this.container.setAttribute(
