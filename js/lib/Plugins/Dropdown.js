@@ -161,7 +161,7 @@ var Sushi;
 			this.dropdownElement.classList.remove("is-visible");
 
 			Events(this.triggerElement).trigger("close");
-		}.bind(this), Css.getMaxTransitionDuration(this.dropdownElement))
+		}.bind(this), Css.getMaxTransitionDuration(this.dropdownElement));
 	};
 
 	proto.updatePositionClass = function () {
