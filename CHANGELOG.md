@@ -371,6 +371,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 - **Plugins.Modal**: Check if BodyScroll library exists and warn user if it doesn't.
 
 
+[0.13.1]: https://github.com/dogandpony/sushi-bazooka/compare/v0.13.0...v0.13.1
 [0.13.0]: https://github.com/dogandpony/sushi-bazooka/compare/v0.12.1...v0.13.0
 [0.12.1]: https://github.com/dogandpony/sushi-bazooka/compare/v0.12.0...v0.12.1
 [0.12.0]: https://github.com/dogandpony/sushi-bazooka/compare/v0.11.0...v0.12.0
