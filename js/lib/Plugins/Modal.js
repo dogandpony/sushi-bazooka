@@ -134,7 +134,7 @@ var Sushi;
 			+ "    <div class=\"c-modal__overlay\">"
 			+ "        <div class=\"c-modal__contentWrapper\">"
 			+ "            <div class=\"c-modal__content\"></div>"
-			+ "            <a href=\"#!\" class=\"c-modal__close\" data-modal-close></a>"
+			+ "            <button type=\"button\" class=\"c-modal__close\" data-modal-close></button>"
 			+ "        </div>"
 			+ "    </div>"
 			+ "</div>",

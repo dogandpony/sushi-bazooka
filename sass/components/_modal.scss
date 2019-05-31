@@ -122,6 +122,10 @@
 	right: $globalSpacingSm;
 	width: 32px;
 	height: 32px;
+	background-color: transparent;
+	border-color: transparent;
+	cursor: pointer;
+	outline: none;
 	font-size: getFontSize(4);
 	text-align: center;
 	z-index: 10;

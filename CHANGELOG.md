@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project will adhere to [Semantic Versioning](http://semver.org/spec/v2.0.0.html) once it's out of beta. Currently we work with `0.x.y` where `x` is **major** and `y` can be either **minor** or **patch** versions. This way we keep code from spilling to real major versions.
 
 
+## [0.14.0] - 2019-05-31
+
+### Fixed
+- **Events**: Fixed event listeners from lower levels not being de-registered when `.off()` is 
+  called.
+
+### Changed
+- **Events**: Set all scroll and touch events to passive by default.
+- **Plugins.Modal**: Change default close button from link tag to `<button>` tag.
+
+### Added
+- **Events**: Implemented `options` parameter for event listeners.
+
+
 ## [0.13.1] - 2019-05-08
 
 ### Fixed
@@ -371,23 +385,26 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 - **Plugins.Modal**: Check if BodyScroll library exists and warn user if it doesn't.
 
 
-[0.13.0]: https://github.com/dogandpony/sushi-bazooka/compare/v0.12.1...v0.13.0
-[0.12.1]: https://github.com/dogandpony/sushi-bazooka/compare/v0.12.0...v0.12.1
-[0.12.0]: https://github.com/dogandpony/sushi-bazooka/compare/v0.11.0...v0.12.0
-[0.11.0]: https://github.com/dogandpony/sushi-bazooka/compare/v0.10.1...v0.11.0
-[0.10.1]: https://github.com/dogandpony/sushi-bazooka/compare/v0.10.0...v0.10.1
-[0.10.0]: https://github.com/dogandpony/sushi-bazooka/compare/v0.9.0...0.10.0
-[0.9.0]: https://github.com/dogandpony/sushi-bazooka/compare/v0.8.1...v0.9.0
-[0.8.1]: https://github.com/dogandpony/sushi-bazooka/compare/v0.8.0...v0.8.1
-[0.8.0]: https://github.com/dogandpony/sushi-bazooka/compare/v0.7.0...v0.8.0
-[0.7.0]: https://github.com/dogandpony/sushi-bazooka/compare/v0.6.2...v0.7.0
-[0.6.2]: https://github.com/dogandpony/sushi-bazooka/compare/v0.6.1...v0.6.2
-[0.6.1]: https://github.com/dogandpony/sushi-bazooka/compare/v0.6.0...v0.6.1
-[0.6.0]: https://github.com/dogandpony/sushi-bazooka/compare/v0.5.3...v0.6.0
-[0.5.3]: https://github.com/dogandpony/sushi-bazooka/compare/v0.5.2...v0.5.3
-[0.5.2]: https://github.com/dogandpony/sushi-bazooka/compare/v0.5.1...v0.5.2
-[0.5.1]: https://github.com/dogandpony/sushi-bazooka/compare/v0.5.0...v0.5.1
-[0.5.0]: https://github.com/dogandpony/sushi-bazooka/compare/v0.4.7...v0.5.0
-[0.4.7]: https://github.com/dogandpony/sushi-bazooka/compare/v0.4.6...v0.4.7
-[0.4.6]: https://github.com/dogandpony/sushi-bazooka/compare/v0.4.5...v0.4.6
-[0.4.5]: https://github.com/dogandpony/sushi-bazooka/compare/v0.4.4...v0.4.5
+[0.14.0]: https://github.com/dogandpony/sushi-bazooka/compare/0.13.1...0.14.0
+[0.13.1]: https://github.com/dogandpony/sushi-bazooka/compare/0.13.0...0.13.1
+[0.13.0]: https://github.com/dogandpony/sushi-bazooka/compare/0.12.1...0.13.0
+[0.13.0]: https://github.com/dogandpony/sushi-bazooka/compare/0.12.1...0.13.1
+[0.12.1]: https://github.com/dogandpony/sushi-bazooka/compare/0.12.0...0.12.1
+[0.12.0]: https://github.com/dogandpony/sushi-bazooka/compare/0.11.0...0.12.0
+[0.11.0]: https://github.com/dogandpony/sushi-bazooka/compare/0.10.1...0.11.0
+[0.10.1]: https://github.com/dogandpony/sushi-bazooka/compare/0.10.0...0.10.1
+[0.10.0]: https://github.com/dogandpony/sushi-bazooka/compare/0.9.0...0.10.0
+[0.9.0]: https://github.com/dogandpony/sushi-bazooka/compare/0.8.1...0.9.0
+[0.8.1]: https://github.com/dogandpony/sushi-bazooka/compare/0.8.0...0.8.1
+[0.8.0]: https://github.com/dogandpony/sushi-bazooka/compare/0.7.0...0.8.0
+[0.7.0]: https://github.com/dogandpony/sushi-bazooka/compare/0.6.2...0.7.0
+[0.6.2]: https://github.com/dogandpony/sushi-bazooka/compare/0.6.1...0.6.2
+[0.6.1]: https://github.com/dogandpony/sushi-bazooka/compare/0.6.0...0.6.1
+[0.6.0]: https://github.com/dogandpony/sushi-bazooka/compare/0.5.3...0.6.0
+[0.5.3]: https://github.com/dogandpony/sushi-bazooka/compare/0.5.2...0.5.3
+[0.5.2]: https://github.com/dogandpony/sushi-bazooka/compare/0.5.1...0.5.2
+[0.5.1]: https://github.com/dogandpony/sushi-bazooka/compare/0.5.0...0.5.1
+[0.5.0]: https://github.com/dogandpony/sushi-bazooka/compare/0.4.7...0.5.0
+[0.4.7]: https://github.com/dogandpony/sushi-bazooka/compare/0.4.6...0.4.7
+[0.4.6]: https://github.com/dogandpony/sushi-bazooka/compare/0.4.5...0.4.6
+[0.4.5]: https://github.com/dogandpony/sushi-bazooka/compare/0.4.4...0.4.5
