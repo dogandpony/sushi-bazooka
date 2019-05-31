@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project will adhere to [Semantic Versioning](http://semver.org/spec/v2.0.0.html) once it's out of beta. Currently we work with `0.x.y` where `x` is **major** and `y` can be either **minor** or **patch** versions. This way we keep code from spilling to real major versions.
 
 
+## [0.14.0] - 2019-05-31
+
+### Fixed
+- **Events**: Fixed event listeners from lower levels not being de-registered when `.off()` is 
+  called.
+
+### Changed
+- **Events**: Set all scroll and touch events to passive by default.
+- **Plugins.Modal**: Change default close button from link tag to `<button>` tag.
+
+### Added
+- **Events**: Implemented `options` parameter for event listeners.
+
+
 ## [0.13.1] - 2019-05-08
 
 ### Fixed
