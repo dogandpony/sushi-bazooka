@@ -117,6 +117,9 @@
    ============================================================================================== */
 
 .c-modal__close {
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	position: absolute;
 	top: $globalSpacingSm;
 	right: $globalSpacingSm;
@@ -131,8 +134,9 @@
 	z-index: 10;
 
 	&:before {
-		@extend %icon;
-		content: "close";
+		content: "\00d7";
+		position: absolute;
+		vertical-align: middle;
 	}
 }
 
