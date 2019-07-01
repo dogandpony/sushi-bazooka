@@ -17,9 +17,7 @@
 	cursor: pointer;
 
 	&:after {
-		@extend %icon;
-
-		content: "expand_more";
+		content: "+";
 		position: absolute;
 		top: 50%;
 		right: 4px;
@@ -74,7 +72,7 @@
 	}
 
 	&:after {
-		content: "expand_more";
+		content: "+";
 	}
 }
 

@@ -53,8 +53,7 @@
 }
 
 .c-toaster__toastCloseButton:before {
-	@extend %icon;
-	content: "close";
+	content: "\00d7";
 }
 
 
