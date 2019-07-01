@@ -134,7 +134,8 @@ var Sushi;
 			+ "    <div class=\"c-modal__overlay\">"
 			+ "        <div class=\"c-modal__contentWrapper\">"
 			+ "            <div class=\"c-modal__content\"></div>"
-			+ "            <button type=\"button\" class=\"c-modal__close\" data-modal-close></button>"
+			+ "            <button type=\"button\" class=\"c-modal__close\""
+			+ "                data-modal-close aria-label=\"Close Modal\"></button>"
 			+ "        </div>"
 			+ "    </div>"
 			+ "</div>",
@@ -283,7 +284,7 @@ var Sushi;
 		this.isOpen = true;
 
 		// Prevent body scroll if this is the only modal open
-		if (this.options.lockScrollWhileOpen && Modal.openModals.length === 0) {
+		if (this.options.lockScroll && Modal.openModals.length === 0) {
 			if (Sushi.BodyScroll !== void 0) {
 				Sushi.BodyScroll.lock(this.id);
 			}
@@ -331,7 +332,7 @@ var Sushi;
 
 		// Release body scroll if this is the last modal open
 		if (Modal.openModals.length === 0) {
-			if (this.options.lockScrollWhileOpen) {
+			if (this.options.lockScroll) {
 				Sushi.BodyScroll.unlock(this.id);
 			}
 		}
