@@ -244,6 +244,10 @@ var Sushi;
 		};
 
 		var onModalOpen = function () {
+			if (!(event.detail && event.detail.modal)) {
+				return;
+			}
+
 			var closeButtons = this.element.querySelectorAll("[data-modal-close]");
 
 			Events(closeButtons).on("Modal.close.click", onCloseButtonClick.bind(this));
@@ -254,6 +258,10 @@ var Sushi;
 		};
 
 		var onModalClose = function () {
+			if (!(event.detail && event.detail.modal)) {
+				return;
+			}
+
 			var closeButtons = this.element.querySelectorAll("[data-modal-close]");
 
 			Events(closeButtons).off("Modal.close.click");
