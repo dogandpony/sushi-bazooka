@@ -136,7 +136,7 @@ var Sushi;
 
 			this.dropdownElement.classList.add("is-open");
 
-			Events(this.triggerElement).trigger("open");
+			Events(this.triggerElement).trigger("Dropdown.open");
 
 			this.updateMaxHeight();
 		}.bind(this), 0);
@@ -160,7 +160,7 @@ var Sushi;
 
 			this.dropdownElement.classList.remove("is-visible");
 
-			Events(this.triggerElement).trigger("close");
+			Events(this.triggerElement).trigger("Dropdown.close");
 		}.bind(this), Css.getMaxTransitionDuration(this.dropdownElement));
 	};
 

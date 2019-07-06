@@ -90,7 +90,7 @@ var Sushi;
 
 			toast.cookingTime = (fadeInDuration + toast.duration);
 
-			Events(toast.bread).trigger("open", {toast: toast});
+			Events(toast.bread).trigger("Toast.open", {toast: toast});
 
 			if (toast.options.autoDismiss === true) {
 				this.scheduleAutoDismiss(toast);
@@ -117,7 +117,7 @@ var Sushi;
 				this.cook();
 			}
 
-			Events(toast.bread).trigger("close", {toast: toast});
+			Events(toast.bread).trigger("Toast.close", {toast: toast});
 
 			this.clean(toast);
 		}.bind(this), fadeOutDuration);

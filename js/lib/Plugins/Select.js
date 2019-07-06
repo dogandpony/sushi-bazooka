@@ -56,9 +56,7 @@ var Sushi;
 	proto.create = function () {
 		this.containerElement = Dom.parse("<div class='c-select'>");
 
-		this.buttonElement = Dom.parse(
-			"<button class='c-select__button' type='button'>"
-		);
+		this.buttonElement = Dom.parse("<button class='c-select__button' type='button'>");
 
 		this.triggerElement.classList.add("c-select__select");
 		this.triggerElement.setAttribute("tabindex", "-99");
@@ -216,10 +214,10 @@ var Sushi;
 
 						checkboxElement.checked = !checkboxElement.checked;
 
-						Events(checkboxElement).trigger("change");
+						Events(checkboxElement).trigger("Select.change");
 					}
 					else {
-						Events(activeElement.closest(".c-select__item")).trigger("click");
+						Events(activeElement.closest(".c-select__item")).trigger("Select.click");
 						this.buttonElement.focus();
 					}
 
@@ -249,7 +247,7 @@ var Sushi;
 		if ((itemValue !== void 0) && (itemValue !== selectedOption.value)) {
 			this.triggerElement.value = itemValue;
 
-			Events(this.triggerElement).trigger("change");
+			Events(this.triggerElement).trigger("Select.change");
 		}
 	};
 
@@ -266,7 +264,7 @@ var Sushi;
 
 		itemElement.focus();
 
-		this.updateSelectedOptions();
+		Events(this.triggerElement).trigger("Select.change");
 	};
 
 	proto.handleSearchInputUpdate = function () {
@@ -279,11 +277,11 @@ var Sushi;
 	proto.registerItemListeners = function () {
 		if (this.isMultiple) {
 			Events(Dom.queryAll(".c-select__checkbox", this.dropdownListElement))
-				.on("select.change", this.handleCheckboxChange.bind(this));
+				.on("Select.change", this.handleCheckboxChange.bind(this));
 		}
 		else {
 			Events(Dom.queryAll(".c-select__item", this.dropdownListElement))
-				.on("select.click", this.handleItemClick.bind(this));
+				.on("Select.click", this.handleItemClick.bind(this));
 		}
 	};
 
@@ -419,7 +417,7 @@ var Sushi;
 			}
 		}
 
-		Events(this.triggerElement).trigger("update");
+		Events(this.triggerElement).trigger("Select.update");
 
 		this.updateButtonLabel();
 		this.filterItems();
