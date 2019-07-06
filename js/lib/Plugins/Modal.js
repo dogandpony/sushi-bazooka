@@ -318,7 +318,7 @@ var Sushi;
 		Dom.addClass(this.element, "is-open");
 
 		// Trigger open events
-		Events(this.element).trigger("open", { modal: this });
+		Events(this.element).trigger("Modal.open", { modal: this });
 	};
 
 
@@ -336,7 +336,7 @@ var Sushi;
 
 		this.removeFromOpenModalsList();
 
-		Events(this.element).trigger("close", { modal: this });
+		Events(this.element).trigger("Modal.close", { modal: this });
 
 		// Release body scroll if this is the last modal open
 		if (Modal.openModals.length === 0) {
@@ -358,7 +358,7 @@ var Sushi;
 			}
 
 			// Trigger closed event
-			Events(this.element).trigger("closed", { modal: this });
+			Events(this.element).trigger("Modal.closed", { modal: this });
 		}.bind(this), maxDuration);
 	};
 
@@ -400,7 +400,7 @@ var Sushi;
 				break;
 		}
 
-		Events(this.element).trigger("contentchange");
+		Events(this.element).trigger("Modal.contentchange");
 	};
 
 
@@ -410,7 +410,7 @@ var Sushi;
 	proto.clearContent = function () {
 		this.content.innerHTML = "";
 
-		Events(this.element).trigger("contentchange");
+		Events(this.element).trigger("Modal.contentchange");
 	};
 
 

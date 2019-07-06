@@ -199,8 +199,21 @@ var Sushi;
 	 */
 	var triggerEvents = function (types, target, data) {
 		var typeList = types.split(" ");
+		var typesToDispatch = [];
 
 		typeList.forEach(function (type) {
+			var namespaceArray = type.split(".");
+
+			typesToDispatch.push(type);
+
+			while (namespaceArray.length > 0) {
+				typesToDispatch.push("*." + namespaceArray.join("."));
+
+				namespaceArray.shift();
+			}
+		});
+
+		typesToDispatch.forEach(function (type) {
 			var event;
 
 			if (typeof window.CustomEvent === "function") {
