@@ -55,7 +55,7 @@ var Sushi;
 				);
 			}
 
-			Events(preventClickOnElement).on("click", function (event) {
+			Events(preventClickOnElement).on("Dropdown.click", function (event) {
 				event.preventDefault();
 			});
 		}

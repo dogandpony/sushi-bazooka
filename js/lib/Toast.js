@@ -80,7 +80,7 @@ var Sushi;
 
 		this.bread.appendChild(closeButtonElement);
 
-		Events(closeButtonElement).on("click", function (event) {
+		Events(closeButtonElement).on("Toast.click", function (event) {
 			event.preventDefault();
 
 			this.toaster.clean(this);

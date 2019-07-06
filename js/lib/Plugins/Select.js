@@ -32,6 +32,8 @@ var Sushi;
 			this.filters.null = false;
 		}
 
+		this.hasChanged = false;
+
 		this.create();
 		this.registerListeners();
 	};
@@ -43,8 +45,9 @@ var Sushi;
 		hideSelected: false,
 		hideNull: false,
 		extraClasses: "",
-		multipleSeparator: ", ",
 		search: false,
+		multipleSeparator: ", ",
+		triggerChange: "onSelect",
 	};
 
 	Select.prototype = Object.create(BasePlugin.prototype);
@@ -134,6 +137,18 @@ var Sushi;
 				.on("Select.click", function (event) {
 					event.stopPropagation();
 				});
+		}
+
+		if (this.options.triggerChange === "onClose") {
+			Events(this.containerElement).on("Select.close", function () {
+				if (!this.hasChanged) {
+					return;
+				}
+
+				Events(this.triggerElement).trigger("Select.change");
+
+				this.hasChanged = false;
+			}.bind(this));
 		}
 	};
 
@@ -240,31 +255,44 @@ var Sushi;
 	 * @param event
 	 */
 	proto.handleItemClick = function (event) {
-		var itemElement = event.target.closest(".c-select__item");
-		var itemValue = itemElement.dataset.value;
-		var selectedOption = this.triggerElement.selectedOptions[0];
-
-		if ((itemValue !== void 0) && (itemValue !== selectedOption.value)) {
-			this.triggerElement.value = itemValue;
-
-			Events(this.triggerElement).trigger("Select.change");
+		// Ignore label click to prevent double activation
+		if (event.target.tagName.toLowerCase() === "label") {
+			return;
 		}
-	};
 
-	proto.handleCheckboxChange = function (event) {
+		var toStringOfValues = function (accumulator, current) {
+			return accumulator + current.value;
+		};
+
 		var itemElement = event.target.closest(".c-select__item");
 		var itemValue = itemElement.dataset.value;
-		var optionElement = Dom.query("option[value='" + itemValue + "']", this.triggerElement);
-		var checkboxElement = Dom.query(
-			".c-select__checkbox",
-			itemElement
-		);
+		var selectedOption = Dom.query("option[value='" + itemValue + "']", this.triggerElement);
+		var previousOptions = Array.prototype.slice.call(this.triggerElement.selectedOptions)
+			.reduce(toStringOfValues, "");
 
-		optionElement.selected = checkboxElement.checked;
+		if (this.isMultiple) {
+			var checkboxElement = Dom.query(".c-select__checkbox", itemElement);
 
-		itemElement.focus();
+			if (event.target === itemElement) {
+				checkboxElement.checked = !checkboxElement.checked;
+			}
 
-		Events(this.triggerElement).trigger("Select.change");
+			selectedOption.selected = checkboxElement.checked;
+		}
+		else {
+			selectedOption.selected = true;
+		}
+
+		var updatedOptions = Array.prototype.slice.call(this.triggerElement.selectedOptions)
+			.reduce(toStringOfValues, "");
+
+		this.hasChanged = (previousOptions !== updatedOptions);
+
+		if (this.hasChanged && (this.options.triggerChange === "onSelect")) {
+			Events(this.triggerElement).trigger("Select.change");
+
+			this.hasChanged = false;
+		}
 	};
 
 	proto.handleSearchInputUpdate = function () {
@@ -275,14 +303,8 @@ var Sushi;
 	};
 
 	proto.registerItemListeners = function () {
-		if (this.isMultiple) {
-			Events(Dom.queryAll(".c-select__checkbox", this.dropdownListElement))
-				.on("Select.change", this.handleCheckboxChange.bind(this));
-		}
-		else {
-			Events(Dom.queryAll(".c-select__item", this.dropdownListElement))
-				.on("Select.click", this.handleItemClick.bind(this));
-		}
+		Events(Dom.queryAll(".c-select__item", this.dropdownListElement))
+			.on("Select.click", this.handleItemClick.bind(this));
 	};
 
 	proto.updateItems = function () {
@@ -408,12 +430,17 @@ var Sushi;
 		for (var i = 0; i < this.dropdownItems.length; i++) {
 			var itemElement = this.dropdownItems[i];
 			var optionElement = this.availableOptions[i];
+			var isActive = Array.prototype.slice.call(selectedOptions).includes(optionElement);
 
-			if (Array.prototype.slice.call(selectedOptions).includes(optionElement)) {
+			if (isActive) {
 				itemElement.classList.add("is-active");
 			}
 			else {
 				itemElement.classList.remove("is-active");
+			}
+
+			if (this.isMultiple) {
+				itemElement.getElementsByClassName("c-select__checkbox").item(0).checked = isActive;
 			}
 		}
 
@@ -430,10 +457,13 @@ var Sushi;
 			var selectedOptionLabels = [];
 
 			for (var i = 0; i < this.triggerElement.selectedOptions.length; i++) {
-				selectedOptionLabels.push(
-					this.triggerElement.selectedOptions[i].title
-					|| this.triggerElement.selectedOptions[i].label
-				);
+				var optionElement = this.triggerElement.selectedOptions[i];
+
+				if (this.options.hideNull && optionElement.value === "") {
+					continue;
+				}
+
+				selectedOptionLabels.push(optionElement.title || optionElement.label);
 			}
 
 			label = selectedOptionLabels.join(this.options.multipleSeparator);

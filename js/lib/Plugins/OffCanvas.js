@@ -108,9 +108,9 @@ var Sushi;
 		};
 
 		Events(this.overlay)
-			.on("touchstart", onTouchStart.bind(this))
-			.on("touchmove", onTouchMove.bind(this))
-			.on("touchend", onTouchEnd.bind(this));
+			.on("OffCanvas.touchstart", onTouchStart.bind(this))
+			.on("OffCanvas.touchmove", onTouchMove.bind(this))
+			.on("OffCanvas.touchend", onTouchEnd.bind(this));
 
 
 
@@ -137,8 +137,8 @@ var Sushi;
 			}
 		};
 
-		Events(this.overlay).on("mousedown", onOverlayMouseDown.bind(this));
-		Events(this.overlay).on("click", onOverlayClick.bind(this));
+		Events(this.overlay).on("OffCanvas.mousedown", onOverlayMouseDown.bind(this));
+		Events(this.overlay).on("OffCanvas.click", onOverlayClick.bind(this));
 	};
 
 
