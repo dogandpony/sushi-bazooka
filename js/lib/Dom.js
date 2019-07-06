@@ -232,6 +232,17 @@ var Sushi;
 		traverseClassNames(target, "remove", classNames);
 	};
 
+	/**
+	 * Iterates through an array-like object, running a callback for each item
+	 *
+	 * @deprecated since 0.15.1
+	 *
+	 * @param {array|HTMLElement|HTMLCollection|NodeList} target Element or collection of element to
+	 *   iterate through.
+	 * @param {function} fn Callback to execute on each element
+	 *
+	 * @returns {void}
+	 */
 	Dom.each = function (target, fn) {
 		if (target instanceof HTMLElement) {
 			target = [target];
@@ -242,6 +253,29 @@ var Sushi;
 				var element = target[i];
 
 				fn.call(element);
+			}
+		}
+	};
+
+	/**
+	 * Iterates through an array-like object, running a callback for each item
+	 *
+	 * @param {array|HTMLElement|HTMLCollection|NodeList} target Element or collection of element to
+	 *   iterate through.
+	 * @param {function} fn Callback to execute on each element
+	 *
+	 * @returns {void}
+	 */
+	Dom.forEach = function (target, fn) {
+		if (target instanceof HTMLElement) {
+			target = [target];
+		}
+
+		if (Dom.isIterable(target)) {
+			for (var i = 0; i < target.length; i++) {
+				var element = target[i];
+
+				fn(element, i);
 			}
 		}
 	};
