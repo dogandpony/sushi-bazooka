@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project will adhere to [Semantic Versioning](http://semver.org/spec/v2.0.0.html) once it's out of beta. Currently we work with `0.x.y` where `x` is **major** and `y` can be either **minor** or **patch** versions. This way we keep code from spilling to real major versions.
 
 
+## [0.16.0] - 2019-07-17
+
+### Changed
+- **Plugins.Modal**: Removed deprecated options: `horizontalCentering` and `verticalCentering`.
+- **Plugins.ScrollTrigger**: Pass the plugin instance as a parameter of the offset function.
+
+### Fixed
+- **Plugins.Modal**: Fixed close button padding in iOS devices.
+
+### Added
+- **Dom**: Added `Dom.forEach()` and deprecated `Dom.each()`. This new function passes the element and the element index to the callback function, just like `Array.forEach()` does.
+- **Plugins.Chaser**: Added option to invert the functionality of the plugin, effectively pulling up a container until the scrolling of the page reaches its initial position — versus the default behavior, that pushes down a container, away from its original position.
+
+
 ## [0.15.0] - 2019-07-05
 
 ### Breaking Changes
