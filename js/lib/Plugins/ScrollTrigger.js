@@ -62,9 +62,10 @@ var Sushi;
 
 	proto.checkPosition = function () {
 		var elementOffset = Util.Css.getOffset(this.triggerElement).top;
+		var elementHeight = Util.Css.getHeight(this.triggerElement);
 		var triggerOffset;
 		var activationPoint;
-		var limitPoint = (elementOffset + Util.Css.getHeight(this.triggerElement));
+		var limitPoint = (elementOffset + elementHeight);
 		var fn = null;
 
 		var offset = this.getOffset();
@@ -79,7 +80,7 @@ var Sushi;
 
 			case "bottom":
 				triggerOffset = window.pageYOffset + window.innerHeight;
-				activationPoint = (elementOffset + offset);
+				activationPoint = (elementOffset + offset + elementHeight);
 				limitPoint += offset;
 
 				break;
