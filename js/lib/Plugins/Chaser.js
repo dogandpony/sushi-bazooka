@@ -39,8 +39,8 @@ var Sushi;
 		placeholder: "<i class=\"o-chaserPlaceholder\">",
 		updatePlaceholderHeight: true,
 		updateThreshold: 30,
-		offset: 0,
-		limit: null,
+		offset: 0, // Number or Function
+		limit: null, // null, Number or HTMLElement
 		usePlaceholderWidth: false,
 	});
 
@@ -109,7 +109,6 @@ var Sushi;
 	};
 
 	proto.parseLimit = function () {
-		// Early return if it's null or undefined
 		if (this.options.limit == null) {
 			return;
 		}
