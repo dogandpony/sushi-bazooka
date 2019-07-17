@@ -235,7 +235,7 @@ var Sushi;
 	/**
 	 * Iterates through an array-like object, running a callback for each item
 	 *
-	 * @deprecated since 0.15.1
+	 * @deprecated since 0.16.0
 	 *
 	 * @param {array|HTMLElement|HTMLCollection|NodeList} target Element or collection of element to
 	 *   iterate through.
