@@ -26,6 +26,10 @@ var Sushi;
 
 		this.proxyEvents();
 
+		if (this.options.inverted) {
+			this.options.triggerPosition = "bottom";
+		}
+
 		this.scrollTrigger = this.getScrollTriggerInstance();
 
 		this.parseLimit();
@@ -42,6 +46,7 @@ var Sushi;
 		offset: 0, // Number or Function
 		limit: null, // null, Number or HTMLElement
 		usePlaceholderWidth: false,
+		inverted: false,
 	});
 
 	Chaser.prototype = Object.create(BasePlugin.prototype);
@@ -81,21 +86,40 @@ var Sushi;
 		var eventBefore = this.options.eventBefore;
 		var eventAfter = this.options.eventAfter;
 
-		this.options.eventBefore = function () {
-			this.triggerElement.style.top = "auto";
-
-			this.triggerElement.classList.remove("is-chasing");
+		this.options.eventBefore = function (scrollTrigger) {
+			this.updateStylesBefore(scrollTrigger.getOffset());
 
 			this.runEvent(eventBefore);
 		}.bind(this);
 
 		this.options.eventAfter = function (scrollTrigger) {
-			this.triggerElement.style.top = (- scrollTrigger.getOffset()) + "px";
-
-			this.triggerElement.classList.add("is-chasing");
+			this.updateStylesAfter(scrollTrigger.getOffset());
 
 			this.runEvent(eventAfter);
 		}.bind(this);
+	};
+
+	proto.updateStylesBefore = function (offset) {
+		if (this.options.inverted) {
+			this.triggerElement.style.bottom = offset + "px";
+			this.triggerElement.classList.add("is-chasing");
+		}
+		else {
+			this.triggerElement.style.top = "auto";
+			this.triggerElement.classList.remove("is-chasing");
+		}
+	};
+
+	proto.updateStylesAfter = function (offset) {
+		if (this.options.inverted) {
+			this.triggerElement.style.bottom = "auto";
+			this.triggerElement.classList.remove("is-chasing");
+		}
+		else {
+			this.triggerElement.style.top = (-1 * offset) + "px";
+			this.triggerElement.classList.add("is-chasing");
+		}
+
 	};
 
 	proto.runEvent = function (fn) {
@@ -128,9 +152,18 @@ var Sushi;
 			return;
 		}
 
-		this.options.limit = function () {
-			return Util.Css.getOffset(limitElement).top - this.placeholder.clientHeight;
-		}.bind(this);
+		if (this.options.inverted) {
+			this.options.limit = function () {
+				return Util.Css.getOffset(limitElement).top
+					+ limitElement.clientHeight
+					+ this.placeholder.clientHeight;
+			}.bind(this);
+		}
+		else {
+			this.options.limit = function () {
+				return Util.Css.getOffset(limitElement).top - this.placeholder.clientHeight;
+			}.bind(this);
+		}
 	};
 
 	proto.update = function () {
@@ -156,13 +189,24 @@ var Sushi;
 			limitPosition = this.options.limit();
 		}
 
-		if (limitPosition + this.scrollTrigger.getOffset() - window.scrollY < 0) {
+		limitPosition += this.scrollTrigger.getOffset();
+
+		var isLimited = (this.options.inverted
+				? (limitPosition - (window.innerHeight + window.scrollY) > 0)
+				: (limitPosition - window.scrollY < 0)
+		);
+
+		if (isLimited) {
+			var placeholderTopOffset = Util.Css.getOffset(this.placeholder).top;
+
+			var translateOffset = limitPosition;
+
+			if (this.options.inverted) {
+				translateOffset -= (placeholderTopOffset + this.placeholder.clientHeight);
+			}
+
 			this.triggerElement.classList.add("is-limited");
-			this.triggerElement.style.transform = "translateY(" + (
-				limitPosition
-				+ this.scrollTrigger.getOffset()
-				- Util.Css.getOffset(this.placeholder).top
-			) + "px)";
+			this.triggerElement.style.transform = "translateY(" + translateOffset + "px)";
 		}
 		else {
 			this.triggerElement.classList.remove("is-limited");
