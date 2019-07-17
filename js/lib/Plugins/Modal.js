@@ -26,8 +26,6 @@
  *   - `onCreate` (default): Populates the modal once, at modal markup creation.
  *   - `onOpen`: Populates the modal every time it's open. Useful for dynamic content.
  *   - `false`: Never populates the modal. Useful for pre-rendered modals.
- * - horizontalCentering: Whether to horizontally center the modal or not. Defaults to `true`.
- * - verticalCentering: Whether to vertically center the modal or not. Defaults to `false`.
  * - template: HTML string, selector string or HTMLElement to be used as the modal template. If it
  *   is an HTMLElement it will be appended to the element set in `appendTo` option.
  * - appendTo: Container to append the modal to. Set to `false` to not move the modal if it is
@@ -118,16 +116,6 @@ var Sushi;
 		 */
 		position: "center top",
 
-		/**
-		 * @deprecated since 0.7.1
-		 */
-		horizontalCentering: false,
-
-		/**
-		 * @deprecated since 0.7.1
-		 */
-		verticalCentering: false,
-
 		// Containers
 		template: ""
 			+ "<div class=\"c-modal\">"
@@ -187,14 +175,6 @@ var Sushi;
 				this.anchors.y = anchor;
 			}
 		}.bind(this));
-
-		if (this.options.horizontalCentering) {
-			this.anchors.x = "center";
-		}
-
-		if (this.options.verticalCentering) {
-			this.anchors.y = "middle";
-		}
 
 		modifierClasses.push("c-modal--" + this.anchors.x);
 		modifierClasses.push("c-modal--" + this.anchors.y);
