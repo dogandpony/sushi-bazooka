@@ -107,7 +107,7 @@ var Sushi;
 
 	proto.getOffset = function () {
 		if (typeof this.options.offset === "function") {
-			return this.options.offset();
+			return this.options.offset(this);
 		}
 
 		return parseInt(this.options.offset);
