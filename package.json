@@ -7,8 +7,6 @@
 		"url": "git+https://github.com/dogandpony/sushi-bazooka.git"
 	},
 	"keywords": [
-		"js",
-		"plugins",
 		"sushi",
 		"bazooka"
 	],
