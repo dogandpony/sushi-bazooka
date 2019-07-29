@@ -181,7 +181,12 @@ var Sushi;
 			return Dom.queryAll("#" + context.id + " " + selector, document, onlyOne);
 		}
 
-		var isSimpleSelector = (/[\s\t\n\r>[='"]/.test(selector) === false);
+		var classNameCount = (selector.match(/\./g) || []).length;
+		var idCount = (selector.match(/#/g) || []).length;
+		var isSimpleSelector = (
+			(classNameCount + idCount < 2)
+			&& (/[\s\t\n\r>[='"]/.test(selector) === false)
+		);
 		var isIdSelector = (isSimpleSelector && (selector.indexOf("#") === 0));
 		var isClassSelector = (isSimpleSelector && !isIdSelector && (selector.indexOf(".") === 0));
 		var isTagSelector = (isSimpleSelector && !isIdSelector && !isClassSelector);

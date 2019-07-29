@@ -81,7 +81,6 @@ var Sushi;
 
 		this.dropdown = new Dropdown(this.containerElement, {
 			triggerEvent: "click",
-			closeOnSelect: !this.isMultiple,
 			closeIntentionTimeout: 0,
 		});
 	};
@@ -124,12 +123,12 @@ var Sushi;
 			.on("Select.change", this.updateSelectedOptions.bind(this));
 
 		Events(this.buttonElement)
-			.on("Select.focus", this.enableKeyDownListener.bind(this))
+			.on("Select.click", this.enableKeyDownListener.bind(this))
 			.on("Select.blur", this.disableKeyDownListener.bind(this));
 
 		Events(this.dropdown.triggerElement)
-			.on("Select.open", this.handleDropdownOpen.bind(this))
-			.on("Select.close", this.disableKeyDownListener.bind(this));
+			.on("Dropdown.open", this.handleDropdownOpen.bind(this))
+			.on("Dropdown.close", this.disableKeyDownListener.bind(this));
 
 		if (this.options.search) {
 			Events(this.searchInput)
@@ -166,8 +165,8 @@ var Sushi;
 
 	proto.handleDropdownOpen = function () {
 		var currentItem = (
-			Dom.query(".c-select__item.is-active", this.dropdownListElement)
-			|| Dom.query(".c-select__item", this.dropdownListElement)
+			Dom.query(".c-select__item.is-active:not(._hidden)", this.dropdownListElement)
+			|| this.getFirstAvailableItem()
 		);
 
 		setTimeout(function () {
@@ -194,7 +193,7 @@ var Sushi;
 		if (this.dropdown.isOpen) {
 			var activeElement = document.activeElement;
 
-			event.preventDefault();
+		event.preventDefault();
 
 			switch (event.keyCode) {
 				// esc
@@ -206,13 +205,13 @@ var Sushi;
 
 				// arrow up
 				case 38:
-					(activeElement.previousSibling || activeElement.parentNode.lastChild).focus();
+					this.getPreviousAvailableSibling(activeElement).focus();
 
 					break;
 
 				// arrow down
 				case 40:
-					(activeElement.nextSibling || activeElement.parentNode.firstChild).focus();
+					this.getNextAvailableSibling(activeElement).focus();
 
 					break;
 
@@ -241,10 +240,49 @@ var Sushi;
 		}
 		// space, arrow up and arrow down open the select
 		else if ([38, 40, 32].indexOf(event.keyCode) !== -1) {
-			event.preventDefault();
-
 			this.dropdown.open();
 		}
+	};
+
+	proto.getNextAvailableSibling = function (element) {
+		if (element.nextSibling === null) {
+			return this.getFirstAvailableItem();
+		}
+
+		if (element.nextSibling.classList.contains("_hidden")) {
+			return this.getNextAvailableSibling(element.nextSibling);
+		}
+
+		return element.nextSibling;
+	};
+
+	proto.getPreviousAvailableSibling = function (element) {
+		if (element.previousSibling === null) {
+			return this.getLastAvailableItem();
+		}
+
+		if (element.previousSibling.classList.contains("_hidden")) {
+			return this.getPreviousAvailableSibling(element.previousSibling);
+		}
+
+		return element.previousSibling;
+	};
+
+	proto.getFirstAvailableItem = function () {
+		return this.getAvailableItems().item(0);
+	};
+
+	proto.getLastAvailableItem = function () {
+		var items = this.getAvailableItems();
+		var lastItemIndex = items.length - 1;
+
+		return items.item(lastItemIndex);
+	};
+
+	proto.getAvailableItems = function (parentElement) {
+		parentElement = parentElement || this.dropdownListElement;
+
+		return parentElement.querySelectorAll(".c-select__item:not(._hidden)");
 	};
 
 	/**
@@ -281,6 +319,9 @@ var Sushi;
 		}
 		else {
 			selectedOption.selected = true;
+
+			this.dropdown.close();
+			this.buttonElement.focus();
 		}
 
 		var updatedOptions = Array.prototype.slice.call(this.triggerElement.selectedOptions)
@@ -490,9 +531,7 @@ var Sushi;
 
 		this.groups.forEach(function (group) {
 			var groupLabel = group.getElementsByClassName("c-select__groupLabel").item(0);
-			var totalVisibleItems = Array.prototype.slice.call(
-				group.getElementsByClassName("c-select__item")
-			).filter(Select.itemIsVisible).length;
+			var totalVisibleItems = this.getAvailableItems(group).length;
 
 			if (totalVisibleItems === 0) {
 				groupLabel.classList.add("_hidden");
@@ -544,10 +583,6 @@ var Sushi;
 		}
 
 		return matchesFilter;
-	};
-
-	Select.itemIsVisible = function (itemElement) {
-		return !itemElement.classList.contains("_hidden");
 	};
 
 	Plugins.Select = Select;
