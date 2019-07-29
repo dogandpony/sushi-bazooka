@@ -194,7 +194,7 @@ var Sushi;
 		if (this.dropdown.isOpen) {
 			var activeElement = document.activeElement;
 
-			event.preventDefault();
+		event.preventDefault();
 
 			switch (event.keyCode) {
 				// esc
@@ -241,8 +241,6 @@ var Sushi;
 		}
 		// space, arrow up and arrow down open the select
 		else if ([38, 40, 32].indexOf(event.keyCode) !== -1) {
-			event.preventDefault();
-
 			this.dropdown.open();
 		}
 	};
