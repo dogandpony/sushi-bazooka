@@ -7,11 +7,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 ## [0.16.1] - 2019-07-29
 
 ### Fixed
+- **Dom**: Fixed query methods not being able to target multi-class or multi-id selectors.
 - **Plugins.Select**
-  - Fix issue on which pressing spacebar after closing the select would open it again and no text could be typed in any inputs in the page.
-  - Fix arrow up/down selecting hidden elements in the select.
+  - Fixed issue on which pressing spacebar after closing the select would open it again and no text could be typed in any inputs in the page.
+  - Fixed arrow up/down selecting hidden elements in the select.
   - Return focus to the button when select is closed.
-  - Make sure to add key event listeners when the button is focused or clicked.
+  - Made sure to add key event listeners when the button is focused or clicked.
 
 
 ## [0.16.0] - 2019-07-17
