@@ -321,6 +321,7 @@ var Sushi;
 			selectedOption.selected = true;
 
 			this.dropdown.close();
+			this.buttonElement.focus();
 		}
 
 		var updatedOptions = Array.prototype.slice.call(this.triggerElement.selectedOptions)
