@@ -206,13 +206,13 @@ var Sushi;
 
 				// arrow up
 				case 38:
-					(activeElement.previousSibling || activeElement.parentNode.lastChild).focus();
+					this.getPreviousAvailableSibling(activeElement).focus();
 
 					break;
 
 				// arrow down
 				case 40:
-					(activeElement.nextSibling || activeElement.parentNode.firstChild).focus();
+					this.getNextAvailableSibling(activeElement).focus();
 
 					break;
 
@@ -243,6 +243,47 @@ var Sushi;
 		else if ([38, 40, 32].indexOf(event.keyCode) !== -1) {
 			this.dropdown.open();
 		}
+	};
+
+	proto.getNextAvailableSibling = function (element) {
+		if (element.nextSibling === null) {
+			return this.getFirstAvailableItem();
+		}
+
+		if (element.nextSibling.classList.contains("_hidden")) {
+			return this.getNextAvailableSibling(element.nextSibling);
+		}
+
+		return element.nextSibling;
+	};
+
+	proto.getPreviousAvailableSibling = function (element) {
+		if (element.previousSibling === null) {
+			return this.getLastAvailableItem();
+		}
+
+		if (element.previousSibling.classList.contains("_hidden")) {
+			return this.getPreviousAvailableSibling(element.previousSibling);
+		}
+
+		return element.previousSibling;
+	};
+
+	proto.getFirstAvailableItem = function () {
+		return this.getAvailableItems().item(0);
+	};
+
+	proto.getLastAvailableItem = function () {
+		var items = this.getAvailableItems();
+		var lastItemIndex = items.length - 1;
+
+		return items.item(lastItemIndex);
+	};
+
+	proto.getAvailableItems = function (parentElement) {
+		parentElement = parentElement || this.dropdownListElement;
+
+		return parentElement.querySelectorAll(".c-select__item:not(._hidden)");
 	};
 
 	/**
