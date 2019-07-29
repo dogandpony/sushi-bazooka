@@ -165,8 +165,8 @@ var Sushi;
 
 	proto.handleDropdownOpen = function () {
 		var currentItem = (
-			Dom.query(".c-select__item.is-active", this.dropdownListElement)
-			|| Dom.query(".c-select__item", this.dropdownListElement)
+			Dom.query(".c-select__item.is-active:not(._hidden)", this.dropdownListElement)
+			|| this.getFirstAvailableItem()
 		);
 
 		setTimeout(function () {
