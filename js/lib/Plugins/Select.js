@@ -531,9 +531,7 @@ var Sushi;
 
 		this.groups.forEach(function (group) {
 			var groupLabel = group.getElementsByClassName("c-select__groupLabel").item(0);
-			var totalVisibleItems = Array.prototype.slice.call(
-				group.getElementsByClassName("c-select__item")
-			).filter(Select.itemIsVisible).length;
+			var totalVisibleItems = this.getAvailableItems(group).length;
 
 			if (totalVisibleItems === 0) {
 				groupLabel.classList.add("_hidden");
@@ -585,10 +583,6 @@ var Sushi;
 		}
 
 		return matchesFilter;
-	};
-
-	Select.itemIsVisible = function (itemElement) {
-		return !itemElement.classList.contains("_hidden");
 	};
 
 	Plugins.Select = Select;
