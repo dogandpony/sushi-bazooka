@@ -81,7 +81,6 @@ var Sushi;
 
 		this.dropdown = new Dropdown(this.containerElement, {
 			triggerEvent: "click",
-			closeOnSelect: !this.isMultiple,
 			closeIntentionTimeout: 0,
 		});
 	};
@@ -320,6 +319,8 @@ var Sushi;
 		}
 		else {
 			selectedOption.selected = true;
+
+			this.dropdown.close();
 		}
 
 		var updatedOptions = Array.prototype.slice.call(this.triggerElement.selectedOptions)
