@@ -127,8 +127,8 @@ var Sushi;
 			.on("Select.blur", this.disableKeyDownListener.bind(this));
 
 		Events(this.dropdown.triggerElement)
-			.on("Select.open", this.handleDropdownOpen.bind(this))
-			.on("Select.close", this.disableKeyDownListener.bind(this));
+			.on("Dropdown.open", this.handleDropdownOpen.bind(this))
+			.on("Dropdown.close", this.disableKeyDownListener.bind(this));
 
 		if (this.options.search) {
 			Events(this.searchInput)
