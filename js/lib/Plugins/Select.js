@@ -124,7 +124,7 @@ var Sushi;
 			.on("Select.change", this.updateSelectedOptions.bind(this));
 
 		Events(this.buttonElement)
-			.on("Select.focus", this.enableKeyDownListener.bind(this))
+			.on("Select.click", this.enableKeyDownListener.bind(this))
 			.on("Select.blur", this.disableKeyDownListener.bind(this));
 
 		Events(this.dropdown.triggerElement)
