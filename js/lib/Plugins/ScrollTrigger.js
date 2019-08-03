@@ -80,7 +80,7 @@ var Sushi;
 
 			case "bottom":
 				triggerOffset = window.pageYOffset + window.innerHeight;
-				activationPoint = (elementOffset + offset + elementHeight - 1);
+				activationPoint = (elementOffset + offset + elementHeight);
 				limitPoint += offset;
 
 				break;
