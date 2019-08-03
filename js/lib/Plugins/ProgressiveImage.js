@@ -125,6 +125,9 @@ var Sushi;
 	proto.registerLazyLoad = function () {
 		new Plugins.ScrollTrigger(this.container, {
 			triggerPosition: "bottom",
+			offset: function () {
+				return -this.container.clientHeight;
+			}.bind(this),
 			eventAfter: function (scrollTrigger) {
 				scrollTrigger.disable();
 				this.loadOriginalImage();

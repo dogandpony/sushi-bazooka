@@ -156,7 +156,8 @@ var Sushi;
 			this.options.limit = function () {
 				return Util.Css.getOffset(limitElement).top
 					+ limitElement.clientHeight
-					+ this.placeholder.clientHeight;
+					+ this.placeholder.clientHeight
+					- window.innerHeight;
 			}.bind(this);
 		}
 		else {
@@ -192,21 +193,13 @@ var Sushi;
 		limitPosition += this.scrollTrigger.getOffset();
 
 		var isLimited = (this.options.inverted
-				? (limitPosition - (window.innerHeight + window.scrollY) > 0)
-				: (limitPosition - window.scrollY < 0)
+			? (limitPosition > window.scrollY)
+			: (limitPosition < window.scrollY)
 		);
 
 		if (isLimited) {
-			var placeholderTopOffset = Util.Css.getOffset(this.placeholder).top;
-
-			var translateOffset = limitPosition;
-
-			if (this.options.inverted) {
-				translateOffset -= (placeholderTopOffset + this.placeholder.clientHeight);
-			}
-
 			this.triggerElement.classList.add("is-limited");
-			this.triggerElement.style.transform = "translateY(" + translateOffset + "px)";
+			this.triggerElement.style.transform = "translateY(" + limitPosition + "px)";
 		}
 		else {
 			this.triggerElement.classList.remove("is-limited");
