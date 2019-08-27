@@ -14,7 +14,6 @@
 	line-height: $tooltipLineHeight;
 	text-align: center;
 	white-space: nowrap;
-	visibility: hidden;
 	opacity: 0;
 	transition: opacity $tooltipTransitionDuration $tooltipTransitionTimingFunction;
 	cursor: default;
