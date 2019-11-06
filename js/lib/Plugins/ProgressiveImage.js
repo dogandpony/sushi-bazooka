@@ -91,8 +91,8 @@ var Sushi;
 		if (this.options.fit !== "none") {
 			// Convert hyphen case to pascal case
 			var fitOption = this.options.fit
-				.replace(/\b\w/g, function(l) {
-					return l.toUpperCase();
+				.replace(/\b\w/g, function (firstLetter) {
+					return firstLetter.toUpperCase();
 				})
 				.replace("-", "");
 
