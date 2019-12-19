@@ -19,36 +19,29 @@ var Sushi;
 	var Reveal = function (triggerElement, options) {
 		BasePlugin.call(this, triggerElement, options);
 
-		this.isOpen = this.triggerElement.classList.contains("is-active");
-
-		// Cache elements
 		this.targetElement = Dom.get(this.options.target);
-		this.contentElement = this.targetElement.querySelector(".c-reveal__content");
 
-		var maxHeight = window.getComputedStyle(this.targetElement).maxHeight;
-		var maxWidth = window.getComputedStyle(this.targetElement).maxWidth;
-
-		this.autoHeight = (maxHeight !== "none") && (parseInt(maxHeight) === 0);
-		this.autoWidth = (maxWidth !== "none") && (parseInt(maxWidth) === 0);
+		this.isOpen = (
+			this.triggerElement.classList.contains("is-active")
+			|| this.targetElement.classList.contains("is-active")
+		);
 
 		this.registerListeners();
 
-		if (this.isOpen) {
-			if (this.autoHeight) {
-				this.targetElement.style.maxHeight = "none";
-			}
-
-			if (this.autoWidth) {
-				this.targetElement.style.maxWidth = "none";
-			}
+		if (!this.isOpen) {
+			return;
 		}
+
+		this.removeDimensionSettings();
 	};
 
 	Reveal.displayName = "Reveal";
 
 	Reveal.DEFAULTS = {
+		animateDimensions: "height", // "height", "width", "both"
 		preventDefault: true,
 		rel: null,
+		target: null,
 	};
 
 	Reveal.prototype = Object.create(BasePlugin.prototype);
@@ -68,34 +61,23 @@ var Sushi;
 	};
 
 
-	proto.prepare = function () {
-		this.targetElement.classList.add("is-animating");
-
-		if (this.autoHeight) {
-			this.targetElement.style.maxHeight = this.contentElement.offsetHeight + "px";
+	proto.updateMaxHeight = function () {
+		if (this.animatesHeight()) {
+			this.targetElement.style.maxHeight = this.targetElement.scrollHeight + "px";
 		}
 
-		if (this.autoWidth) {
-			this.targetElement.style.maxWidth = this.contentElement.offsetWidth + "px";
-		}
-
-		if (this.triggerElement !== null) {
-			this.triggerElement.blur();
+		if (this.animatesWidth()) {
+			this.targetElement.style.maxWidth = this.targetElement.scrollWidth + "px";
 		}
 	};
 
 
-	proto.removeAnimationClass = function () {
-		Events(this.targetElement)
-			.off("Reveal.removeAnimationClass." + transitionEndEvent)
-			.one("Reveal.removeAnimationClass." + transitionEndEvent, function () {
-				this.targetElement.classList.remove("is-animating");
+	proto.removeFocusFromTriggerElement = function () {
+		if (this.triggerElement === null) {
+			return;
+		}
 
-				if (this.isOpen) {
-					this.targetElement.style.maxHeight = "none";
-					this.targetElement.style.maxWidth = "none";
-				}
-			}.bind(this));
+		this.triggerElement.blur();
 	};
 
 
@@ -106,27 +88,15 @@ var Sushi;
 
 		this.isOpen = true;
 
-		if (this.triggerElement !== null) {
-			this.triggerElement.classList.add("is-active");
-		}
+		this.registerAnimationEndEvents();
 
-		this.targetElement.classList.add("is-active");
+		this.addOpenClasses();
 
-		this.prepare();
+		this.addAnimatingClass();
+		this.updateMaxHeight();
+		this.removeFocusFromTriggerElement();
 
-		Events(this.targetElement)
-			.off("Reveal." + transitionEndEvent)
-			.one("Reveal." + transitionEndEvent, function () {
-				if (this.autoHeight) {
-					this.targetElement.style.maxHeight = "none";
-				}
-
-				if (this.autoWidth) {
-					this.targetElement.style.maxWidth = "none";
-				}
-			}.bind(this));
-
-		this.removeAnimationClass();
+		this.triggerOpenEvents();
 	};
 
 
@@ -137,32 +107,117 @@ var Sushi;
 
 		this.isOpen = false;
 
-		Events(this.targetElement).off("Reveal." + transitionEndEvent);
+		this.addAnimatingClass();
+		this.updateMaxHeight();
+		this.removeFocusFromTriggerElement();
 
+		this.forceRepaint();
+
+		this.removeOpenClasses();
+		this.registerAnimationEndEvents();
+		this.triggerCloseEvents();
+
+		this.zeroDimensions();
+	};
+
+
+	proto.addAnimatingClass = function () {
+		this.targetElement.classList.add("is-animating");
+	};
+
+
+	proto.removeAnimatingClass = function () {
+		this.targetElement.classList.remove("is-animating");
+	};
+
+
+	proto.addOpenClasses = function () {
+		if (this.triggerElement !== null) {
+			this.triggerElement.classList.add("is-active");
+		}
+
+		this.targetElement.classList.add("is-active");
+	};
+
+
+	proto.removeOpenClasses = function () {
 		if (this.triggerElement !== null) {
 			this.triggerElement.classList.remove("is-active");
 		}
 
 		this.targetElement.classList.remove("is-active");
+	};
 
-		this.prepare();
 
-		Util.forceRepaint(this.targetElement);
+	proto.triggerOpenEvents = function () {
+		Events(this.targetElement).trigger("Reveal.open");
+		Events(this.triggerElement).trigger("Reveal.open");
+	};
 
-		if (this.autoHeight) {
-			this.targetElement.style.maxHeight = 0;
-		}
 
-		if (this.autoWidth) {
-			this.targetElement.style.maxWidth = 0;
-		}
+	proto.triggerCloseEvents = function () {
+		Events(this.targetElement).trigger("Reveal.close");
+		Events(this.triggerElement).trigger("Reveal.close");
+	};
 
-		this.removeAnimationClass();
+
+	proto.registerAnimationEndEvents = function () {
+		var eventType = "Reveal.animation." + transitionEndEvent;
+
+		Events(this.targetElement)
+			.off(eventType)
+			.one(eventType, handleTransitionEnd.bind(this));
 	};
 
 
 	proto.toggle = function () {
 		this.isOpen ? this.close() : this.open();
+	};
+
+
+	proto.forceRepaint = function () {
+		Util.forceRepaint(this.targetElement);
+	};
+
+
+	proto.animatesWidth = function () {
+		return ["width", "both"].includes(this.options.animateDimensions.toLowerCase());
+	};
+
+
+	proto.animatesHeight = function () {
+		return ["height", "both"].includes(this.options.animateDimensions.toLowerCase());
+	};
+
+
+	proto.removeDimensionSettings = function () {
+		if (this.animatesHeight()) {
+			this.targetElement.style.maxHeight = "none";
+		}
+
+		if (this.animatesWidth()) {
+			this.targetElement.style.maxWidth = "none";
+		}
+	};
+
+
+	proto.zeroDimensions = function () {
+		if (this.animatesHeight()) {
+			this.targetElement.style.maxHeight = "0";
+		}
+
+		if (this.animatesWidth()) {
+			this.targetElement.style.maxWidth = "0";
+		}
+	};
+
+
+	var handleTransitionEnd = function () {
+		this.targetElement.classList.remove("is-animating");
+
+		if (this.isOpen) {
+			this.removeDimensionSettings();
+		}
 	};
 
 

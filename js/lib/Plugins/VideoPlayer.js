@@ -159,7 +159,7 @@ var Sushi;
 		this.player.stopVideo();
 	};
 
-	VideoPlayer.prototype.playerReady = function (event) {
+	VideoPlayer.prototype.playerReady = function () {
 		this.triggerElement.classList.add("is-ready");
 	};
 
@@ -170,6 +170,13 @@ var Sushi;
 				this.triggerElement.classList.add("is-playing");
 
 				break;
+
+			case window.YT.PlayerState.PAUSED:
+				if (!this.options.hideOnPause) {
+					break;
+				}
+
+				// fallthrough
 
 			default:
 				this.triggerElement.classList.remove("is-playing");
