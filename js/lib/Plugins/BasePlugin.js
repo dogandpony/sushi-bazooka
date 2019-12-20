@@ -25,6 +25,7 @@ var Sushi;
 		this.options = Object.assign(
 			{},
 			this.constructor.DEFAULTS,
+			triggerElement.dataset,
 			Util.getNamespaceProperties(constructorName, triggerElement.dataset),
 			options
 		);
