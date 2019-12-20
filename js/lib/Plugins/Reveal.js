@@ -26,6 +26,8 @@ var Sushi;
 			|| this.targetElement.classList.contains("is-active")
 		);
 
+		this.zeroDimensions();
+
 		this.registerListeners();
 
 		if (!this.isOpen) {
