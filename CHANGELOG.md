@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ### Changed
 - **Sushi.getPluginInstance()**: Now the first parameter can also be a string that matches a plugin's _displayName_.
+- **All plugins**: Now all data-attributes don't need to be prefixed with the plugin's name, as such: `data-modal-target` may be replaced with `data-target`.
 
 ## Fixed
 - **Plugins.Reveal**: Plugin instances are now opening and closing again. This was a bug introduced on [0.17.1] that made the instances not aware of their own initial states, making the plugin non operational.
