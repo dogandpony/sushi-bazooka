@@ -21,10 +21,14 @@ var Sushi;
 
 		this.targetElement = Dom.get(this.options.target);
 
+		Sushi.addPluginInstanceTo(this.targetElement, this);
+
 		this.isOpen = (
 			this.triggerElement.classList.contains("is-active")
 			|| this.targetElement.classList.contains("is-active")
 		);
+
+		this.zeroDimensions();
 
 		this.registerListeners();
 
@@ -161,6 +165,18 @@ var Sushi;
 	};
 
 
+	proto.triggerOpenedEvents = function () {
+		Events(this.targetElement).trigger("Reveal.opened");
+		Events(this.triggerElement).trigger("Reveal.opened");
+	};
+
+
+	proto.triggerClosedEvents = function () {
+		Events(this.targetElement).trigger("Reveal.closed");
+		Events(this.triggerElement).trigger("Reveal.closed");
+	};
+
+
 	proto.registerAnimationEndEvents = function () {
 		var eventType = "Reveal.animation." + transitionEndEvent;
 
@@ -217,7 +233,12 @@ var Sushi;
 
 		if (this.isOpen) {
 			this.removeDimensionSettings();
+			this.triggerOpenedEvents();
+
+			return;
 		}
+
+		this.triggerClosedEvents();
 	};
 
 

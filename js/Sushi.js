@@ -67,6 +67,10 @@ var Sushi;
 	};
 
 	Sushi.getPluginInstance = function (ofClass, inElement) {
+		if (typeof ofClass === "string") {
+			ofClass = Sushi.Plugins[ofClass];
+		}
+
 		return (pluginStack.get(inElement) || new Map()).get(ofClass);
 	};
 
