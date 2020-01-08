@@ -42,8 +42,6 @@
  * "What a fool believes"
  * ============================================================================================== */
 
-var Sushi;
-
 (function (Sushi, Plugins) {
 	"use strict";
 
@@ -84,6 +82,7 @@ var Sushi;
 
 		this.contentSource = parseTarget(this.options.content);
 		this.appendTo = Dom.get(this.options.appendTo);
+		this.name = this.element.getAttribute("id") || this.content.getAttribute("id");
 
 		var defaultAnchors = Modal.DEFAULTS.position.split(" ");
 
@@ -95,6 +94,21 @@ var Sushi;
 		Sushi.addPluginInstanceTo(this.element, this);
 
 		this.create();
+
+		openFromHash.bind(this)();
+
+		if (this.element.classList.contains("is-open")) {
+			if (this.parseSlugFromUrl() && this.parseSlugFromUrl() !== this.name) {
+				this.close();
+			}
+			else {
+				if (this.name) {
+					window.location.hash = "#/" + this.name;
+				}
+
+				this.open();
+			}
+		}
 	};
 
 	Modal.displayName = "Modal";
@@ -159,6 +173,19 @@ var Sushi;
 
 
 	/**
+	 * Returns parsed slug from current URL
+	 *
+	 * @returns {string|null}
+	 */
+	proto.parseSlugFromUrl = function () {
+		if (this.options.navigationType === null) {
+			return null;
+		}
+
+		return window.location.hash.toString().replace(/^#\/(.*)$/, "$1");
+	};
+
+	/**
 	 * Create the modal and overlay HTML and append it to the body
 	 */
 	proto.create = function () {
@@ -190,68 +217,87 @@ var Sushi;
 			this.updateContent();
 		}
 
-		this.registerListeners();
+		registerListeners.bind(this)();
 
 		if (this.element.classList.contains("is-open")) {
 			this.open();
 		}
 	};
 
+	/**
+	 * Opens modal if there is a slug in the URL, closes it otherwise
+	 */
+	var toggleFromHash = function () {
+		if (this.parseSlugFromUrl() === this.name) {
+			this.open();
+		}
+		else if (this.parseSlugFromUrl() === "") {
+			this.close();
+		}
+	};
 
-	proto.registerListeners = function () {
-		var onTriggerElementClick = function (event) {
-			event.preventDefault();
-			this.toggle();
-		};
+	/**
+	 * Opens the modal if there is a slug in the URL
+	 */
+	var openFromHash = function () {
+		if (this.parseSlugFromUrl() === this.name) {
+			this.open();
+		}
+	};
 
-		var onOverlayClick = function (event) {
-			if (event.target === this.overlay) {
-				event.preventDefault();
-				this.close();
-			}
-		};
+	var onTriggerElementClick = function (event) {
+		event.preventDefault();
+		this.toggle();
+	};
 
-		var onCloseButtonClick = function (event) {
+	var onOverlayClick = function (event) {
+		if (event.target === this.overlay) {
 			event.preventDefault();
 			this.close();
-		};
+		}
+	};
 
-		var onDocumentKeyDown = function (event) {
-			var currentModal = Modal.getCurrent();
+	var onCloseButtonClick = function () {
+		this.close();
+	};
 
-			if (currentModal.options.closeOnEscape && (event.keyCode === 27)) {
-				currentModal.close();
-			}
-		};
+	var onDocumentKeyDown = function (event) {
+		var currentModal = Modal.getCurrent();
 
-		var onModalOpen = function () {
-			if (!(event.detail && event.detail.modal)) {
-				return;
-			}
+		if (currentModal.options.closeOnEscape && (event.keyCode === 27)) {
+			currentModal.close();
+		}
+	};
 
-			var closeButtons = this.element.querySelectorAll("[data-modal-close]");
+	var onModalOpen = function (event) {
+		if (!(event.detail && event.detail.modal)) {
+			return;
+		}
 
-			Events(closeButtons).on("Modal.close.click", onCloseButtonClick.bind(this));
+		var closeButtons = this.element.querySelectorAll("[data-modal-close]");
 
-			if (Modal.openModals.length === 1) {
-				Events(document).on("Modal.keydown", onDocumentKeyDown.bind(this));
-			}
-		};
+		Events(closeButtons).on("Modal.close.click", onCloseButtonClick.bind(this));
 
-		var onModalClose = function () {
-			if (!(event.detail && event.detail.modal)) {
-				return;
-			}
+		if (Modal.openModals.length === 1) {
+			Events(document).on("Modal.keydown", onDocumentKeyDown.bind(this));
+		}
+	};
 
-			var closeButtons = this.element.querySelectorAll("[data-modal-close]");
+	var onModalClose = function (event) {
+		if (!(event.detail && event.detail.modal)) {
+			return;
+		}
 
-			Events(closeButtons).off("Modal.close.click");
+		var closeButtons = this.element.querySelectorAll("[data-modal-close]");
 
-			if (Modal.openModals.length === 0) {
-				Events(document).off("Modal.keydown");
-			}
-		};
+		Events(closeButtons).off("Modal.close.click");
 
+		if (Modal.openModals.length === 0) {
+			Events(document).off("Modal.keydown");
+		}
+	};
+
+	var registerListeners = function () {
 		// Register click listener on triggering element
 		Events(this.triggerElement).on("Modal.click", onTriggerElementClick.bind(this));
 
@@ -260,10 +306,13 @@ var Sushi;
 			Events(this.overlay).on("Modal.close.click", onOverlayClick.bind(this));
 		}
 
+		// Register open / close listener
 		Events(this.element).on("Modal.open", onModalOpen.bind(this));
 		Events(this.element).on("Modal.close", onModalClose.bind(this));
-	};
 
+		// Register hash change to toggle modal state
+		Events(window).on("hashchange", toggleFromHash.bind(this));
+	};
 
 	/**
 	 * Show the modal
@@ -306,6 +355,14 @@ var Sushi;
 	 * Hide the modal
 	 */
 	proto.close = function () {
+		if (
+			this.name
+			&& this.parseSlugFromUrl()
+			&& this.parseSlugFromUrl() === this.name
+		) {
+			window.location.hash = "";
+		}
+
 		this.isOpen = false;
 
 		Dom.removeClass(this.element, "is-open");
@@ -348,7 +405,12 @@ var Sushi;
 			this.close();
 		}
 		else {
-			this.open();
+			if (this.name) {
+				window.location.hash = "#/" + this.name;
+			}
+			else {
+				this.open();
+			}
 		}
 	};
 
@@ -427,4 +489,4 @@ var Sushi;
 
 
 	Plugins.Modal = Modal;
-})(Sushi || (Sushi = {}), Sushi.Plugins || (Sushi.Plugins = {}));
+})(window.Sushi || (window.Sushi = {}), window.Sushi.Plugins || (window.Sushi.Plugins = {}));
