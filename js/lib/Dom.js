@@ -306,9 +306,9 @@ var Sushi;
 
 		var documentFragment = document.createDocumentFragment();
 
-		elements.forEach(function (element) {
-			documentFragment.appendChild(element);
-		});
+		while (elements.length) {
+			documentFragment.appendChild(elements[0]);
+		}
 
 		parentElement.appendChild(documentFragment);
 	};
