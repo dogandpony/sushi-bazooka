@@ -7,6 +7,7 @@ var Sushi;
 (function (Sushi, Plugins) {
 	"use strict";
 
+	var Events = Sushi.Events;
 	var Util = Sushi.Util;
 
 	var BasePlugin = function (triggerElement, options) {
@@ -44,11 +45,11 @@ var Sushi;
 
 		one = one || false;
 
-		return Sushi.Events(targets)[one ? "one" : "on"](this.getNamespaceEventTypes(types), fn);
+		return Events(targets)[one ? "one" : "on"](this.getNamespaceEventTypes(types), fn);
 	};
 
 	proto.destroyListener = function (targets, types, fn) {
-		return Sushi.Events(targets).off(this.getNamespaceEventTypes(types), fn);
+		return Events(targets).off(this.getNamespaceEventTypes(types), fn);
 	};
 
 	proto.getNamespaceEventTypes = function (types) {
