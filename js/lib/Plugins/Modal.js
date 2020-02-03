@@ -55,8 +55,7 @@ var Sushi;
 	var parseTarget = function (target) {
 		var element = Dom.get(target);
 
-		if (
-			(element !== null)
+		if ((element !== null)
 			&& ["script", "template"].includes(element.tagName.toLowerCase())
 		) {
 			element = Dom.parseAll(element.innerHTML);
@@ -162,6 +161,8 @@ var Sushi;
 	 * Create the modal and overlay HTML and append it to the body
 	 */
 	proto.create = function () {
+		this.triggerBeforeCreateEvent();
+
 		var modifierClasses = Util.getModifierClasses("c-modal", this.options.modifiers);
 		var anchors = this.options.position.split(" ");
 
@@ -195,6 +196,8 @@ var Sushi;
 		if (this.element.classList.contains("is-open")) {
 			this.open();
 		}
+
+		this.triggerAfterCreateEvent();
 	};
 
 
