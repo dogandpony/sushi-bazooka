@@ -16,7 +16,7 @@ var Sushi;
 
 		this.isOpen = false;
 
-		this.createTooltip();
+		this.create();
 		this.addPositionClass();
 		this.registerEventListeners();
 	};
@@ -50,7 +50,9 @@ var Sushi;
 		}
 	};
 
-	proto.createTooltip = function () {
+	proto.create = function () {
+		this.triggerBeforeCreateEvent();
+
 		this.tooltip = document.createElement("div");
 		this.tooltip.classList.add("c-tooltip");
 
@@ -65,6 +67,8 @@ var Sushi;
 		this.tooltip.appendChild(this.content);
 
 		this.triggerElement.appendChild(this.tooltip);
+
+		this.triggerAfterCreateEvent();
 	};
 
 	proto.toggle = function () {

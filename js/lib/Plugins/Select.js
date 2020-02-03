@@ -57,6 +57,8 @@ var Sushi;
 	proto.constructor = Select;
 
 	proto.create = function () {
+		this.triggerBeforeCreateEvent();
+
 		this.containerElement = Dom.parse("<div class='c-select'>");
 
 		this.buttonElement = Dom.parse("<button class='c-select__button' type='button'>");
@@ -83,6 +85,8 @@ var Sushi;
 			triggerEvent: "click",
 			closeIntentionTimeout: 0,
 		});
+
+		this.triggerAfterCreateEvent();
 	};
 
 	proto.createDropdown = function () {

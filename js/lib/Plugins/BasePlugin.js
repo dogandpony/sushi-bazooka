@@ -64,5 +64,13 @@ var Sushi;
 		return namespaceTypes;
 	};
 
+	proto.triggerBeforeCreateEvent = function () {
+		Events(this.triggerElement).trigger(this.getNamespaceEventTypes("beforecreate"));
+	};
+
+	proto.triggerAfterCreateEvent = function () {
+		Events(this.triggerElement).trigger(this.getNamespaceEventTypes("aftercreate"));
+	};
+
 	Plugins.BasePlugin = BasePlugin;
 })(Sushi || (Sushi = {}), Sushi.Plugins || (Sushi.Plugins = {}));
