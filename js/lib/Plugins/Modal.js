@@ -55,8 +55,7 @@ var Sushi;
 	var parseTarget = function (target) {
 		var element = Dom.get(target);
 
-		if (
-			(element !== null)
+		if ((element !== null)
 			&& ["script", "template"].includes(element.tagName.toLowerCase())
 		) {
 			element = Dom.parseAll(element.innerHTML);
