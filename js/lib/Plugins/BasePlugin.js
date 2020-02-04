@@ -61,7 +61,7 @@ var Sushi;
 			namespaceTypes.push([ this.id, this.constructor.displayName, type ].join("."));
 		}.bind(this));
 
-		return namespaceTypes;
+		return namespaceTypes.join(" ");
 	};
 
 	proto.triggerBeforeCreateEvent = function () {
