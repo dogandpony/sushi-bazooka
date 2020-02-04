@@ -7,6 +7,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 ## [0.18.0] - 2020-02-03
 
 ## Fixed
+- **Plugins.BasePlugin**: Fixed `beforecreate` and `aftercreate` triggers.
+
+
+## [0.18.0] - 2020-02-03
+
+## Fixed
 - **Dom**: Fixed `append()` skipping odd-number items.
 
 ## Added
