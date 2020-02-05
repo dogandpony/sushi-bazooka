@@ -15,8 +15,6 @@ var Sushi;
 			return;
 		}
 
-		var constructorName = Util.firstCharacterToLowerCase(this.constructor.displayName);
-
 		Sushi.addPluginInstanceTo(triggerElement, this);
 
 		this.triggerElement = triggerElement;
@@ -27,7 +25,10 @@ var Sushi;
 			{},
 			this.constructor.DEFAULTS,
 			triggerElement.dataset,
-			Util.getNamespaceProperties(constructorName, triggerElement.dataset),
+			Util.getNamespaceProperties(
+				Util.firstCharacterToLowerCase(this.constructor.displayName),
+				triggerElement.dataset
+			),
 			options
 		);
 	};
@@ -65,11 +66,21 @@ var Sushi;
 	};
 
 	proto.triggerBeforeCreateEvent = function () {
-		Events(this.triggerElement).trigger(this.getNamespaceEventTypes("beforecreate"));
+		Events(this.triggerElement)
+			.trigger(this.getNamespaceEventTypes("beforecreate"), this.getBaseEventData());
 	};
 
 	proto.triggerAfterCreateEvent = function () {
-		Events(this.triggerElement).trigger(this.getNamespaceEventTypes("aftercreate"));
+		Events(this.triggerElement)
+			.trigger(this.getNamespaceEventTypes("aftercreate"), this.getBaseEventData());
+	};
+
+	proto.getBaseEventData = function () {
+		var data = {};
+
+		data[Util.firstCharacterToLowerCase(this.constructor.displayName)] = this;
+
+		return data;
 	};
 
 	Plugins.BasePlugin = BasePlugin;
