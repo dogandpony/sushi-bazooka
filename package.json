@@ -1,6 +1,6 @@
 {
 	"name": "sushi-bazooka",
-	"version": "0.18.2",
+	"version": "0.19.0",
 	"description": "Component-based JavaScript library",
 	"repository": {
 		"type": "git",
@@ -15,6 +15,8 @@
 	"author": "Caio Costa <caiocrcosta@gmail.com>",
 	"contributors": [
 		"Fabio Ribeiro <fabio@dogandponystudios.com>",
+		"Felipe Santos <felipedems@gmail.com>",
+		"Rafael Raupp <raupperino@gmail.com>",
 		"Vinicius do Canto <viniciusdocanto@gmail.com>"
 	],
 	"license": "ISC",

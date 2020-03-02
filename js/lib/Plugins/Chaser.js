@@ -193,8 +193,8 @@ var Sushi;
 		limitPosition += this.scrollTrigger.getOffset();
 
 		var isLimited = (this.options.inverted
-			? (limitPosition > window.scrollY)
-			: (limitPosition < window.scrollY)
+			? (limitPosition > window.pageYOffset)
+			: (limitPosition < window.pageYOffset)
 		);
 
 		if (isLimited) {

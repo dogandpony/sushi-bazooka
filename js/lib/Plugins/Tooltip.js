@@ -66,7 +66,7 @@ var Sushi;
 		this.tooltip.appendChild(this.arrow);
 		this.tooltip.appendChild(this.content);
 
-		this.triggerElement.appendChild(this.tooltip);
+		document.body.appendChild(this.tooltip);
 
 		this.triggerAfterCreateEvent();
 	};
@@ -144,57 +144,118 @@ var Sushi;
 	};
 
 	proto.centerTooltip = function () {
+
+		// Required rects
 		var bodyRect = document.body.getBoundingClientRect();
-		var triggerElementRect = this.triggerElement.getBoundingClientRect();
 		var tooltipRect = this.tooltip.getBoundingClientRect();
+		var triggerElementRect = this.triggerElement.getBoundingClientRect();
+		var lineRects = this.triggerElement.getClientRects();
+		var firstLineRect = lineRects[0];
+		var lastLineRect = lineRects[lineRects.length - 1];
+		var triggerElementCoords = getCoords(this.triggerElement);
 
-		var triggerElementCenter = {
-			x: triggerElementRect.x + (triggerElementRect.width / 2),
-			y: triggerElementRect.y + (triggerElementRect.height / 2),
-		};
+		// Min and max to prevent overflow
+		var minX = this.options.horizontalMargin;
+		var maxX = (bodyRect.width - this.options.horizontalMargin);
 
-		var maxWidth = (bodyRect.width - (this.options.horizontalMargin * 2));
+		// Placement
+		var top;
+		var left;
+		var offset;
 
-		// Shrink the tooltip if it's wider than the max width (window width minus horizontal
-		// margin)
-		if (tooltipRect.width > maxWidth) {
-			this.tooltip.style.width = maxWidth + "px";
-
-			// update rect
-			tooltipRect = this.tooltip.getBoundingClientRect();
+		// Closes if rects are not found
+		if (!bodyRect || !tooltipRect || !firstLineRect || !triggerElementCoords) {
+			return this.close();
 		}
 
-		var centerXMin = (tooltipRect.width / 2) + this.options.horizontalMargin;
-		var centerXMax = (bodyRect.width
-			- (tooltipRect.width / 2)
-			- this.options.horizontalMargin
-		);
+		// Find top and left
+		switch (this.options.position) {
+			case "top":
+				top = triggerElementCoords.top - tooltipRect.height - 10;
+				left = firstLineRect.left + (firstLineRect.width / 2);
+				break;
 
-		var xOffset = Math.min(
-			Math.max(0, (centerXMin - triggerElementCenter.x)),
-			(centerXMax - triggerElementCenter.x)
-		);
+			case "bottom":
+				top = triggerElementCoords.top + triggerElementRect.height + 10;
+				left = lastLineRect.left + (lastLineRect.width / 2);
+				break;
 
-		this.arrow.style.marginLeft = (-1 * xOffset) + "px";
+			case "left":
+				top = triggerElementCoords.top - (tooltipRect.height / 2) + (firstLineRect.height / 2);
+				left = firstLineRect.left - (tooltipRect.width / 2) - 10;
+				break;
+
+			case "right":
+				top = triggerElementCoords.top + triggerElementRect.height
+					- (tooltipRect.height / 2) - (lastLineRect.height / 2);
+				left = lastLineRect.left + lastLineRect.width + (tooltipRect.width / 2) + 10;
+				break;
+		}
+
+		// Set tooltip placements
+		this.tooltip.style.top = top + "px";
+		this.tooltip.style.left = left + "px";
+		this.arrow.style.marginLeft = "0";
+
+		// Fixes overflow
+		tooltipRect = this.tooltip.getBoundingClientRect();
+		var overflowingRight = tooltipRect.right > maxX;
+		var overflowingLeft = minX > tooltipRect.left;
 
 		switch (this.options.position) {
 			case "top":
-			// fall through
-
 			case "bottom":
-				this.tooltip.style.marginLeft = ((tooltipRect.width / -2) + xOffset) + "px";
+				if (overflowingRight) {
+					offset = tooltipRect.right - maxX;
+					this.tooltip.style.left = left - offset + "px";
+					this.arrow.style.marginLeft = offset + "px";
+				}
+
+				if (overflowingLeft) {
+					offset = minX - tooltipRect.left;
+					this.tooltip.style.left = left + offset + "px";
+					this.arrow.style.marginLeft = -offset + "px";
+				}
 
 				break;
 
 			case "left":
-			// fall through
+				if (overflowingLeft) {
+					this.options.position = "top";
+					this.tooltip.classList.remove("c-tooltip--left");
+					this.tooltip.classList.add("c-tooltip--top");
+					this.centerTooltip();
+				}
+				break;
 
 			case "right":
-				this.tooltip.style.marginTop = (tooltipRect.height / -2) + "px";
-
+				if (overflowingRight) {
+					this.options.position = "bottom";
+					this.tooltip.classList.remove("c-tooltip--right");
+					this.tooltip.classList.add("c-tooltip--bottom");
+					this.centerTooltip();
+				}
 				break;
 		}
 	};
+
+	function getCoords(elem) {
+		var box = elem.getBoundingClientRect();
+
+		var body = document.body;
+		var docEl = document.documentElement;
+
+		var scrollTop = window.pageYOffset || docEl.scrollTop || body.scrollTop;
+		var scrollLeft = window.pageXOffset || docEl.scrollLeft || body.scrollLeft;
+
+		var clientTop = docEl.clientTop || body.clientTop || 0;
+		var clientLeft = docEl.clientLeft || body.clientLeft || 0;
+
+		var top = box.top + scrollTop - clientTop;
+		var left = box.left + scrollLeft - clientLeft;
+
+		return {top: Math.round(top), left: Math.round(left)};
+	}
 
 	Plugins.Tooltip = Tooltip;
 })(Sushi || (Sushi = {}), Sushi.Plugins || (Sushi.Plugins = {}));
