@@ -15,7 +15,6 @@ var Sushi;
 		BasePlugin.call(this, triggerElement, options);
 
 		this.isOpen = false;
-		this.triggerElement.style.cursor = "pointer";
 
 		this.create();
 		this.addPositionClass();
