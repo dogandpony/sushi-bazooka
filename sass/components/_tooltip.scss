@@ -17,6 +17,7 @@
 	opacity: 0;
 	transition: opacity $tooltipTransitionDuration $tooltipTransitionTimingFunction;
 	cursor: default;
+	transform: translateX(-50%);
 }
 
 .c-tooltip.is-visible {
@@ -29,6 +30,7 @@
 
 .c-tooltip__arrow {
 	position: absolute;
+	background: inherit;
 }
 
 .c-tooltip__arrow:before,
@@ -38,7 +40,7 @@
 	z-index: 2;
 	width: $tooltipArrowSize;
 	height: $tooltipArrowSize;
-	background: $tooltipBackground;
+	background: inherit;
 	transform: rotateZ(45deg);
 }
 
@@ -46,18 +48,13 @@
 	z-index: 3;
 }
 
-.c-tooltip__content,
+.c-tooltip,
 .c-tooltip__arrow:before {
 	@include elevation(4);
 }
 
 
 // Top
-.c-tooltip--top {
-	bottom: calc(100% + #{($tooltipArrowSize / 2)});
-	left: 50%;
-}
-
 .c-tooltip--top .c-tooltip__arrow {
 	top: calc(100% - #{($tooltipArrowSize / 2)});
 	left: calc(50% - #{($tooltipArrowSize / 2)});
@@ -65,11 +62,6 @@
 
 
 // Bottom
-.c-tooltip--bottom {
-	top: calc(100% + #{($tooltipArrowSize / 2)});
-	left: 50%;
-}
-
 .c-tooltip--bottom .c-tooltip__arrow {
 	bottom: calc(100% + #{($tooltipArrowSize / 2)});
 	left: calc(50% - #{($tooltipArrowSize / 2)});
@@ -77,23 +69,13 @@
 
 
 // Right
-.c-tooltip--right {
-	top: 50%;
-	left: calc(100% + #{($tooltipArrowSize / 2)});
-}
-
 .c-tooltip--right .c-tooltip__arrow {
 	top: calc(50% - #{($tooltipArrowSize / 2)});
-	right: calc(100% - #{($tooltipArrowSize / 2)});
+	right: calc(100% + #{($tooltipArrowSize / 2)});
 }
 
 
 // Left
-.c-tooltip--left {
-	top: 50%;
-	right: calc(100% + #{($tooltipArrowSize / 2)});
-}
-
 .c-tooltip--left .c-tooltip__arrow {
 	top: calc(50% - #{($tooltipArrowSize / 2)});
 	left: calc(100% - #{($tooltipArrowSize / 2)});
@@ -104,7 +86,7 @@
 	display: inline-block;
 	z-index: 2;
 	padding: $tooltipPadding;
-	background: $tooltipBackground;
+	background: inherit;
 	border-radius: $tooltipBorderRadius;
 	font-size: $tooltipFontSize;
 	line-height: $tooltipLineHeight;
