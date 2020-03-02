@@ -7,14 +7,13 @@ var Sushi;
 (function (Sushi, Plugins) {
 	"use strict";
 
+	var Events = Sushi.Events;
 	var Util = Sushi.Util;
 
 	var BasePlugin = function (triggerElement, options) {
 		if (Sushi.getPluginInstance(this.constructor, triggerElement)) {
 			return;
 		}
-
-		var constructorName = Util.firstCharacterToLowerCase(this.constructor.displayName);
 
 		Sushi.addPluginInstanceTo(triggerElement, this);
 
@@ -25,7 +24,11 @@ var Sushi;
 		this.options = Object.assign(
 			{},
 			this.constructor.DEFAULTS,
-			Util.getNamespaceProperties(constructorName, triggerElement.dataset),
+			triggerElement.dataset,
+			Util.getNamespaceProperties(
+				Util.firstCharacterToLowerCase(this.constructor.displayName),
+				triggerElement.dataset
+			),
 			options
 		);
 	};
@@ -43,11 +46,11 @@ var Sushi;
 
 		one = one || false;
 
-		return Sushi.Events(targets)[one ? "one" : "on"](this.getNamespaceEventTypes(types), fn);
+		return Events(targets)[one ? "one" : "on"](this.getNamespaceEventTypes(types), fn);
 	};
 
 	proto.destroyListener = function (targets, types, fn) {
-		return Sushi.Events(targets).off(this.getNamespaceEventTypes(types), fn);
+		return Events(targets).off(this.getNamespaceEventTypes(types), fn);
 	};
 
 	proto.getNamespaceEventTypes = function (types) {
@@ -59,7 +62,25 @@ var Sushi;
 			namespaceTypes.push([ this.id, this.constructor.displayName, type ].join("."));
 		}.bind(this));
 
-		return namespaceTypes;
+		return namespaceTypes.join(" ");
+	};
+
+	proto.triggerBeforeCreateEvent = function () {
+		Events(this.triggerElement)
+			.trigger(this.getNamespaceEventTypes("beforecreate"), this.getBaseEventData());
+	};
+
+	proto.triggerAfterCreateEvent = function () {
+		Events(this.triggerElement)
+			.trigger(this.getNamespaceEventTypes("aftercreate"), this.getBaseEventData());
+	};
+
+	proto.getBaseEventData = function () {
+		var data = {};
+
+		data[Util.firstCharacterToLowerCase(this.constructor.displayName)] = this;
+
+		return data;
 	};
 
 	Plugins.BasePlugin = BasePlugin;

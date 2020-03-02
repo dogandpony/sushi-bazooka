@@ -124,7 +124,7 @@ var Sushi;
 	 * Returns the maximum transition duration from an element taking the delays into account
 	 *
 	 * @param {HTMLElement} element Element to get values from
-	 * @param {Boolean} ignoreDelay Whether to ignore or not the delay value
+	 * @param {Boolean} [ignoreDelay] Whether to ignore or not the delay value
 	 *
 	 * @returns {number} Transition duration in milliseconds
 	 */

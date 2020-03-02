@@ -27,7 +27,7 @@ var Sushi;
 			);
 		}
 
-		this.createContainers();
+		this.create();
 		this.loadThumbnail();
 
 		if (this.options.lazyLoad) {
@@ -65,7 +65,9 @@ var Sushi;
 
 	proto.constructor = ProgressiveImage;
 
-	proto.createContainers = function () {
+	proto.create = function () {
+		this.triggerBeforeCreateEvent();
+
 		this.container = document.createElement("div");
 		this.fill = Dom.parse("<div class='c-progressiveImage__fill'>");
 		this.imageFrame = Dom.parse("<div class='c-progressiveImage__imageFrame'>");
@@ -91,8 +93,8 @@ var Sushi;
 		if (this.options.fit !== "none") {
 			// Convert hyphen case to pascal case
 			var fitOption = this.options.fit
-				.replace(/\b\w/g, function(l) {
-					return l.toUpperCase();
+				.replace(/\b\w/g, function (firstLetter) {
+					return firstLetter.toUpperCase();
 				})
 				.replace("-", "");
 
@@ -120,6 +122,8 @@ var Sushi;
 
 		this.container.appendChild(this.fill);
 		this.container.appendChild(this.imageFrame);
+
+		this.triggerAfterCreateEvent();
 	};
 
 	proto.registerLazyLoad = function () {

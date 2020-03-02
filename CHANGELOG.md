@@ -4,6 +4,55 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project will adhere to [Semantic Versioning](http://semver.org/spec/v2.0.0.html) once it's out of beta. Currently we work with `0.x.y` where `x` is **major** and `y` can be either **minor** or **patch** versions. This way we keep code from spilling to real major versions.
 
 
+## [0.18.2] - 2020-02-05
+
+## Added
+- **Plugins.BasePlugin**: Add base event data (with instance reference) to `beforecreate` and `aftercreate` triggers.
+
+
+## [0.18.1] - 2020-02-04
+
+## Fixed
+- **Plugins.BasePlugin**: Fixed `beforecreate` and `aftercreate` triggers.
+
+
+## [0.18.0] - 2020-02-03
+
+## Fixed
+- **Dom**: Fixed `append()` skipping odd-number items.
+
+## Added
+- **Plugins.Modal**, **Plugins.ProgressiveImage**, **Plugins.Select**, **Plugins.Tooltip**: Added `beforecreate` and `aftercreate` events to all plugins that create their own markup.
+
+
+## [0.17.2] - 2020-01-07
+
+### Changed
+- **Sushi.getPluginInstance()**: Now the first parameter can also be a string that matches a plugin's _displayName_.
+- **All plugins**: Now all data-attributes don't need to be prefixed with the plugin's name, as such: `data-modal-target` may be replaced with `data-target`.
+
+## Fixed
+- **Plugins.Reveal**: Plugin instances are now opening and closing again. This was a bug introduced on [0.17.1] that made the instances not aware of their own initial states, making the plugin non operational.
+
+## Added
+- **Plugins.Reveal**: Added `Reveal.opened` and `Reveal.closed` triggers when the open and close transitions have been finished, respectively.
+
+
+## [0.17.1] - 2019-12-19
+
+### Changed
+- **Plugins.Reveal**
+  - The class `c-reveal--hidden` is not necessary anymore.
+  - Option `animateDimensions` was added to set if the plugin should animate the container's `"height"`, `"width"` or `"both"`. This option is case-insensitive.
+  - It is not necessary to use the class `c-reveal__content` in the content element anymore, but that will prevent the content itself from animating even if classes like `c-reveal--appearFromBottom` or `c-reveal--fade` are used.
+
+## Fixed
+- **Util.Css.getMaxTransitionDuration()**: The function description now describes the second argument as optional.
+
+## Added
+- **Plugins.Video**: Added option `hideOnPause` to, well, hide the video player whenever it's paused.
+
+
 ## [0.17.0] - 2019-08-21
 
 ### Changed
@@ -460,6 +509,11 @@ This version is the first one in a series of breaking releases that will change 
 - **Plugins.Modal**: Check if BodyScroll library exists and warn user if it doesn't.
 
 
+[0.18.2]: https://github.com/dogandpony/sushi-bazooka/compare/0.18.1...0.18.2
+[0.18.1]: https://github.com/dogandpony/sushi-bazooka/compare/0.18.0...0.18.1
+[0.18.0]: https://github.com/dogandpony/sushi-bazooka/compare/0.17.2...0.18.0
+[0.17.2]: https://github.com/dogandpony/sushi-bazooka/compare/0.17.1...0.17.2
+[0.17.1]: https://github.com/dogandpony/sushi-bazooka/compare/0.17.0...0.17.1
 [0.17.0]: https://github.com/dogandpony/sushi-bazooka/compare/0.16.2...0.17.0
 [0.16.2]: https://github.com/dogandpony/sushi-bazooka/compare/0.16.1...0.16.2
 [0.16.1]: https://github.com/dogandpony/sushi-bazooka/compare/0.16.0...0.16.1
