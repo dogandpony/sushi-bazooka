@@ -275,6 +275,9 @@ var Sushi;
 		if (target instanceof HTMLElement) {
 			target = [target];
 		}
+		else if (target instanceof NodeList) {
+			target = Array.prototype.slice.call(target);
+		}
 
 		if (Dom.isIterable(target)) {
 			for (var i = 0; i < target.length; i++) {
@@ -306,9 +309,9 @@ var Sushi;
 
 		var documentFragment = document.createDocumentFragment();
 
-		while (elements.length) {
-			documentFragment.appendChild(elements[0]);
-		}
+		Dom.forEach(elements, function (element) {
+			documentFragment.appendChild(element);
+		});
 
 		parentElement.appendChild(documentFragment);
 	};
