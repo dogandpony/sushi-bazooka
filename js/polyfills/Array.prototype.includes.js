@@ -8,6 +8,7 @@ if (Array.prototype.includes === void 0) {
 
 	// eslint-disable-next-line no-extend-native
 	Object.defineProperty(Array.prototype, "includes", {
+		configurable: true,
 		value: function (searchElement, fromIndex) {
 			// 1. Let O be ? ToObject(this value).
 			if (this == null) {
