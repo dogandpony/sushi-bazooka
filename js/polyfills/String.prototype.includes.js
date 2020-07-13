@@ -6,6 +6,7 @@ if (String.prototype.includes === void 0) {
 	console.warn("Polyfilling String.prototype.includes");
 
 	Object.defineProperty(String.prototype, "includes", {
+		configurable: true,
 		value: function (search, start) {
 			if (typeof start !== "number") {
 				start = 0;
