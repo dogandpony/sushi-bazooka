@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project will adhere to [Semantic Versioning](http://semver.org/spec/v2.0.0.html) once it's out of beta. Currently we work with `0.x.y` where `x` is **major** and `y` can be either **minor** or **patch** versions. This way we keep code from spilling to real major versions.
 
 
+## [0.20.1] - 2020-07-13
+
+## Fixed
+- **Polyfills**: Add `configurable` option to `Array.includes` and `String.includes` polyfills so they don't break when other libs try to overwrite them. 
+
+
 ## [0.20.0] - 2020-04-16
 
 ## Fixed
@@ -524,6 +530,7 @@ This version is the first one in a series of breaking releases that will change 
 - **Plugins.Modal**: Check if BodyScroll library exists and warn user if it doesn't.
 
 
+[0.20.1]: https://github.com/dogandpony/sushi-bazooka/compare/0.20.0...0.20.1
 [0.20.0]: https://github.com/dogandpony/sushi-bazooka/compare/0.19.0...0.20.0
 [0.19.0]: https://github.com/dogandpony/sushi-bazooka/compare/0.18.2...0.19.0
 [0.18.2]: https://github.com/dogandpony/sushi-bazooka/compare/0.18.1...0.18.2
